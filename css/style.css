@@ -37,6 +37,7 @@ body {
   place-items: center;
   min-height: 100vh;
   padding: 2.5vmin;
+  overflow: hidden;        /* ← added */
 }
 
 .stage {
@@ -44,8 +45,14 @@ body {
   container-type: inline-size;
   width: min(100%, calc((100vh - 5vmin) * 1.42));
   aspect-ratio: 1.42 / 1;
-  overflow: hidden;
   background: var(--ink);
+}
+
+.stage__frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;        /* clips the photo only */
+  z-index: 1;
 }
 
 .stage__photo {
