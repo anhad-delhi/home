@@ -3,9 +3,9 @@
   --ink:      #080303;   /* field outside the photo */
   --cream:    #FFFEE8;   /* label + logo colour     */
 
-  --maroon:   155, 22, 66;    /* #9B1642 */
-  --olive:    154, 148, 36;   /* #9A9424 */
-  --blue:      64, 84, 164;   /* #4054A4 */
+  --maroon:   155 22 66;      /* #9B1642 */
+  --olive:    154 148 36;     /* #9A9424 */
+  --blue:      64 84 164;     /* #4054A4 */
 
   --rest:     0.40;   /* circle fill at rest  */
   --active:   1;      /* circle fill on hover */
