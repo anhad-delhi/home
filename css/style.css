@@ -136,8 +136,8 @@ body {
 /* ---- ABOUT ANHAD (maroon) ---- */
 .orb--about {
   --hue: var(--maroon);
-  left:      13cqw;
-  top:       22cqw;
+  left:      9.5cqw;
+  top:       20cqw;
   width:     25cqw;
   font-size: 1.95cqw;
 }
