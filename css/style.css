@@ -157,8 +157,8 @@ body {
 /* ---- TICKET COUNTER (blue) ---- */
 .orb--tickets {
   --hue: var(--blue);
-  left:      86.3cqw;
-  top:       61.4cqw;
+  left:      95cqw;
+  top:       50cqw;
   width:     17.8cqw;
   font-size: 1.75cqw;
 }
