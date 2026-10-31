@@ -129,7 +129,7 @@ body {
 /* ---- ABOUT ANHAD (maroon) ---- */
 .orb--about {
   --hue: var(--maroon);
-  left:      10cqw;
+  left:      13cqw;
   top:       22cqw;
   width:     25cqw;
   font-size: 1.95cqw;
@@ -143,7 +143,7 @@ body {
 /* ---- GALLERY (olive) ---- */
 .orb--gallery {
   --hue: var(--olive);
-  left:      82.2cqw;
+  left:      86cqw;
   top:       28.3cqw;
   width:     13cqw;
   font-size: 1.55cqw;
