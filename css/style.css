@@ -1,0 +1,146 @@
+/* ---------- tokens ---------- */
+:root {
+  --ink:      #080303;   /* field outside the photo */
+  --cream:    #FFFEE8;   /* label + logo colour     */
+
+  --maroon:   155, 22, 66;    /* #9B1642 */
+  --olive:    154, 148, 36;   /* #9A9424 */
+  --blue:      64, 84, 164;   /* #4054A4 */
+
+  --rest:     0.40;   /* circle fill at rest  */
+  --active:   1;      /* circle fill on hover */
+
+  --ease:     cubic-bezier(.4, 0, .2, 1);
+  --speed:    380ms;
+}
+
+/* ---------- reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- the stage ----------
+   The photo is 2:1. We letterbox it inside the ink field so the
+   composition the circles were placed against stays intact.
+   `container-type: inline-size` lets everything inside size in cqw,
+   so circles and type scale together with the frame.           */
+.page--landing {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 2.5vmin;
+}
+
+.stage {
+  position: relative;
+  container-type: inline-size;
+
+  width:  min(100%, calc((100vh - 5vmin) * 1.42));
+  aspect-ratio: 1.42 / 1;          /* the frame, per your mockup */
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.stage__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;               /* see note below */
+  object-position: 50% 50%;
+  display: block;
+}
+
+/* ---------- logo ---------- */
+.stage__logo {
+  position: absolute;
+  left: 47%;
+  top: 46.5%;
+  transform: translate(-50%, -50%);
+  width: 26cqw;
+  margin: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.stage__logo img { width: 100%; height: auto; display: block; }
+
+/* ---------- circles ---------- */
+.orb {
+  position: absolute;
+  z-index: 3;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+  color: var(--cream);
+
+  /* fill is dimmed — the label is not */
+  background-color: rgb(var(--hue) / var(--rest));
+  transition: background-color var(--speed) var(--ease),
+              transform      var(--speed) var(--ease);
+}
+.orb:hover,
+.orb:focus-visible {
+  background-color: rgb(var(--hue) / var(--active));
+}
+.orb:focus-visible {
+  outline: 2px solid var(--cream);
+  outline-offset: 6px;
+}
+
+/* label stack: rest + hover text occupy the same cell and cross-fade */
+.orb__label {
+  display: grid;
+  place-items: center;
+  width: 74%;
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: 0.06em;
+}
+.orb__text {
+  grid-area: 1 / 1;
+  transition: opacity var(--speed) var(--ease);
+}
+.orb__text--hover {
+  opacity: 0;
+  font-size: 0.72em;
+  letter-spacing: 0.03em;
+  text-transform: none;
+}
+.orb:hover .orb__text--rest,
+.orb:focus-visible .orb__text--rest { opacity: 0; }
+.orb:hover .orb__text--hover,
+.orb:focus-visible .orb__text--hover { opacity: 1; }
+
+/* ---------- placement, measured off your mockup ---------- */
+.orb--about {
+  --hue: var(--maroon);
+  width: 25cqw;
+  left: 4.2cqw;
+  top:  9.5cqw;
+  font-size: 1.95cqw;
+}
+
+.orb--gallery {
+  --hue: var(--olive);
+  width: 13cqw;
+  left: 75.7cqw;
+  top:  21.8cqw;
+  font-size: 1.55cqw;
+}
+
+.orb--tickets {
+  --hue: var(--blue);
+  width: 17.8cqw;
+  left: 77.4cqw;
+  top:  52.5cqw;
+  font-size: 1.75cqw;
+}
