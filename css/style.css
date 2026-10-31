@@ -67,11 +67,9 @@ body {
 
 /* ----------  ---------- */
 .stage__logo {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  margin: 0;
-  z-index: 2;
-  pointer-events: none;
+  left:  47cqw;
+  top:   50%;      /* ← dead centre, whatever the frame's ratio */
+  width: 26cqw;
 }
 .stage__logo img { width: 100%; height: auto; display: block; }
 
