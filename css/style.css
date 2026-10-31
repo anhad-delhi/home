@@ -139,7 +139,7 @@ body {
   font-size: 1.95cqw;
 }
 .orb--about .orb__label {
-  width:          74%;
+  width:          50%;
   line-height:    1.25;
   letter-spacing: 0.06em;
 }
@@ -153,7 +153,7 @@ body {
   font-size: 1.55cqw;
 }
 .orb--gallery .orb__label {
-  width:          80%;
+  width:          65%;
   line-height:    1.25;
   letter-spacing: 0.06em;
 }
@@ -167,7 +167,7 @@ body {
   font-size: 1.75cqw;
 }
 .orb--tickets .orb__label {
-  width:          74%;
+  width:          60%;
   line-height:    1.25;
   letter-spacing: 0.06em;
 }
