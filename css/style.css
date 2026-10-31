@@ -43,8 +43,8 @@ body {
 .stage {
   position: relative;
   container-type: inline-size;
-  width: min(100%, calc((100vh - 5vmin) * 1.42));
-  aspect-ratio: 1.42 / 1;
+  width: 100vw;
+  height: 100vh;
   background: var(--ink);
 }
 
