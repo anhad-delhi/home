@@ -4,16 +4,16 @@
 
 /* ---------- tokens ---------- */
 :root {
-  --ink:      #080303;   /* field outside the photo */
-  --cream:    #FFFEE8;   /* label + logo colour     */
+  --ink:      #080303;
+  --cream:    #FFFEE8;
 
-  /* space-separated, NOT commas — required for the rgb( / ) syntax below */
+  /* space-separated, NOT commas — required by rgb( / ) below */
   --maroon:   155 22 66;     /* #9B1642 */
   --olive:    154 148 36;    /* #9A9424 */
   --blue:      64 84 164;    /* #4054A4 */
 
-  --rest:     0.40;   /* circle fill at rest  */
-  --active:   1;      /* circle fill on hover */
+  --rest:     0.40;
+  --active:   1;
 
   --ease:     cubic-bezier(.4, 0, .2, 1);
   --speed:    380ms;
@@ -37,7 +37,7 @@ body {
   place-items: center;
   min-height: 100vh;
   padding: 2.5vmin;
-  overflow: hidden;        /* ← added */
+  overflow: hidden;
 }
 
 .stage {
@@ -48,10 +48,11 @@ body {
   background: var(--ink);
 }
 
+/* clips the photo only — circles can sit outside the frame */
 .stage__frame {
   position: absolute;
   inset: 0;
-  overflow: hidden;        /* clips the photo only */
+  overflow: hidden;
   z-index: 1;
 }
 
@@ -65,26 +66,17 @@ body {
   display: block;
 }
 
-/* ----------  ---------- */
-.stage__logo {
-  left:  47cqw;
-  top:   50%;      /* ← dead centre, whatever the frame's ratio */
-  width: 26cqw;
-}
-.stage__logo img { width: 100%; height: auto; display: block; }
-
 /* ---------- circles: shared behaviour ---------- */
 .orb {
   position: absolute;
   z-index: 3;
   aspect-ratio: 1;
   border-radius: 50%;
-  transform: translate(-50%, -50%);   /* makes left/top mean CENTRE */
+  transform: translate(-50%, -50%);   /* left/top = CENTRE */
   display: grid;
   place-items: center;
   text-decoration: none;
   color: var(--cream);
-
   background-color: rgb(var(--hue) / var(--rest));
   transition: background-color var(--speed) var(--ease);
 }
@@ -120,35 +112,42 @@ body {
 
 /* ============================================================
    ADJUST EVERYTHING BELOW THIS LINE
-   All units are cqw = percent of the frame's WIDTH.
-   left/top = the CENTRE of the circle.
+   cqw = percent of the frame's WIDTH.  left/top = CENTRE.
+   Each selector appears ONCE. Edit here, nowhere else.
    ============================================================ */
 
 /* ---- LOGO ---- */
 .stage__logo {
-  left:  47cqw;   /* → right / ← left   */
-  top:   46.5cqw; /* ↓ down  / ↑ up     */
-  width: 26cqw;   /* bigger / smaller   */
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+
+  left:  47%;      /* → right / ← left  (% of frame width)  */
+  top:   50%;      /* ↓ down  / ↑ up    (% of frame height) */
+  width: 26cqw;    /* bigger / smaller                      */
 }
+.stage__logo img { width: 100%; height: auto; display: block; }
 
 /* ---- ABOUT ANHAD (maroon) ---- */
 .orb--about {
   --hue: var(--maroon);
-  left:      6cqw;
-  top:       16cqw;
+  left:      16.7cqw;
+  top:       22cqw;
   width:     25cqw;
   font-size: 1.95cqw;
 }
 .orb--about .orb__label {
-  width:          74%;    /* text box width — narrower wraps sooner */
-  line-height:    1.25;   /* gap between the two lines              */
+  width:          74%;
+  line-height:    1.25;
   letter-spacing: 0.06em;
 }
 
 /* ---- GALLERY (olive) ---- */
 .orb--gallery {
   --hue: var(--olive);
-  left:      86cqw;
+  left:      82.2cqw;
   top:       28.3cqw;
   width:     13cqw;
   font-size: 1.55cqw;
@@ -162,8 +161,8 @@ body {
 /* ---- TICKET COUNTER (blue) ---- */
 .orb--tickets {
   --hue: var(--blue);
-  left:      95cqw;
-  top:       50cqw;
+  left:      86.3cqw;
+  top:       61.4cqw;
   width:     17.8cqw;
   font-size: 1.75cqw;
 }
