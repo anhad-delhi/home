@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About Anhad</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page--about">
+
+  <header class="about__head">
+    <h1 class="about__title">About Anhad</h1>
+    <div class="about__cols">
+      <p>Vitae et voluptates natus nam vel ipsa. Nesciunt optio porro quasi deserunt tempore nihil non. Mollitia rerum sunt repudiandae quia et dolorem dolorum. Corrupti et adipisci quia est sit provident et aut. Blanditiis unde placeat suscipit animi corporis. Nam ipsa est quas et sed molestiae rerum ducimus. Quae et at veritatis. Vel sunt sit necessitatibus. Sit accusamus asperiores ullam sed earum sit. Ut quia quis facere amet aut adipisci saepe porro. Velit molestiae voluptas nulla dicta aut perferendis ut porro.</p>
+      <p>Vitae et voluptates natus nam vel ipsa. Nesciunt optio porro quasi deserunt tempore nihil non. Mollitia rerum sunt repudiandae quia et dolorem dolorum. Corrupti et adipisci quia est sit provident et aut. Blanditiis unde placeat suscipit animi corporis. Nam ipsa est quas et sed molestiae rerum ducimus. Quae et at veritatis. Vel sunt sit necessitatibus. Sit accusamus asperiores ullam sed earum sit. Ut quia quis facere amet aut adipisci saepe porro. Velit molestiae voluptas nulla dicta aut perferendis ut porro.</p>
+    </div>
+  </header>
+
+  <section class="scatter">
+
+    <button class="piece piece--cert" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-certificate.jpg" alt="A university degree certificate.">
+    </button>
+
+    <button class="piece piece--stage" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-stage.jpg" alt="The company on stage at curtain call.">
+    </button>
+
+    <button class="piece piece--card" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-card.jpg" alt="A small printed card for the production.">
+    </button>
+
+    <button class="piece piece--draw" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-drawing.jpg" alt="An illustrated poster for the production.">
+    </button>
+
+    <button class="piece piece--poster" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-poster.jpg" alt="The Anhad poster.">
+    </button>
+
+  </section>
+
+  <div class="veil" hidden></div>
+
+  <aside class="note" hidden>
+    <h2 class="note__title"></h2>
+    <p class="note__body"></p>
+    <p class="note__meta"></p>
+  </aside>
+
+<script>
+(function () {
+  const pieces = Array.from(document.querySelectorAll('.piece'));
+  const note   = document.querySelector('.note');
+  const veil   = document.querySelector('.veil');
+  const GAP = 36, NOTE_W = 300;
+  let active = null;
+
+  function place() {
+    if (!active) return;
+    const el = active;
+
+    el.style.transition = 'none';
+    el.style.transform  = '';
+    const r  = el.getBoundingClientRect();
+    const cx = r.left + r.width  / 2;
+    const cy = r.top  + r.height / 2;
+    const w  = el.offsetWidth;
+    const h  = el.offsetHeight;
+
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const maxH = vh * 0.74;
+    const maxW = (vw - NOTE_W - GAP) * 0.76;
+    const s    = Math.min(maxW / w, maxH / h, 2.4);
+
+    const groupW  = w * s + GAP + NOTE_W;
+    const groupX  = (vw - groupW) / 2;
+    const targetX = groupX + (w * s) / 2;
+    const targetY = vh / 2;
+
+    void el.offsetHeight;                    // force reflow before re-enabling
+    el.style.transition = '';
+    el.style.transform  =
+      'translate(' + (targetX - cx) + 'px,' + (targetY - cy) + 'px) scale(' + s + ')';
+
+    note.style.left = (groupX + w * s + GAP) + 'px';
+    note.style.top  = (vh / 2) + 'px';
+  }
+
+  function open(el) {
+    if (active) close();
+    active = el;
+    el.classList.add('is-active');
+    document.body.classList.add('is-zoomed');
+    veil.hidden = false;
+    note.querySelector('.note__title').textContent = el.dataset.title || '';
+    note.querySelector('.note__body').textContent  = el.dataset.body  || '';
+    note.querySelector('.note__meta').textContent  = el.dataset.year  || '';
+    note.hidden = false;
+    place();
+    requestAnimationFrame(function () {
+      veil.classList.add('is-on');
+      note.classList.add('is-on');
+    });
+  }
+
+  function close() {
+    if (!active) return;
+    active.classList.remove('is-active');
+    active.style.transform  = '';
+    active.style.transition = '';
+    active = null;
+    document.body.classList.remove('is-zoomed');
+    veil.classList.remove('is-on');
+    note.classList.remove('is-on');
+    setTimeout(function () {
+      if (!active) { veil.hidden = true; note.hidden = true; }
+    }, 320);
+  }
+
+  pieces.forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (el === active) return;
+      open(el);
+    });
+  });
+
+  veil.addEventListener('click', close);
+  note.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') close();
+  });
+  window.addEventListener('resize', place);
+})();
+</script>
+
+</body>
+</html>
