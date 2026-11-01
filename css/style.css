@@ -27,7 +27,7 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--cream);
-  font-family: "Alegreya SC", Georgia, serif;
+  -family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
@@ -230,7 +230,7 @@ body {
 .about__col {
   font-family: "Alegreya Sans", system-ui, sans-serif;
   font-weight: 400;
-  font-size: calc(1.2cqw * var(--type));
+  font-size: calc(1.45cqw * var(--type)); /*font size change*/
   line-height: 1.45;
   text-align: justify;
   text-justify: inter-word;
