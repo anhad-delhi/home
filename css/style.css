@@ -221,7 +221,7 @@ body {
   grid-column: 3 / 25;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: calc(4.8cqw * var(--type));
+  font-size: calc(5cqw * var(--type));
   line-height: 1;
   color: var(--paper);
   margin: 0 0 0.55em;
@@ -319,7 +319,7 @@ body {
   align-items: baseline;
   gap: 2em;
   font-family: "Alegreya SC", Georgia, serif;
-  font-size: calc(1.55cqw * var(--type));
+  font-size: calc(1.75cqw * var(--type));
   color: #F49528;               /* ← send me the real gold */
   text-decoration: none;
   transition: color 220ms ease, transform 220ms ease;
