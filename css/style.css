@@ -186,63 +186,68 @@ body {
 
 
 /* ============================================================
-   ABOUT PAGE
+   ABOUT PAGE — one screen, no scroll
    ============================================================ */
 
 .page--about {
   --paper:  #F7F7F7;
   --note:   #690B0B;
-  --col:    2.5cqw;    /* 1 of 40 columns */
-  --row:    3.05cqw;   /* 1 of 24 rows    */
 
+  /* ---- THE THREE KNOBS ---------------------------------- */
+  --type:     0.76;   /* type scale. 1 = full Figma size.     */
+  --head-top: 6vh;    /* space above the heading              */
+  --dim:      0.18;   /* opacity of the un-clicked images     */
+  /* ------------------------------------------------------- */
+
+  height: 100vh;
+  overflow: hidden;              /* page cannot scroll */
+  display: flex;
+  flex-direction: column;
   background: var(--ink);
   color: var(--paper);
   font-family: "Alegreya Sans", system-ui, sans-serif;
-  min-height: 100vh;
-  padding: 0;
   container-type: inline-size;
+  margin: 0;
 }
-.page--about.is-zoomed { overflow: hidden; }
 
-/* ---- 40-column grid, full bleed ---- */
+/* ---- heading + columns, on the 40-col grid ---- */
 .about__head {
+  flex: none;
   display: grid;
   grid-template-columns: repeat(40, 1fr);
-  padding-top: calc(var(--row) * 3);   /* starts on row 4 */
+  padding-top: var(--head-top);
 }
 
-/* heading — Alegreya SC, cols 3–24 */
 .about__title {
   grid-column: 3 / 25;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: 4.8cqw;          /* ≈ 200px on a ~4170px artboard */
+  font-size: calc(4.8cqw * var(--type));
   line-height: 1;
   color: var(--paper);
-  margin: 0 0 calc(var(--row) * 0.9);
+  margin: 0 0 0.55em;
 }
 
-/* body — Alegreya Sans, justified */
 .about__col {
   font-family: "Alegreya Sans", system-ui, sans-serif;
   font-weight: 400;
-  font-size: 1.2cqw;          /* ≈ 50px on a ~4170px artboard */
+  font-size: calc(1.2cqw * var(--type));
   line-height: 1.45;
   text-align: justify;
   text-justify: inter-word;
   color: var(--paper);
   margin: 0;
 }
-.about__col--left  { grid-column:  3 / 20; }   /* cols 3–19  */
-.about__col--right { grid-column: 22 / 39; }   /* cols 22–38 */
+.about__col--left  { grid-column:  3 / 20; }
+.about__col--right { grid-column: 22 / 39; }
 
-/* ---- the scatter ---- */
+/* ---- the scatter: takes whatever height is left ---- */
 .scatter {
   position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   container-type: inline-size;
-  width: auto;
-  aspect-ratio: 1358 / 520;
-  margin: calc(var(--row) * 1.2) 5.5vw 0;
+  margin: 2vh 5.5vw 0;
 }
 
 .piece {
@@ -254,81 +259,66 @@ body {
   transform-origin: 50% 50%;
   transform: rotate(var(--rot, 0deg));
   transition: transform 420ms cubic-bezier(.4,0,.2,1),
+              opacity   280ms ease,
               filter    420ms cubic-bezier(.4,0,.2,1);
   filter: drop-shadow(0 6px 18px rgb(0 0 0 / .55));
 }
 .piece img { width: 100%; height: auto; display: block; }
 .piece:focus-visible { outline: 2px solid var(--paper); outline-offset: 8px; }
 
+/* dim the OTHER images only — the page itself stays lit */
+.scatter.has-active .piece:not(.is-active) {
+  opacity: var(--dim);
+  pointer-events: auto;
+}
+
 .piece.is-active {
   z-index: 60;
   cursor: default;
-  filter: drop-shadow(0 26px 60px rgb(0 0 0 / .75));
+  filter: drop-shadow(0 22px 48px rgb(0 0 0 / .8));
 }
 
 /* ---- the comment card ---- */
-.veil {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: rgb(8 3 3 / 0);
-  transition: background 320ms ease;
-}
-.veil.is-on { background: rgb(8 3 3 / .72); }
-
 .note {
   position: fixed;
   z-index: 61;
-  width: 300px;
+  width: 280px;
   transform: translateY(-50%) scale(.96);
   opacity: 0;
-  transition: opacity 280ms ease, transform 280ms cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+  transition: opacity 260ms ease, transform 260ms cubic-bezier(.4,0,.2,1);
   background: var(--note);
   color: var(--paper);
   border-radius: 18px;
-  padding: 22px 24px 26px;
+  padding: 20px 22px 24px;
   font-family: "Alegreya Sans", system-ui, sans-serif;
 }
-.note.is-on { opacity: 1; transform: translateY(-50%) scale(1); }
+.note.is-on { opacity: 1; transform: translateY(-50%) scale(1); pointer-events: auto; }
 
-.note::before {                      /* the little pointer */
+.note::before {
   content: "";
   position: absolute;
-  left: -9px;
-  top: 26px;
-  width: 20px;
-  height: 20px;
+  left: -8px;
+  top: 24px;
+  width: 18px;
+  height: 18px;
   background: var(--note);
   border-radius: 4px 0 0 0;
   transform: rotate(-45deg);
 }
 
-.note__title {
-  margin: 0 0 .7em;
-  font-size: 1.06rem;
-  font-weight: 500;
-  line-height: 1.2;
-}
-.note__body {
-  margin: 0 0 2.4em;
-  font-size: .95rem;
-  line-height: 1.5;
-}
-.note__meta {
-  margin: 0;
-  font-size: .9rem;
-  opacity: .85;
-}
+.note__title { margin: 0 0 .7em;  font-size: 1rem;  font-weight: 500; line-height: 1.2; }
+.note__body  { margin: 0 0 2.2em; font-size: .9rem; line-height: 1.5; }
+.note__meta  { margin: 0;         font-size: .85rem; opacity: .85; }
 
 
 /* ============================================================
-   ABOUT — ADJUST SCATTER POSITIONS HERE
+   ABOUT — SCATTER POSITIONS
    cqw = % of the scatter's WIDTH.  left/top = TOP-LEFT corner.
-   --rot = tilt.  z-index = stacking order + click priority.
    ============================================================ */
 
-.piece--cert   { left: 11.0cqw; top:  9.1cqw; width: 22.1cqw; --rot: -4deg; z-index: 1; }
-.piece--stage  { left: 32.0cqw; top:  0.4cqw; width: 31.3cqw; --rot: -4deg; z-index: 2; }
-.piece--poster { left: 63.5cqw; top:  9.6cqw; width: 23.4cqw; --rot:  2deg; z-index: 2; }
-.piece--card   { left: 26.4cqw; top: 26.5cqw; width:  8.2cqw; --rot: -7deg; z-index: 3; }
-.piece--draw   { left: 34.6cqw; top: 19.5cqw; width: 28.3cqw; --rot: -1deg; z-index: 4; }
+.piece--cert   { left: 21.9cqw; top:  6.6cqw; width: 15.9cqw; --rot: -4deg; z-index: 1; }
+.piece--stage  { left: 37.0cqw; top:  0.3cqw; width: 22.5cqw; --rot: -4deg; z-index: 2; }
+.piece--poster { left: 59.7cqw; top:  6.9cqw; width: 16.8cqw; --rot:  2deg; z-index: 2; }
+.piece--card   { left: 33.0cqw; top: 19.1cqw; width:  5.9cqw; --rot: -7deg; z-index: 3; }
+.piece--draw   { left: 38.9cqw; top: 14.0cqw; width: 20.4cqw; --rot: -1deg; z-index: 4; }
