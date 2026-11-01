@@ -108,12 +108,9 @@
     const w  = el.offsetWidth;
     const h  = el.offsetHeight;
 
-    const NW = note.offsetWidth || 280;
-    const s  = Math.min(1, (sc.width - NW - GAP) / w, sc.height / h);
+    const s = Math.min(1, sc.height / h);
 
-    const groupW  = w * s + GAP + NW;
-    const groupX  = sc.left + (sc.width - groupW) / 2;
-    const targetX = groupX + (w * s) / 2;
+    const targetX = window.innerWidth / 2;
     const targetY = sc.top + sc.height / 2;
 
     void el.offsetHeight;
@@ -121,7 +118,7 @@
     el.style.transform  =
       'translate(' + (targetX - cx) + 'px,' + (targetY - cy) + 'px) scale(' + s + ')';
 
-    note.style.left = (groupX + w * s + GAP) + 'px';
+    note.style.left = (targetX + (w * s) / 2 + GAP) + 'px';
     note.style.top  = targetY + 'px';
 
     /* --- the others: slide away from the scatter's midline --- */
