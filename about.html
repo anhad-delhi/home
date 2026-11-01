@@ -69,15 +69,36 @@
   const scatter = document.querySelector('.scatter');
   const pieces  = Array.from(document.querySelectorAll('.piece'));
   const note    = document.querySelector('.note');
-  const GAP = 34;
+  const GAP  = 34;
+  const PUSH = 0.085;       /* ← how far siblings slide, as a fraction
+                                 of the scatter's width. 0.085 ≈ 8.5%.
+                                 Raise for more spread, lower for less. */
   let active = null;
-  let stack  = 10;          /* starts above the CSS z-indexes (1–4) */
+  let stack  = 10;
 
-  function place() {
-    if (!active) return;
-    const el = active;
+  /* each piece's resting centre, measured once, in px from scatter left */
+  function restCentre(el) {
+    const sc = scatter.getBoundingClientRect();
+    const prev = el.style.transform;
+    el.style.transition = 'none';
+    el.style.transform  = '';
+    const r = el.getBoundingClientRect();
+    el.style.transform  = prev;
+    void el.offsetHeight;
+    el.style.transition = '';
+    return (r.left + r.width / 2) - sc.left;
+  }
+
+  function layout() {
     const sc = scatter.getBoundingClientRect();
 
+    if (!active) {
+      pieces.forEach(function (el) { el.style.transform = ''; });
+      return;
+    }
+
+    /* --- the clicked piece: move to the centre of the scatter --- */
+    const el = active;
     el.style.transition = 'none';
     el.style.transform  = '';
     const r  = el.getBoundingClientRect();
@@ -101,33 +122,42 @@
 
     note.style.left = (groupX + w * s + GAP) + 'px';
     note.style.top  = targetY + 'px';
+
+    /* --- the others: slide away from the scatter's midline --- */
+    const mid = sc.width / 2;
+    const amt = sc.width * PUSH;
+
+    pieces.forEach(function (p) {
+      if (p === active) return;
+      const c   = restCentre(p);
+      const dir = c < mid ? -1 : 1;              /* left of centre → left */
+      /* pieces nearest the midline move most, far ones barely budge */
+      const near = 1 - Math.min(1, Math.abs(c - mid) / mid);
+      const dx   = dir * amt * (0.35 + 0.65 * near);
+      p.style.transform =
+        'translateX(' + dx + 'px) rotate(var(--rot, 0deg))';
+    });
   }
 
   function open(el) {
-    if (active && active !== el) {
-      active.classList.remove('is-active');
-      active.style.transform = '';
-    }
     active = el;
-    el.classList.add('is-active');
-    el.style.zIndex = ++stack;        /* stays after close */
+    pieces.forEach(function (p) { p.classList.toggle('is-active', p === el); });
+    el.style.zIndex = ++stack;
 
     note.querySelector('.note__title').textContent = el.dataset.title || '';
     note.querySelector('.note__body').textContent  = el.dataset.body  || '';
     note.querySelector('.note__meta').textContent  = el.dataset.year  || '';
     note.hidden = false;
 
-    place();
+    layout();
     requestAnimationFrame(function () { note.classList.add('is-on'); });
   }
 
   function close() {
     if (!active) return;
     active.classList.remove('is-active');
-    active.style.transform  = '';
-    active.style.transition = '';
-    /* z-index deliberately left in place — last touched stays on top */
     active = null;
+    layout();                       /* resets every transform */
     note.classList.remove('is-on');
     setTimeout(function () { if (!active) note.hidden = true; }, 300);
   }
@@ -145,7 +175,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') close();
   });
-  window.addEventListener('resize', place);
+  window.addEventListener('resize', layout);
 })();
 </script>
 
