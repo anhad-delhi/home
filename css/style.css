@@ -330,14 +330,14 @@ body {
   transform: translateX(4px);
 }
 
-/* ---- the edge bubbles ---- */
-.bubbles {
+/* ---- the edge s ---- */
+.s {
   position: fixed;
   inset: 0;
   z-index: 70;
   pointer-events: none;         /* only the circles are clickable */
 }
-.bubble {
+. {
   position: absolute;
   pointer-events: auto;
   aspect-ratio: 1;
@@ -353,14 +353,14 @@ body {
   background-color: rgb(var(--hue) / var(--bub-rest, 0.55));
   transition: background-color var(--speed) var(--ease);
 }
-.bubble:hover,
-.bubble:focus-visible { background-color: rgb(var(--hue) / 1); }
-.bubble:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
-.bubble span { display: block; transform: translateX(var(--nudge, 0)); }
+.:hover,
+.:focus-visible { background-color: rgb(var(--hue) / 1); }
+.:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+. span { display: block; transform: translateX(var(--nudge, 0)); }
 
 
 /* ============================================================
-   BUBBLES — ADJUST HERE
+   S — ADJUST HERE
    All in vh.  right = negative pushes it off the screen edge.
    --nudge shifts the label left so it centres in the VISIBLE part.
    ============================================================ */
@@ -372,12 +372,12 @@ body {
 }
 .bubble--gallery {
   --hue: var(--olive);
-  width: 20vh;  top: 28.5vh;  right: 11.5vh;
+  width: 20vh;  top: 48.5vh;  right: 11.5vh;
   font-size: 2.6vh;  --nudge: 0;  z-index: 2;
 }
 .bubble--tickets {
   --hue: var(--blue);
-  width: 24vh;  top: 76.5vh;  left: -11vh;  right: auto;
+  width: 24vh;  top: 76.5vh;  left: -11vh;  right: auto + 20vh;
   font-size: 2.4vh;  --nudge: 2.2vh;  z-index: 3;
 }
 
