@@ -28,7 +28,7 @@
       <img src="assets/about-certificate.png" alt="A university degree certificate.">
     </button>
 
-     class="piece piece--stage" type="button"
+    <button class="piece piece--stage" type="button"
             data-title="Reading Area"
             data-body="Photo depicts a designated reading and review area within the archival library."
             data-year="1967">
@@ -36,7 +36,6 @@
     </button>
 
     <button class="piece piece--poster" type="button"
-            data-fill="draw"
             data-title="Reading Area"
             data-body="Photo depicts a designated reading and review area within the archival library."
             data-year="1967">
@@ -71,90 +70,72 @@
   const pieces  = Array.from(document.querySelectorAll('.piece'));
   const note    = document.querySelector('.note');
   const GAP  = 34;
-  const PUSH = 0.075;     /* sibling slide, as a fraction of scatter width */
+  const PUSH = 0.085;       /* ← how far siblings slide, as a fraction
+                                 of the scatter's width. 0.085 ≈ 8.5%.
+                                 Raise for more spread, lower for less. */
   let active = null;
   let stack  = 10;
 
-  /* viewport x of a piece's centre with no transform applied */
-  function restCentreX(el) {
+  /* each piece's resting centre, measured once, in px from scatter left */
+  function restCentre(el) {
+    const sc = scatter.getBoundingClientRect();
     const prev = el.style.transform;
-    const tr   = el.style.transition;
     el.style.transition = 'none';
     el.style.transform  = '';
     const r = el.getBoundingClientRect();
     el.style.transform  = prev;
     void el.offsetHeight;
-    el.style.transition = tr;
-    return r.left + r.width / 2;
-  }
-
-  function restRect(el) {
-    const prev = el.style.transform;
-    const tr   = el.style.transition;
-    el.style.transition = 'none';
-    el.style.transform  = '';
-    const r = el.getBoundingClientRect();
-    el.style.transform  = prev;
-    void el.offsetHeight;
-    el.style.transition = tr;
-    return r;
+    el.style.transition = '';
+    return (r.left + r.width / 2) - sc.left;
   }
 
   function layout() {
     const sc = scatter.getBoundingClientRect();
 
     if (!active) {
-      pieces.forEach(function (p) { p.style.transform = ''; });
+      pieces.forEach(function (el) { el.style.transform = ''; });
       return;
     }
 
-    /* --- active piece: centred on the SCREEN, horizontally --- */
+    /* --- the clicked piece: move to the centre of the scatter --- */
     const el = active;
-    const r  = restRect(el);
+    el.style.transition = 'none';
+    el.style.transform  = '';
+    const r  = el.getBoundingClientRect();
     const cx = r.left + r.width  / 2;
     const cy = r.top  + r.height / 2;
     const w  = el.offsetWidth;
     const h  = el.offsetHeight;
 
-    const s = Math.min(1, sc.height / h);
+    const NW = note.offsetWidth || 280;
+    const s  = Math.min(1, (sc.width - NW - GAP) / w, sc.height / h);
 
-    const targetX = window.innerWidth / 2;
+    const groupW  = w * s + GAP + NW;
+    const groupX  = sc.left + (sc.width - groupW) / 2;
+    const targetX = groupX + (w * s) / 2;
     const targetY = sc.top + sc.height / 2;
 
-    el.style.transform =
+    void el.offsetHeight;
+    el.style.transition = '';
+    el.style.transform  =
       'translate(' + (targetX - cx) + 'px,' + (targetY - cy) + 'px) scale(' + s + ')';
 
-    note.style.left = (targetX + (w * s) / 2 + GAP) + 'px';
+    note.style.left = (groupX + w * s + GAP) + 'px';
     note.style.top  = targetY + 'px';
 
-    /* --- siblings --- */
-    const mid      = sc.left + sc.width / 2;
-    const amt      = sc.width * PUSH;
-    const activeCX = restCentreX(active);
-    const from     = activeCX < mid ? -1 : 1;
-
-    /* the named understudy, if any, takes the active piece's slot */
-    const fillKey = el.dataset.fill;
-    const filler  = fillKey
-      ? scatter.querySelector('.piece--' + fillKey)
-      : null;
+    /* --- the others: slide away from the scatter's midline --- */
+    const mid = sc.width / 2;
+    const amt = sc.width * PUSH;
 
     pieces.forEach(function (p) {
       if (p === active) return;
-
-      if (p === filler) {
-        p.style.transform =
-          'translateX(' + (activeCX - restCentreX(p)) + 'px) rotate(var(--rot, 0deg))';
-        return;
-      }
-
-      const c    = restCentreX(p);
-      const dir  = c < mid ? -1 : 1;
-      const near = 1 - Math.min(1, Math.abs(c - mid) / (sc.width / 2));
-      const bias = (dir === from) ? -0.55 : 1;
-      const dx   = dir * amt * (0.35 + 0.65 * near) * bias;
-
-      p.style.transform = 'translateX(' + dx + 'px) rotate(var(--rot, 0deg))';
+      const c   = restCentre(p);
+      const dir = c < mid ? -1 : 1;              /* left of centre → left */
+      /* pieces nearest the midline move most, far ones barely budge */
+      const near = 1 - Math.min(1, Math.abs(c - mid) / mid);
+      const dx   = dir * amt * (0.35 + 0.65 * near);
+      p.style.transform =
+        'translateX(' + dx + 'px) rotate(var(--rot, 0deg))';
     });
   }
 
@@ -176,7 +157,7 @@
     if (!active) return;
     active.classList.remove('is-active');
     active = null;
-    layout();
+    layout();                       /* resets every transform */
     note.classList.remove('is-on');
     setTimeout(function () { if (!active) note.hidden = true; }, 300);
   }
