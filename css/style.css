@@ -37,7 +37,7 @@ body {
    LANDING PAGE
    ============================================================ */
 
-.page--landing {
+--landing {
   display: grid;
   place-items: center;
   min-height: 100vh;
@@ -190,21 +190,19 @@ body {
    ============================================================ */
 
 .page--about {
-   background: #171717
   --paper:  #F7F7F7;
   --note:   #690B0B;
 
-  /* ---- THE THREE KNOBS ---------------------------------- */
-  --type:     0.76;   /* type scale. 1 = full Figma size.     */
-  --head-top: 6vh;    /* space above the heading              */
-  --dim:      0.18;   /* opacity of the un-clicked images     */
+  /* ---- KNOBS ------------------------------------------- */
+  --type:     0.76;   /* type scale. 1 = full Figma size.    */
+  --head-top: 6vh;    /* space above the heading             */
   /* ------------------------------------------------------- */
 
   height: 100vh;
-  overflow: hidden;              /* page cannot scroll */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  background: var(--ink);
+  background: #171717;
   color: var(--paper);
   font-family: "Alegreya Sans", system-ui, sans-serif;
   container-type: inline-size;
@@ -311,8 +309,8 @@ body {
    cqw = % of the scatter's WIDTH.  left/top = TOP-LEFT corner.
    ============================================================ */
 
-.piece--cert   { left: 11.8cqw; top:  7.5cqw; width: 21.0cqw; --rot: -6deg; z-index: 1; }
-.piece--stage  { left: 29.5cqw; top:  0.0cqw; width: 26.5cqw; --rot:  3deg; z-index: 2; }
-.piece--poster { left: 68.0cqw; top:  7.2cqw; width: 23.5cqw; --rot: -2deg; z-index: 2; }
-.piece--card   { left: 22.0cqw; top: 23.0cqw; width:  8.5cqw; --rot:  0deg; z-index: 3; }
-.piece--draw   { left: 32.0cqw; top: 17.5cqw; width: 33.0cqw; --rot:  1deg; z-index: 4; }
+.piece--cert   { left: 18.9cqw; top:  5.9cqw; width: 16.4cqw; --rot: -11deg; z-index: 1; }
+.piece--stage  { left: 32.7cqw; top:  0.0cqw; width: 20.7cqw; --rot:   6deg; z-index: 2; }
+.piece--poster { left: 62.8cqw; top:  5.6cqw; width: 18.3cqw; --rot:  -5deg; z-index: 2; }
+.piece--card   { left: 26.9cqw; top: 17.9cqw; width:  6.6cqw; --rot:   4deg; z-index: 3; }
+.piece--draw   { left: 34.7cqw; top: 13.7cqw; width: 25.7cqw; --rot:   2.5deg; z-index: 4; }
