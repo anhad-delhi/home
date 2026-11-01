@@ -314,15 +314,20 @@ body {
   gap: 0.35em;
 }
 .about__links a {
-  color: #F49528;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2em;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: calc(1.55cqw * var(--type));
+  color: #C88A2E;               /* ← send me the real gold */
+  text-decoration: none;
+  transition: color 220ms ease, transform 220ms ease;
 }
 .about__links a:hover,
 .about__links a:focus-visible {
-  color: #FFB255;
-   transform: translateX(4px);
-}
-.about__links a span {           /* the arrow stays white */
-  color: var(--paper);
+  color: #E8A445;
+  transform: translateX(4px);
 }
 
 /* ---- the edge bubbles ---- */
