@@ -331,13 +331,14 @@ body {
 }
 
 /* ---- the edge s ---- */
-.s {
+/* ---- the edge bubbles ---- */
+.bubbles {
   position: fixed;
   inset: 0;
   z-index: 70;
   pointer-events: none;         /* only the circles are clickable */
 }
-. {
+.bubble {
   position: absolute;
   pointer-events: auto;
   aspect-ratio: 1;
@@ -353,10 +354,10 @@ body {
   background-color: rgb(var(--hue) / var(--bub-rest, 0.55));
   transition: background-color var(--speed) var(--ease);
 }
-.:hover,
-.:focus-visible { background-color: rgb(var(--hue) / 1); }
-.:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
-. span { display: block; transform: translateX(var(--nudge, 0)); }
+.bubble:hover,
+.bubble:focus-visible { background-color: rgb(var(--hue) / 1); }
+.bubble:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+.bubble span { display: block; transform: translateX(var(--nudge, 0)); }
 
 
 /* ============================================================
