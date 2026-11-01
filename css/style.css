@@ -27,7 +27,7 @@ body {
   margin: 0;
   background: var(--ink);
   color: var(--cream);
-  -family: "Alegreya SC", Georgia, serif;
+  font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
