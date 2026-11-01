@@ -19,7 +19,7 @@
       <p class="about__col about__col--right">Vitae et voluptates natus nam vel ipsa. Nesciunt optio porro quasi deserunt tempore nihil non. Mollitia rerum sunt repudiandae quia et dolorem dolorum. Corrupti et adipisci quia est sit provident et aut. Blanditiis unde placeat suscipit animi corporis. Nam ipsa est quas et sed molestiae rerum ducimus. Quae et at veritatis. Vel sunt sit necessitatibus. Sit accusamus asperiores ullam sed earum sit. Ut quia quis facere amet aut adipisci saepe porro. Velit molestiae voluptas nulla dicta aut perferendis ut porro.</p>
   </header>
 
-  <section class="scatter">
+    <section class="scatter">
 
     <button class="piece piece--cert" type="button"
             data-title="Reading Area"
@@ -33,6 +33,13 @@
             data-body="Photo depicts a designated reading and review area within the archival library."
             data-year="1967">
       <img src="assets/about-stage.jpg" alt="The company on stage at curtain call.">
+    </button>
+
+    <button class="piece piece--poster" type="button"
+            data-title="Reading Area"
+            data-body="Photo depicts a designated reading and review area within the archival library."
+            data-year="1967">
+      <img src="assets/about-poster.jpg" alt="The Anhad poster.">
     </button>
 
     <button class="piece piece--card" type="button"
@@ -49,16 +56,7 @@
       <img src="assets/about-drawing.png" alt="An illustrated poster for the production.">
     </button>
 
-    <button class="piece piece--poster" type="button"
-            data-title="Reading Area"
-            data-body="Photo depicts a designated reading and review area within the archival library."
-            data-year="1967">
-      <img src="assets/about-poster.jpg" alt="The Anhad poster.">
-    </button>
-
   </section>
-
-  <div class="veil" hidden></div>
 
   <aside class="note" hidden>
     <h2 class="note__title"></h2>
@@ -68,16 +66,22 @@
 
 <script>
 (function () {
-  const pieces = Array.from(document.querySelectorAll('.piece'));
-  const note   = document.querySelector('.note');
-  const veil   = document.querySelector('.veil');
-  const GAP = 36, NOTE_W = 300;
+  const scatter = document.querySelector('.scatter');
+  const pieces  = Array.from(document.querySelectorAll('.piece'));
+  const note    = document.querySelector('.note');
+  const GAP = 34;
   let active = null;
+
+  function noteWidth() {
+    return note.offsetWidth || 300;
+  }
 
   function place() {
     if (!active) return;
     const el = active;
+    const sc = scatter.getBoundingClientRect();
 
+    /* measure the piece in its un-transformed state */
     el.style.transition = 'none';
     el.style.transform  = '';
     const r  = el.getBoundingClientRect();
@@ -86,40 +90,40 @@
     const w  = el.offsetWidth;
     const h  = el.offsetHeight;
 
-    const vw = window.innerWidth, vh = window.innerHeight;
-    const maxH = vh * 0.74;
-    const maxW = (vw - NOTE_W - GAP) * 0.76;
-    const s    = Math.min(maxW / w, maxH / h, 2.4);
+    const NW = noteWidth();
+    /* never enlarge — only shrink if it would not fit the scatter box */
+    const s = Math.min(1, (sc.width - NW - GAP) / w, sc.height / h);
 
-    const groupW  = w * s + GAP + NOTE_W;
-    const groupX  = (vw - groupW) / 2;
+    const groupW  = w * s + GAP + NW;
+    const groupX  = sc.left + (sc.width - groupW) / 2;
     const targetX = groupX + (w * s) / 2;
-    const targetY = vh / 2;
+    const targetY = sc.top + sc.height / 2;
 
-    void el.offsetHeight;                    // force reflow before re-enabling
+    void el.offsetHeight;                   /* force reflow before animating */
     el.style.transition = '';
     el.style.transform  =
       'translate(' + (targetX - cx) + 'px,' + (targetY - cy) + 'px) scale(' + s + ')';
 
     note.style.left = (groupX + w * s + GAP) + 'px';
-    note.style.top  = (vh / 2) + 'px';
+    note.style.top  = targetY + 'px';
   }
 
   function open(el) {
-    if (active) close();
+    if (active && active !== el) {
+      active.classList.remove('is-active');
+      active.style.transform = '';
+    }
     active = el;
     el.classList.add('is-active');
-    document.body.classList.add('is-zoomed');
-    veil.hidden = false;
+    scatter.classList.add('has-active');
+
     note.querySelector('.note__title').textContent = el.dataset.title || '';
     note.querySelector('.note__body').textContent  = el.dataset.body  || '';
     note.querySelector('.note__meta').textContent  = el.dataset.year  || '';
     note.hidden = false;
+
     place();
-    requestAnimationFrame(function () {
-      veil.classList.add('is-on');
-      note.classList.add('is-on');
-    });
+    requestAnimationFrame(function () { note.classList.add('is-on'); });
   }
 
   function close() {
@@ -128,12 +132,9 @@
     active.style.transform  = '';
     active.style.transition = '';
     active = null;
-    document.body.classList.remove('is-zoomed');
-    veil.classList.remove('is-on');
+    scatter.classList.remove('has-active');
     note.classList.remove('is-on');
-    setTimeout(function () {
-      if (!active) { veil.hidden = true; note.hidden = true; }
-    }, 320);
+    setTimeout(function () { if (!active) note.hidden = true; }, 300);
   }
 
   pieces.forEach(function (el) {
@@ -144,8 +145,8 @@
     });
   });
 
-  veil.addEventListener('click', close);
   note.addEventListener('click', function (e) { e.stopPropagation(); });
+  document.addEventListener('click', close);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') close();
   });
