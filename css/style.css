@@ -304,6 +304,83 @@ body {
 .note__meta  { margin: 0;         font-size: .85rem; opacity: .85; }
 
 
+/* ---- the two text links ---- */
+.about__links {
+  grid-column: 22 / 36;
+  align-self: start;
+  margin-top: 6vh;              /* ← vertical position of the pair */
+  display: flex;
+  flex-direction: column;
+  gap: 0.35em;
+}
+.about__links a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2em;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: calc(1.55cqw * var(--type));
+  color: #C88A2E;               /* ← send me the real gold */
+  text-decoration: none;
+  transition: color 220ms ease, transform 220ms ease;
+}
+.about__links a:hover,
+.about__links a:focus-visible {
+  color: #E8A445;
+  transform: translateX(4px);
+}
+
+/* ---- the edge bubbles ---- */
+.bubbles {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;         /* only the circles are clickable */
+}
+.bubble {
+  position: absolute;
+  pointer-events: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  color: var(--cream);
+  font-family: "Alegreya SC", Georgia, serif;
+  background-color: rgb(var(--hue) / var(--bub-rest, 0.55));
+  transition: background-color var(--speed) var(--ease);
+}
+.bubble:hover,
+.bubble:focus-visible { background-color: rgb(var(--hue) / 1); }
+.bubble:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+.bubble span { display: block; transform: translateX(var(--nudge, 0)); }
+
+
+/* ============================================================
+   BUBBLES — ADJUST HERE
+   All in vh.  right = negative pushes it off the screen edge.
+   --nudge shifts the label left so it centres in the VISIBLE part.
+   ============================================================ */
+
+.bubble--home {
+  --hue: var(--maroon);
+  width: 35vh;  top: 28.5vh;  right: -11.6vh;
+  font-size: 3.5vh;  --nudge: -2.2vh;  z-index: 1;
+}
+.bubble--gallery {
+  --hue: var(--olive);
+  width: 28vh;  top: 50.4vh;  right: -2.3vh;
+  font-size: 2.9vh;  --nudge: -0.6vh;  z-index: 2;
+}
+.bubble--tickets {
+  --hue: var(--blue);
+  width: 31.4vh;  top: 66.5vh;  right: -7.3vh;
+  font-size: 2.7vh;  --nudge: -1.6vh;  z-index: 3;
+}
+
 /* ============================================================
    ABOUT — SCATTER POSITIONS
    cqw = % of the scatter's WIDTH.  left/top = TOP-LEFT corner.
