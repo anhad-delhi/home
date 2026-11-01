@@ -71,17 +71,13 @@
   const note    = document.querySelector('.note');
   const GAP = 34;
   let active = null;
-
-  function noteWidth() {
-    return note.offsetWidth || 300;
-  }
+  let stack  = 10;          /* starts above the CSS z-indexes (1–4) */
 
   function place() {
     if (!active) return;
     const el = active;
     const sc = scatter.getBoundingClientRect();
 
-    /* measure the piece in its un-transformed state */
     el.style.transition = 'none';
     el.style.transform  = '';
     const r  = el.getBoundingClientRect();
@@ -90,16 +86,15 @@
     const w  = el.offsetWidth;
     const h  = el.offsetHeight;
 
-    const NW = noteWidth();
-    /* never enlarge — only shrink if it would not fit the scatter box */
-    const s = Math.min(1, (sc.width - NW - GAP) / w, sc.height / h);
+    const NW = note.offsetWidth || 280;
+    const s  = Math.min(1, (sc.width - NW - GAP) / w, sc.height / h);
 
     const groupW  = w * s + GAP + NW;
     const groupX  = sc.left + (sc.width - groupW) / 2;
     const targetX = groupX + (w * s) / 2;
     const targetY = sc.top + sc.height / 2;
 
-    void el.offsetHeight;                   /* force reflow before animating */
+    void el.offsetHeight;
     el.style.transition = '';
     el.style.transform  =
       'translate(' + (targetX - cx) + 'px,' + (targetY - cy) + 'px) scale(' + s + ')';
@@ -115,7 +110,7 @@
     }
     active = el;
     el.classList.add('is-active');
-    scatter.classList.add('has-active');
+    el.style.zIndex = ++stack;        /* stays after close */
 
     note.querySelector('.note__title').textContent = el.dataset.title || '';
     note.querySelector('.note__body').textContent  = el.dataset.body  || '';
@@ -131,8 +126,8 @@
     active.classList.remove('is-active');
     active.style.transform  = '';
     active.style.transition = '';
+    /* z-index deliberately left in place — last touched stays on top */
     active = null;
-    scatter.classList.remove('has-active');
     note.classList.remove('is-on');
     setTimeout(function () { if (!active) note.hidden = true; }, 300);
   }
