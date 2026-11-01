@@ -367,18 +367,18 @@ body {
 
 .bubble--home {
   --hue: var(--maroon);
-  width: 35vh;  top: 28.5vh;  right: -11.6vh;
-  font-size: 3.5vh;  --nudge: -2.2vh;  z-index: 1;
+  width: 26vh;  top: 1.5vh;  right: -4vh;
+  font-size: 3.2vh;  --nudge: -0.8vh;  z-index: 1;
 }
 .bubble--gallery {
   --hue: var(--olive);
-  width: 28vh;  top: 50.4vh;  right: -2.3vh;
-  font-size: 2.9vh;  --nudge: -0.6vh;  z-index: 2;
+  width: 20vh;  top: 28.5vh;  right: 11.5vh;
+  font-size: 2.6vh;  --nudge: 0;  z-index: 2;
 }
 .bubble--tickets {
   --hue: var(--blue);
-  width: 31.4vh;  top: 66.5vh;  right: -7.3vh;
-  font-size: 2.7vh;  --nudge: -1.6vh;  z-index: 3;
+  width: 24vh;  top: 76.5vh;  left: -11vh;  right: auto;
+  font-size: 2.4vh;  --nudge: 2.2vh;  z-index: 3;
 }
 
 /* ============================================================
