@@ -388,7 +388,7 @@ body {
    ============================================================ */
 
 .piece--cert   { left: 18.9cqw; top:  5.9cqw; width: 16.4cqw; --rot: -11deg; z-index: 1; }
-.piece--stage  { left: 31.5cqw; top:  2.5cqw; width: 27.0cqw; --rot:   6deg; z-index: 2; }
-.piece--poster { left: 62.8cqw; top:  5.6cqw; width: 18.3cqw; --rot:   5deg; z-index: 2; }
-.piece--card   { left: 26.9cqw; top: 21.5cqw; width:  6.6cqw; --rot:   4deg; z-index: 3; }
+.piece--stage  { left: 31.5cqw; top:  5.5cqw; width: 34.0cqw; --rot:   6deg; z-index: 2; }
+.piece--poster { left: 62.8cqw; top:  5.6cqw; width: 18.3cqw; --rot:   7deg; z-index: 2; }
+.piece--card   { left: 30.9cqw; top: 21.5cqw; width:  6.6cqw; --rot:   4deg; z-index: 3; }
 .piece--draw   { left: 34.7cqw; top: 13.7cqw; width: 25.7cqw; --rot: 2.5deg; z-index: 4; }
