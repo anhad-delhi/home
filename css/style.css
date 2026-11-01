@@ -320,7 +320,7 @@ body {
   gap: 2em;
   font-family: "Alegreya SC", Georgia, serif;
   font-size: calc(1.55cqw * var(--type));
-  color: #C88A2E;               /* ← send me the real gold */
+  color: #F49528;               /* ← send me the real gold */
   text-decoration: none;
   transition: color 220ms ease, transform 220ms ease;
 }
