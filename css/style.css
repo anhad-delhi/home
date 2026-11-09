@@ -696,6 +696,7 @@ body.is-locked { overflow: hidden; }
 .page--setlist {
   --paper-ink: #1A1613;
   --head-top:  5vh;
+  --text-right: 1.5cqw;    /* 0 = flush with the timestamps */
   --type:      1;      /* overall scale knob */
 
   min-height: 100vh;
@@ -785,18 +786,19 @@ body.is-locked { overflow: hidden; }
 
 .track__text {
   margin: calc(1.1cqw * var(--type)) 0 0;
-  padding: 0 0 calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
-  font-size: calc(1.22cqw * var(--type));
+  padding: 0 var(--text-right, 0cqw) calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
+  font-size: calc(1.5cqw * var(--type));
   line-height: 1;
   text-transform: uppercase;
   letter-spacing: 0.0005em;
-  max-width: 82%;
+  max-width: none;
 }
 
 /* full-width rule under an open row */
 .track__rule {
   height: 0;
   margin-left: calc(5.4cqw * var(--type));
+  margin-right: var(--text-right, 0cqw);
   background-image: radial-gradient(circle, var(--paper-ink) 1px, transparent 1.3px);
   background-size: calc(0.62cqw * var(--type)) calc(0.62cqw * var(--type));
   background-repeat: repeat-x;
