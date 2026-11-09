@@ -499,8 +499,8 @@ body {
 }
 
 /* keep the edge bubbles off the outer columns on this page */
-.page--members .bubble--gallery { width: 16vh; top: 30vh;   right: -5vh; font-size: 2.3vh; --nudge: -0.6vh; }
-.page--members .bubble--tickets { width: 20vh; top: 74.5vh; left: -6vh;  font-size: 2.2vh; --nudge: 1.2vh;  }
+.page--members .bubble--about   { --hue: var(--maroon); width: 19vh; top: 29vh;   right: -5vh; font-size: 2.2vh; --nudge: -1.2vh; }
+.page--members .bubble--tickets { width: 20vh; top: 74.5vh; left: -6vh;  font-size: 2.2vh; --nudge: 1.2vh; }
 
 /* ---------- small screens ---------- */
 @media (max-width: 860px) {
@@ -514,7 +514,7 @@ body {
   .members__title { font-size: calc(9cqw * var(--type)); }
   .member__name   { font-size: calc(3.1cqw * var(--type)); }
   .member__role   { font-size: calc(2.6cqw * var(--type)); }
-  .page--members .bubble--gallery,
+  .page--members .bubble--about,
   .page--members .bubble--tickets { width: 13vh; font-size: 1.9vh; }
 }
 
