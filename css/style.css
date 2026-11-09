@@ -393,3 +393,128 @@ body {
 .piece--poster { left: 62.8cqw; top:  5.6cqw; width: 18.3cqw; --rot:   10deg; z-index: 2; }
 .piece--card   { left: 30.9cqw; top: 21.5cqw; width:  6.6cqw; --rot:   4deg; z-index: 3; }
 .piece--draw   { left: 41cqw; top: 13.7cqw; width: 25.7cqw; --rot: 2.5deg; z-index: 4; }
+
+/* ============================================================
+   MEMBERS PAGE
+   ============================================================ */
+
+.page--members {
+  --paper: #F7F7F7;
+  min-height: 100vh;
+  margin: 0;
+  background: #171717;
+  color: var(--paper);
+  font-family: "Alegreya Sans", system-ui, sans-serif;
+}
+
+/* container lives here, NOT on body, so .bubbles stay viewport-fixed */
+.members {
+  container-type: inline-size;
+
+  /* ---- KNOBS ------------------------------------------------ */
+  --type:     0.76;   /* matches the about page's type scale     */
+  --pad:      5.5vw;  /* side margin, matches .scatter           */
+  --cols:     4;      /* photos per row                          */
+  --cell:     min(19cqw, 31vh);  /* the square's edge            */
+  --col-gap:  4cqw;
+  --row-gap:  4.5vh;
+  --head-top: 6vh;
+  /* ------------------------------------------------------------ */
+}
+
+.members__title {
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: calc(5cqw * var(--type));
+  line-height: 1;
+  color: var(--paper);
+  margin: 0 0 4.5vh;
+  padding: var(--head-top) var(--pad) 0;
+}
+
+/* width cap = exactly --cols per row, and a short last row centres */
+.members__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: var(--col-gap);
+  row-gap: var(--row-gap);
+  width: min(
+    calc(100% - 2 * var(--pad)),
+    calc(var(--cols) * var(--cell) + (var(--cols) - 1) * var(--col-gap))
+  );
+  margin: 0 auto;
+  padding-bottom: 8vh;
+  list-style: none;
+}
+
+.member {
+  width: var(--cell);
+  margin: 0;
+}
+
+.member__frame {
+  width: 100%;
+  aspect-ratio: 1;          /* square on every screen */
+  overflow: hidden;
+  background: #0d0d0d;
+}
+
+.member__frame img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: var(--focus, 50% 35%);  /* per-photo override */
+  filter: grayscale(1) contrast(1.04);     /* colour uploads → B&W */
+  transition: filter 420ms var(--ease, cubic-bezier(.4,0,.2,1));
+}
+
+/* optional: colour on hover, matching the orb idiom. delete if unwanted. */
+.member:hover .member__frame img { filter: grayscale(0) contrast(1); }
+
+.member__name {
+  margin: 1.1em 0 0;
+  text-align: center;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  font-size: calc(1.35cqw * var(--type));
+  color: var(--paper);
+}
+
+/* optional second line — instrument/role. remove the comment to use. */
+.member__role {
+  margin: 0.35em 0 0;
+  text-align: center;
+  font-family: "Alegreya Sans", system-ui, sans-serif;
+  font-size: calc(1.05cqw * var(--type));
+  letter-spacing: 0.04em;
+  opacity: 0.68;
+}
+
+/* keep the edge bubbles off the outer columns on this page */
+.page--members .bubble--gallery { width: 16vh; top: 30vh;   right: -5vh; font-size: 2.3vh; --nudge: -0.6vh; }
+.page--members .bubble--tickets { width: 20vh; top: 74.5vh; left: -6vh;  font-size: 2.2vh; --nudge: 1.2vh;  }
+
+/* ---------- small screens ---------- */
+@media (max-width: 860px) {
+  .members {
+    --cols: 2;
+    --cell: min(40cqw, 46vh);
+    --col-gap: 6cqw;
+    --row-gap: 3.5vh;
+    --pad: 7vw;
+  }
+  .members__title  { font-size: calc(9cqw * var(--type)); }
+  .member__name    { font-size: calc(3.1cqw * var(--type)); }
+  .member__role    { font-size: calc(2.6cqw * var(--type)); }
+  .page--members .bubble--gallery,
+  .page--members .bubble--tickets { width: 13vh; font-size: 1.9vh; }
+}
+
+@media (hover: none) {
+  .member:hover .member__frame img { filter: grayscale(1) contrast(1.04); }
+}
