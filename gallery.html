@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gallery — Anhad</title>
+<meta name="description" content="Photographs from Anhad.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page--gallery">
+
+  <main class="gallery">
+    <h1 class="gallery__title">Gallery</h1>
+    <ul class="gallery__grid"></ul>
+    <noscript><p style="padding:0 5.5vw 8vh">The gallery needs JavaScript enabled.</p></noscript>
+  </main>
+
+  <div class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer" hidden>
+    <img class="lightbox__img" alt="">
+    <button class="lightbox__btn lightbox__prev" type="button" aria-label="Previous photo">&lsaquo;</button>
+    <button class="lightbox__btn lightbox__next" type="button" aria-label="Next photo">&rsaquo;</button>
+    <button class="lightbox__btn lightbox__close" type="button" aria-label="Close">&times;</button>
+    <p class="lightbox__count" aria-live="polite"></p>
+  </div>
+
+  <nav class="bubbles" aria-label="Site">
+    <a class="bubble bubble--home"    href="index.html"><span>home</span></a>
+    <a class="bubble bubble--about"   href="about.html"><span>about<br>anhad</span></a>
+    <a class="bubble bubble--tickets" href="https://example.com"><span>ticket<br>counter</span></a>
+  </nav>
+
+<script>
+(function () {
+  /* ---- KNOBS ------------------------------------------------ */
+  var COUNT  = 93;                    /* highest filename number  */
+  var DIR    = 'assets/gallery/';     /* full-size photos         */
+  var THUMBS = '';                    /* 'assets/gallery/thumb/'  */
+  var EXT    = '.jpg';
+  var EAGER  = 10;                    /* load first N immediately */
+  /* ------------------------------------------------------------ */
+
+  var grid  = document.querySelector('.gallery__grid');
+  var box   = document.querySelector('.lightbox');
+  var big   = box.querySelector('.lightbox__img');
+  var count = box.querySelector('.lightbox__count');
+  var live  = [];          /* filename numbers that actually loaded */
+  var pos   = -1;          /* index into live[] */
+  var last  = null;        /* element to restore focus to */
+
+  /* ---- build the grid ---- */
+  var frag = document.createDocumentFragment();
+  for (var i = 1; i <= COUNT; i++) {
+    (function (n) {
+      var li  = document.createElement('li');
+      var btn = document.createElement('button');
+      var img = document.createElement('img');
+
+      li.className  = 'shot';
+      btn.className = 'shot__btn';
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Open photo ' + n);
+
+      img.src = (THUMBS || DIR) + n + EXT;
+      img.alt = '';
+      img.loading  = n <= EAGER ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      img.addEventListener('error', function () {
+        li.remove();
+        var k = live.indexOf(n);
+        if (k > -1) live.splice(k, 1);
+      });
+
+      btn.addEventListener('click', function () { open(live.indexOf(n), btn); });
+      btn.appendChild(img);
+      li.appendChild(btn);
+      frag.appendChild(li);
+      live.push(n);
+    })(i);
+  }
+  grid.appendChild(frag);
+
+  /* ---- lightbox ---- */
+  function show(p) {
+    pos = (p + live.length) % live.length;
+    big.classList.remove('is-ready');
+    big.alt = 'Photo ' + live[pos] + ' of ' + live.length;
+    big.src = DIR + live[pos] + EXT;
+    count.textContent = (pos + 1) + ' / ' + live.length;
+    [1, -1].forEach(function (d) {            /* preload neighbours */
+      var q = (pos + d + live.length) % live.length;
+      new Image().src = DIR + live[q] + EXT;
+    });
+  }
+  big.addEventListener('load', function () { big.classList.add('is-ready'); });
+
+  function open(p, trigger) {
+    if (p < 0) return;
+    last = trigger || null;
+    box.hidden = false;
+    document.body.classList.add('is-locked');
+    show(p);
+    requestAnimationFrame(function () { box.classList.add('is-on'); });
+    box.querySelector('.lightbox__close').focus();
+  }
+
+  function close() {
+    box.classList.remove('is-on');
+    document.body.classList.remove('is-locked');
+    setTimeout(function () { box.hidden = true; big.removeAttribute('src'); }, 280);
+    if (last) last.focus();
+  }
+
+  box.querySelector('.lightbox__close').addEventListener('click', close);
+  box.querySelector('.lightbox__prev').addEventListener('click', function (e) {
+    e.stopPropagation(); show(pos - 1);
+  });
+  box.querySelector('.lightbox__next').addEventListener('click', function (e) {
+    e.stopPropagation(); show(pos + 1);
+  });
+  big.addEventListener('click', function (e) { e.stopPropagation(); });
+  box.addEventListener('click', close);
+
+  document.addEventListener('keydown', function (e) {
+    if (box.hidden) return;
+    if (e.key === 'Escape')     close();
+    if (e.key === 'ArrowLeft')  show(pos - 1);
+    if (e.key === 'ArrowRight') show(pos + 1);
+  });
+
+  /* swipe on touch */
+  var x0 = null;
+  box.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, {passive: true});
+  box.addEventListener('touchend', function (e) {
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) show(pos + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, {passive: true});
+})();
+</script>
+
+</body>
+</html>
