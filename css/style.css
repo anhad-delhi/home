@@ -407,19 +407,24 @@ body {
   font-family: "Alegreya Sans", system-ui, sans-serif;
 }
 
-/* container lives here, NOT on body, so .bubbles stay viewport-fixed */
 .members {
   container-type: inline-size;
 
   /* ---- KNOBS ------------------------------------------------ */
-  --type:     0.76;   /* matches the about page's type scale     */
-  --pad:      5.5vw;  /* side margin, matches .scatter           */
-  --cols:     4;      /* photos per row                          */
-  --cell:     min(19cqw, 31vh);  /* the square's edge            */
-  --col-gap:  4cqw;
+  --cols:     5;      /* photos per row. 5 = two clean rows of ten. */
+  --type:     0.76;   /* type scale, matches the about page         */
+  --pad:      5.5vw;  /* side margin, matches .scatter              */
+  --col-gap:  3cqw;
   --row-gap:  4.5vh;
+  --cap:      31vh;   /* tallest a square may get on a short screen */
   --head-top: 6vh;
   /* ------------------------------------------------------------ */
+
+  /* square edge, derived from --cols. don't hand-edit. */
+  --cell: min(
+    calc((100cqw - 2 * var(--pad) - (var(--cols) - 1) * var(--col-gap)) / var(--cols)),
+    var(--cap)
+  );
 }
 
 .members__title {
@@ -432,7 +437,7 @@ body {
   padding: var(--head-top) var(--pad) 0;
 }
 
-/* width cap = exactly --cols per row, and a short last row centres */
+/* width cap = exactly --cols per row; a short last row centres */
 .members__grid {
   display: flex;
   flex-wrap: wrap;
@@ -455,7 +460,7 @@ body {
 
 .member__frame {
   width: 100%;
-  aspect-ratio: 1;          /* square on every screen */
+  aspect-ratio: 1;
   overflow: hidden;
   background: #0d0d0d;
 }
@@ -465,32 +470,30 @@ body {
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: var(--focus, 50% 35%);  /* per-photo override */
-  filter: grayscale(1) contrast(1.04);     /* colour uploads → B&W */
+  object-position: var(--focus, 50% 35%);
+  filter: grayscale(1) contrast(1.04);
   transition: filter 420ms var(--ease, cubic-bezier(.4,0,.2,1));
 }
 
-/* optional: colour on hover, matching the orb idiom. delete if unwanted. */
 .member:hover .member__frame img { filter: grayscale(0) contrast(1); }
 
 .member__name {
-  margin: 1.1em 0 0;
+  margin: 1em 0 0;
   text-align: center;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   line-height: 1.25;
-  font-size: calc(1.35cqw * var(--type));
+  font-size: calc(1.25cqw * var(--type));
   color: var(--paper);
 }
 
-/* optional second line — instrument/role. remove the comment to use. */
 .member__role {
   margin: 0.35em 0 0;
   text-align: center;
   font-family: "Alegreya Sans", system-ui, sans-serif;
-  font-size: calc(1.05cqw * var(--type));
+  font-size: calc(1.0cqw * var(--type));
   letter-spacing: 0.04em;
   opacity: 0.68;
 }
@@ -503,14 +506,14 @@ body {
 @media (max-width: 860px) {
   .members {
     --cols: 2;
-    --cell: min(40cqw, 46vh);
+    --pad: 7vw;
     --col-gap: 6cqw;
     --row-gap: 3.5vh;
-    --pad: 7vw;
+    --cap: 46vh;
   }
-  .members__title  { font-size: calc(9cqw * var(--type)); }
-  .member__name    { font-size: calc(3.1cqw * var(--type)); }
-  .member__role    { font-size: calc(2.6cqw * var(--type)); }
+  .members__title { font-size: calc(9cqw * var(--type)); }
+  .member__name   { font-size: calc(3.1cqw * var(--type)); }
+  .member__role   { font-size: calc(2.6cqw * var(--type)); }
   .page--members .bubble--gallery,
   .page--members .bubble--tickets { width: 13vh; font-size: 1.9vh; }
 }
