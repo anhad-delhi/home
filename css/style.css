@@ -848,3 +848,53 @@ body.is-locked { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .track__body, .track__dots, .track__rule { transition: none; }
 }
+
+
+/* ============================================================
+   TICKETS PAGE
+   ============================================================ */
+
+.page--tickets {
+  --paper: #F7F7F7;
+  min-height: 100vh;
+  margin: 0;
+  background: #171717;
+  color: var(--paper);
+  font-family: "Alegreya SC", Georgia, serif;
+}
+
+.tickets {
+  container-type: inline-size;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 6vh 7vw;
+  text-align: center;
+}
+
+.tickets__title {
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: calc(5cqw * var(--type, 0.76));
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--paper);
+  margin: 0;
+}
+
+.tickets__sub {
+  font-family: "Alegreya Sans", system-ui, sans-serif;
+  font-size: calc(1.5cqw * var(--type, 0.76));
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  margin: 1.6em 0 0;
+}
+.tickets__sub a { color: inherit; }
+
+@media (max-width: 860px) {
+  .tickets__title { font-size: calc(9cqw * var(--type, 0.76)); }
+  .tickets__sub   { font-size: calc(3.2cqw * var(--type, 0.76)); }
+  .page--tickets .bubble--home,
+  .page--tickets .bubble--about,
+  .page--tickets .bubble--gallery { width: 12vh; font-size: 1.7vh; }
+}
