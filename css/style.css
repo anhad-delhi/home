@@ -659,7 +659,7 @@ body {
 body.is-locked { overflow: hidden; }
 
 /* ---------- bubbles: smaller + further off-edge, page scrolls ---------- */
-.page--gallery .bubble--home    { width: 20vh; top: 1.5vh;  right: -6vh; font-size: 2.6vh; --nudge: -1.2vh; }
+.page--gallery .bubble--home    { width: 26vh; top: 1.5vh;  right: -4vh; font-size: 3.2vh; --nudge: -0.8vh; }
 .page--gallery .bubble--about   { --hue: var(--olive); width: 17vh; top: 28vh; right: -5.5vh; font-size: 2.1vh; --nudge: -1.3vh; }
 .page--gallery .bubble--tickets { width: 18vh; top: 76vh;  left: -6vh;  font-size: 2.1vh; --nudge: 1.4vh; }
 
