@@ -726,7 +726,7 @@ body.is-locked { overflow: hidden; }
 }
 
 /* ---- one piece ---- */
-.track { margin: 0 0 calc(1.6cqw * var(--type)); }
+.track { margin: 0 0 calc(1cqw * var(--type)); }
 
 .track__btn {
   display: grid;
@@ -747,7 +747,7 @@ body.is-locked { overflow: hidden; }
 .track__num {
   justify-self: end;
   font-size: calc(2.45cqw * var(--type));
-  letter-spacing: -0.005em;
+  letter-spacing: -0.0005em;
 }
 
 .track__name {
@@ -787,9 +787,9 @@ body.is-locked { overflow: hidden; }
   margin: calc(1.1cqw * var(--type)) 0 0;
   padding: 0 0 calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
   font-size: calc(1.22cqw * var(--type));
-  line-height: 1.4;
+  line-height: 1;
   text-transform: uppercase;
-  letter-spacing: 0.005em;
+  letter-spacing: 0.0005em;
   max-width: 82%;
 }
 
