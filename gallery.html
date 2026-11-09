@@ -69,7 +69,15 @@
       img.alt = '';
       img.loading  = n <= EAGER ? 'eager' : 'lazy';
       img.decoding = 'async';
+
+      var retried = false;
       img.addEventListener('error', function () {
+        if (THUMBS && !retried) {         /* no thumb → use the full-size file */
+          retried = true;
+          img.src = DIR + n + EXT;
+          return;
+        }
+        console.warn('gallery: missing ' + DIR + n + EXT);
         li.remove();
         var k = live.indexOf(n);
         if (k > -1) live.splice(k, 1);
