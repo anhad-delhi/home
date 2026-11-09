@@ -686,3 +686,163 @@ body.is-locked { overflow: hidden; }
 .page--gallery .bubbles { position: absolute; height: 100vh; }
 .page--gallery { position: relative; }
 */
+
+
+
+/* ============================================================
+   SET LIST PAGE
+   ============================================================ */
+
+.page--setlist {
+  --paper-ink: #1A1613;
+  --head-top:  5vh;
+  --type:      1;      /* overall scale knob */
+
+  min-height: 100vh;
+  margin: 0;
+  background: #EDE4D3 url("../assets/setlist.jpg") center / cover no-repeat fixed;
+  color: var(--paper-ink);
+  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+}
+
+.setlist {
+  container-type: inline-size;
+  min-height: 100vh;
+  padding: var(--head-top) 7vw 10vh;
+}
+
+/* ---- the stylised title image ---- */
+.setlist__title {
+  margin: 0 auto 5vh;
+  width: min(34cqw, 420px);
+}
+.setlist__title img { width: 100%; height: auto; display: block; }
+
+.setlist__list {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  width: min(100%, 1100px);
+}
+
+/* ---- one piece ---- */
+.track { margin: 0 0 calc(2.4cqw * var(--type)); }
+
+.track__btn {
+  display: grid;
+  grid-template-columns: calc(4cqw * var(--type)) auto 1fr auto;
+  align-items: baseline;
+  column-gap: calc(0.9cqw * var(--type));
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.track__btn:focus-visible { outline: 2px solid var(--paper-ink); outline-offset: 6px; }
+
+.track__num {
+  justify-self: end;
+  font-size: calc(2.45cqw * var(--type));
+  letter-spacing: 0.02em;
+}
+
+.track__name {
+  font-size: calc(2.45cqw * var(--type));
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+/* the dot leader — shrinks to nothing as the row opens */
+.track__dots {
+  align-self: end;
+  height: calc(2.45cqw * var(--type));
+  margin: 0 calc(0.6cqw * var(--type));
+  background-image: radial-gradient(circle, var(--paper-ink) 1px, transparent 1.3px);
+  background-position: bottom;
+  background-size: calc(0.62cqw * var(--type)) calc(0.62cqw * var(--type));
+  background-repeat: repeat-x;
+  transition: opacity 320ms var(--ease);
+}
+
+.track__time {
+  font-size: calc(2.45cqw * var(--type));
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ---- the body, hidden until opened ---- */
+.track__body {
+  display: grid;
+  grid-template-rows: 0fr;            /* animates to 1fr */
+  transition: grid-template-rows 420ms var(--ease);
+}
+.track__inner { overflow: hidden; }
+
+.track__text {
+  margin: calc(1.1cqw * var(--type)) 0 0;
+  padding: 0 0 calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
+  font-size: calc(1.22cqw * var(--type));
+  line-height: 1.55;
+  text-transform: uppercase;
+  letter-spacing: 0.015em;
+  max-width: 82%;
+}
+
+/* full-width rule under an open row */
+.track__rule {
+  height: 0;
+  margin-left: calc(5.4cqw * var(--type));
+  background-image: radial-gradient(circle, var(--paper-ink) 1px, transparent 1.3px);
+  background-size: calc(0.62cqw * var(--type)) calc(0.62cqw * var(--type));
+  background-repeat: repeat-x;
+  opacity: 0;
+  transition: opacity 320ms var(--ease);
+}
+
+/* ---- open state ---- */
+.track.is-open .track__body  { grid-template-rows: 1fr; }
+.track.is-open .track__dots  { opacity: 0; }
+.track.is-open .track__rule  { height: 3px; opacity: 1; }
+.track.is-open .track__name  { font-weight: 700; }
+
+/* ---- the one way out ---- */
+.setlist__back {
+  position: fixed;
+  left: 3vw;
+  bottom: 3vh;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 2.2vh;
+  letter-spacing: 0.06em;
+  color: var(--paper-ink);
+  text-decoration: none;
+  opacity: 0.55;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.setlist__back:hover,
+.setlist__back:focus-visible { opacity: 1; transform: translateX(-3px); }
+
+/* ---------- small screens ---------- */
+@media (max-width: 860px) {
+  .page--setlist { background-attachment: scroll; }
+  .setlist { padding: 4vh 6vw 12vh; }
+  .setlist__title { width: min(62cqw, 320px); }
+  .track__btn { grid-template-columns: calc(8cqw * var(--type)) auto 1fr auto; }
+  .track__num, .track__name, .track__time { font-size: calc(4.4cqw * var(--type)); }
+  .track__name { white-space: normal; }
+  .track__text {
+    font-size: calc(2.9cqw * var(--type));
+    padding-left: calc(10cqw * var(--type));
+    max-width: 100%;
+  }
+  .track__rule { margin-left: calc(10cqw * var(--type)); }
+  .track__dots, .track__rule { background-size: calc(1.5cqw * var(--type)) calc(1.5cqw * var(--type)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track__body, .track__dots, .track__rule { transition: none; }
+}
