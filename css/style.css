@@ -663,10 +663,6 @@ body.is-locked { overflow: hidden; }
 .page--gallery .bubble--about   { --hue: var(--olive); width: 17vh; top: 28vh; right: -5.5vh; font-size: 2.1vh; --nudge: -1.3vh; }
 .page--gallery .bubble--tickets { width: 18vh; top: 76vh;  left: -6vh;  font-size: 2.1vh; --nudge: 1.4vh; }
 
-/* olive is light: dark label at full opacity keeps it readable */
-.page--gallery .bubble--about:hover,
-.page--gallery .bubble--about:focus-visible { color: var(--ink); }
-
 /* ---------- small screens ---------- */
 @media (max-width: 860px) {
   .gallery {
