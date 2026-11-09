@@ -702,7 +702,7 @@ body.is-locked { overflow: hidden; }
   margin: 0;
   background: #EDE4D3 url("../assets/setlist.jpg") center / cover no-repeat fixed;
   color: var(--paper-ink);
-  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .setlist {
@@ -726,7 +726,7 @@ body.is-locked { overflow: hidden; }
 }
 
 /* ---- one piece ---- */
-.track { margin: 0 0 calc(2.4cqw * var(--type)); }
+.track { margin: 0 0 calc(1.6cqw * var(--type)); }
 
 .track__btn {
   display: grid;
@@ -747,7 +747,7 @@ body.is-locked { overflow: hidden; }
 .track__num {
   justify-self: end;
   font-size: calc(2.45cqw * var(--type));
-  letter-spacing: 0.02em;
+  letter-spacing: -0.005em;
 }
 
 .track__name {
@@ -787,9 +787,9 @@ body.is-locked { overflow: hidden; }
   margin: calc(1.1cqw * var(--type)) 0 0;
   padding: 0 0 calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
   font-size: calc(1.22cqw * var(--type));
-  line-height: 1.55;
+  line-height: 1.4;
   text-transform: uppercase;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.005em;
   max-width: 82%;
 }
 
@@ -808,7 +808,7 @@ body.is-locked { overflow: hidden; }
 .track.is-open .track__body  { grid-template-rows: 1fr; }
 .track.is-open .track__dots  { opacity: 0; }
 .track.is-open .track__rule  { height: 3px; opacity: 1; }
-.track.is-open .track__name  { font-weight: 700; }
+
 
 /* ---- the one way out ---- */
 .setlist__back {
