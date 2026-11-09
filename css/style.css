@@ -687,8 +687,6 @@ body.is-locked { overflow: hidden; }
 .page--gallery { position: relative; }
 */
 
-
-
 /* ============================================================
    SET LIST PAGE
    ============================================================ */
@@ -696,7 +694,6 @@ body.is-locked { overflow: hidden; }
 .page--setlist {
   --paper-ink: #1A1613;
   --head-top:  5vh;
-  --type:      1;      /* overall scale knob */
 
   min-height: 100vh;
   margin: 0;
@@ -708,31 +705,39 @@ body.is-locked { overflow: hidden; }
 .setlist {
   container-type: inline-size;
   min-height: 100vh;
-  padding: var(--head-top) 7vw 10vh;
+  padding: var(--head-top) 5.5vw 10vh;
 }
 
-/* ---- the stylised title image ---- */
 .setlist__title {
-  margin: 0 auto 5vh;
-  width: min(34cqw, 420px);
+  margin: 0 auto 6.5vh;
+  width: min(24cqw, 460px);
 }
 .setlist__title img { width: 100%; height: auto; display: block; }
 
+/* the list is its own container: everything below scales off ITS width */
 .setlist__list {
+  container-type: inline-size;
   list-style: none;
   margin: 0 auto;
   padding: 0;
-  width: min(100%, 1100px);
+  width: min(100%, 1600px);
+
+  /* ---- KNOBS ------------------------------------------------ */
+  --row:  2.68cqw;   /* row type size — drives everything else   */
+  --gap:  0.93;      /* space between rows, in multiples of --row */
+  --body: 0.78cqw;   /* description type size                     */
+  --numw: 1.6;       /* numeral column width, × --row             */
+  --numg: 0.85;      /* gap after the numeral, × --row            */
+  /* ------------------------------------------------------------ */
 }
 
-/* ---- one piece ---- */
-.track { margin: 0 0 calc(2.4cqw * var(--type)); }
+.track { margin: 0 0 calc(var(--row) * var(--gap)); }
 
 .track__btn {
   display: grid;
-  grid-template-columns: calc(4cqw * var(--type)) auto 1fr auto;
+  grid-template-columns: calc(var(--row) * var(--numw)) auto 1fr auto;
   align-items: baseline;
-  column-gap: calc(0.9cqw * var(--type));
+  column-gap: calc(var(--row) * var(--numg));
   width: 100%;
   padding: 0;
   border: 0;
@@ -746,31 +751,31 @@ body.is-locked { overflow: hidden; }
 
 .track__num {
   justify-self: end;
-  font-size: calc(2.45cqw * var(--type));
+  font-size: var(--row);
   letter-spacing: 0.02em;
 }
 
 .track__name {
-  font-size: calc(2.45cqw * var(--type));
+  font-size: var(--row);
   text-transform: uppercase;
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
 
-/* the dot leader — shrinks to nothing as the row opens */
+/* the dot leader — fades as the row opens */
 .track__dots {
   align-self: end;
-  height: calc(2.45cqw * var(--type));
-  margin: 0 calc(0.6cqw * var(--type));
+  height: var(--row);
+  margin: 0 calc(var(--row) * 0.3);
   background-image: radial-gradient(circle, var(--paper-ink) 1px, transparent 1.3px);
   background-position: bottom;
-  background-size: calc(0.62cqw * var(--type)) calc(0.62cqw * var(--type));
+  background-size: calc(var(--row) * 0.27) calc(var(--row) * 0.27);
   background-repeat: repeat-x;
   transition: opacity 320ms var(--ease);
 }
 
 .track__time {
-  font-size: calc(2.45cqw * var(--type));
+  font-size: var(--row);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
@@ -784,9 +789,9 @@ body.is-locked { overflow: hidden; }
 .track__inner { overflow: hidden; }
 
 .track__text {
-  margin: calc(1.1cqw * var(--type)) 0 0;
-  padding: 0 0 calc(1.4cqw * var(--type)) calc(5.4cqw * var(--type));
-  font-size: calc(1.22cqw * var(--type));
+  margin: calc(var(--row) * 0.4) 0 0;
+  padding: 0 0 calc(var(--row) * 0.5) calc(var(--row) * (var(--numw) + var(--numg)));
+  font-size: var(--body);
   line-height: 1.55;
   text-transform: uppercase;
   letter-spacing: 0.015em;
@@ -796,19 +801,18 @@ body.is-locked { overflow: hidden; }
 /* full-width rule under an open row */
 .track__rule {
   height: 0;
-  margin-left: calc(5.4cqw * var(--type));
+  margin-left: calc(var(--row) * (var(--numw) + var(--numg)));
   background-image: radial-gradient(circle, var(--paper-ink) 1px, transparent 1.3px);
-  background-size: calc(0.62cqw * var(--type)) calc(0.62cqw * var(--type));
+  background-size: calc(var(--row) * 0.27) calc(var(--row) * 0.27);
   background-repeat: repeat-x;
   opacity: 0;
   transition: opacity 320ms var(--ease);
 }
 
 /* ---- open state ---- */
-.track.is-open .track__body  { grid-template-rows: 1fr; }
-.track.is-open .track__dots  { opacity: 0; }
-.track.is-open .track__rule  { height: 3px; opacity: 1; }
-.track.is-open .track__name  { font-weight: 700; }
+.track.is-open .track__body { grid-template-rows: 1fr; }
+.track.is-open .track__dots { opacity: 0; }
+.track.is-open .track__rule { height: 3px; opacity: 1; }
 
 /* ---- the one way out ---- */
 .setlist__back {
@@ -831,16 +835,14 @@ body.is-locked { overflow: hidden; }
   .page--setlist { background-attachment: scroll; }
   .setlist { padding: 4vh 6vw 12vh; }
   .setlist__title { width: min(62cqw, 320px); }
-  .track__btn { grid-template-columns: calc(8cqw * var(--type)) auto 1fr auto; }
-  .track__num, .track__name, .track__time { font-size: calc(4.4cqw * var(--type)); }
-  .track__name { white-space: normal; }
-  .track__text {
-    font-size: calc(2.9cqw * var(--type));
-    padding-left: calc(10cqw * var(--type));
-    max-width: 100%;
+  .setlist__list {
+    --row:  6cqw;
+    --gap:  0.8;
+    --body: 3.8cqw;
+    --numw: 1.8;
   }
-  .track__rule { margin-left: calc(10cqw * var(--type)); }
-  .track__dots, .track__rule { background-size: calc(1.5cqw * var(--type)) calc(1.5cqw * var(--type)); }
+  .track__name { white-space: normal; }
+  .track__text { max-width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
