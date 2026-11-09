@@ -499,8 +499,12 @@ body {
 }
 
 /* keep the edge bubbles off the outer columns on this page */
-.page--members .bubble--about   { --hue: var(--maroon); width: 19vh; top: 29vh;   right: -5vh; font-size: 2.2vh; --nudge: -1.2vh; }
-.page--members .bubble--tickets { width: 20vh; top: 74.5vh; left: -6vh;  font-size: 2.2vh; --nudge: 1.2vh; }
+.page--members .bubble--about   { --hue: 43 141 136; width: 19vh; top: 29vh; right: -5vh; font-size: 2.2vh; --nudge: -1.2vh; }
+.page--members .bubble--tickets { --hue: var(--blue); width: 20vh; top: 74.5vh; left: -6vh; font-size: 2.2vh; --nudge: 1.2vh; }
+
+/* teal is light — switch the label to ink at full opacity so it stays legible */
+.page--members .bubble--about:hover,
+.page--members .bubble--about:focus-visible { color: var(--ink); }
 
 /* ---------- small screens ---------- */
 @media (max-width: 860px) {
