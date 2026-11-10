@@ -15,6 +15,18 @@
 </head>
 <body class="page--gallery">
 
+  <!-- mobile only: display:none above 860px -->
+  <nav class="topnav" aria-label="Main">
+    <ul class="topnav__list">
+      <li><a class="topnav__link" href="index.html">Home</a></li>
+      <li><a class="topnav__link" href="about.html">About</a></li>
+      <li><a class="topnav__link" href="members.html">Members</a></li>
+      <li><a class="topnav__link" href="setlist.html">Set List</a></li>
+      <li><a class="topnav__link" href="tickets.html">Tickets</a></li>
+      <li><a class="topnav__link" href="gallery.html" aria-current="page">Gallery</a></li>
+    </ul>
+  </nav>
+
   <main class="gallery">
     <h1 class="gallery__title">Gallery</h1>
     <ul class="gallery__grid"></ul>
@@ -178,85 +190,6 @@
     ? MOBILE.addEventListener.bind(MOBILE, 'change')
     : MOBILE.addListener.bind(MOBILE))(applyMode);
   applyMode();
-})();
-</script>
-
-  <!-- ===== mobile only: display:none above 860px ===== -->
-
-  <div class="scrim" hidden></div>
-
-  <button class="menu-btn" type="button"
-          aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
-    <span class="menu-btn__bars" aria-hidden="true"></span>
-  </button>
-
-  <nav class="drawer" id="drawer" aria-label="Main">
-    <ul class="drawer__list">
-      <li><a class="drawer__link" href="index.html">Home</a></li>
-      <li>
-        <a class="drawer__link" href="about.html">About Anhad</a>
-        <ul class="drawer__sub">
-          <li><a class="drawer__link drawer__link--sub" href="members.html">Members</a></li>
-          <li><a class="drawer__link drawer__link--sub" href="setlist.html">Set List</a></li>
-        </ul>
-      </li>
-      <li><a class="drawer__link" href="tickets.html">Ticket Counter</a></li>
-      <li><a class="drawer__link" href="gallery.html" aria-current="page">Gallery</a></li>
-    </ul>
-  </nav>
-
-<script>
-(function () {
-  var btn    = document.querySelector('.menu-btn');
-  var drawer = document.getElementById('drawer');
-  var scrim  = document.querySelector('.scrim');
-  if (!btn || !drawer || !scrim) return;
-
-  var links = Array.prototype.slice.call(drawer.querySelectorAll('a'));
-  var open  = false;
-
-  function setOpen(state) {
-    open = state;
-    btn.classList.toggle('is-open', state);
-    drawer.classList.toggle('is-open', state);
-    btn.setAttribute('aria-expanded', state ? 'true' : 'false');
-    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
-    document.body.classList.toggle('is-locked', state);
-
-    if (state) {
-      scrim.hidden = false;
-      requestAnimationFrame(function () { scrim.classList.add('is-on'); });
-      links[0].focus();
-    } else {
-      scrim.classList.remove('is-on');
-      setTimeout(function () { if (!open) scrim.hidden = true; }, 400);
-    }
-  }
-
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    setOpen(!open);
-    if (!open) btn.focus();
-  });
-
-  scrim.addEventListener('click', function () { setOpen(false); btn.focus(); });
-
-  document.addEventListener('keydown', function (e) {
-    if (!open) return;
-    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
-    if (e.key !== 'Tab') return;
-
-    var ring  = [btn].concat(links);
-    var first = ring[0];
-    var last  = ring[ring.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-
-  var mq = window.matchMedia('(min-width: 861px)');
-  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(
-    function (ev) { if ((ev.matches !== undefined ? ev.matches : mq.matches) && open) setOpen(false); }
-  );
 })();
 </script>
 

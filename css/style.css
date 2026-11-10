@@ -656,8 +656,6 @@ body {
   opacity: 0.55;
 }
 
-body.is-locked { overflow: hidden; }
-
 /* ---------- bubbles: smaller + further off-edge, page scrolls ---------- */
 .page--gallery .bubble--home    { width: 26vh; top: 1.5vh;  right: -4vh; font-size: 3.2vh; --nudge: -0.8vh; }
 .page--gallery .bubble--about   { --hue: var(--olive); width: 17vh; top: 28vh; right: -5.5vh; font-size: 2.1vh; --nudge: -1.3vh; }
@@ -1186,28 +1184,10 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    TICKETS — MOBILE
-   One column, in the original vertical order. Drawer nav.
+   One column, in the original vertical order.
    ============================================================ */
 
 @media (max-width: 860px) {
-
-  .page--tickets {
-    /* ---- nav knobs — keep in sync with .page--landing --------- */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.86;
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;   /* drawer line-height. Does NOT reach the
-                           summary: .tickets declares its own --row. */
-  }
 
   .tickets {
     /* ---- page knobs ------------------------------------------- */
@@ -1301,32 +1281,14 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    LANDING — MOBILE
-   The orbs are replaced wholesale by a stylised hamburger
-   and a right-hand drawer. Desktop is untouched.
+   Full-bleed photo; the orbs give way to the top nav.
+   Desktop is untouched.
    ============================================================ */
-
-/* the three new elements don't exist above the breakpoint */
-.menu-btn,
-.drawer,
-.scrim { display: none; }
 
 @media (max-width: 860px) {
 
   .page--landing {
     /* ---- KNOBS ------------------------------------------------ */
-    --panel:    max(50.6vw, 188px); /* drawer width                */
-    --veil:     0.86;    /* drawer maroon opacity over the photo   */
-    --edge-x:   4.1vw;   /* bars inset from the screen's right     */
-    --panel-x:  5vw;     /* bars + links inset inside the panel    */
-    --edge-y:   2.7vh;   /* bars inset from the top                */
-    --bar-w:    22px;    /* hamburger bar width                    */
-    --bar-h:    2px;     /* hamburger bar thickness                */
-    --bar-gap:  6px;     /* gap between bars                       */
-    --nav-top:  7.6vh;   /* top of the first link                  */
-    --link:     clamp(16px, 5vw, 22px);  /* top-level link size    */
-    --sub:      0.88;    /* sub-item size, as a fraction of --link */
-    --indent:   8.9vw;   /* Members / Set List indent              */
-    --row:      1.72;    /* line-height = vertical rhythm          */
     --logo-w:   62cqw;   /* logo width (cqw = % of the stage)      */
     --logo-y:   28%;     /* logo centre, from the top              */
     --focus:    50% 50%; /* herophone.jpg crop                     */
@@ -1357,137 +1319,96 @@ body.is-locked { overflow: hidden; }
 
   /* ---- the orbs are gone ---- */
   .page--landing .orb { display: none; }
+}
 
-  /* ---- hamburger ---- */
-  .menu-btn {
-    display: block;
-    position: fixed;
-    z-index: 60;
-    top:   calc(var(--edge-y) + env(safe-area-inset-top, 0px));
-    right: calc(var(--edge-x) + env(safe-area-inset-right, 0px));
-    width:  var(--bar-w);
-    height: calc(var(--bar-h) * 3 + var(--bar-gap) * 2);
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    opacity: 0.95;
-    -webkit-tap-highlight-color: transparent;
-    transition: transform var(--speed) var(--ease);
-  }
-  /* invisible 52×44 tap target without changing the box */
-  .menu-btn::after {
-    content: "";
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 52px; height: 44px;
-    transform: translate(-50%, -50%);
-  }
-  .menu-btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 8px; }
+/* ============================================================
+   TOP NAV — MOBILE
+   A row of text links at the top of every page, in place of
+   the bubbles / orbs. No toggle, no JS. Desktop is untouched.
+   ============================================================ */
 
-  .menu-btn__bars,
-  .menu-btn__bars::before,
-  .menu-btn__bars::after {
+.topnav { display: none; }
+
+@media (max-width: 860px) {
+
+  .topnav {
+    /* ---- KNOBS ------------------------------------------------ */
+    --nav-size:  clamp(13px, 3.7vw, 17px);  /* link size          */
+    --nav-gap-x: 0.6em;   /* space between links                  */
+    --nav-gap-y: 0.1em;   /* space between rows, if it wraps      */
+    --nav-pad-y: 1.6vh;   /* space above the row                  */
+    --nav-pad-x: 4vw;     /* side margin                          */
+    --nav-ink:   var(--cream);
+    /* ------------------------------------------------------------ */
+
     display: block;
-    width: 100%;
-    height: var(--bar-h);
-    background: var(--cream);
-  }
-  .menu-btn__bars {
     position: relative;
-    margin-top: calc(var(--bar-h) + var(--bar-gap));
-  }
-  .menu-btn__bars::before,
-  .menu-btn__bars::after {
-    content: "";
-    position: absolute;
-    left: 0;
-  }
-  .menu-btn__bars::before { top: calc(-1 * (var(--bar-h) + var(--bar-gap))); }
-  .menu-btn__bars::after  { top: calc(      var(--bar-h) + var(--bar-gap));  }
-
-  /* when the panel opens, the bars ride in to sit flush with the links */
-  .menu-btn.is-open {
-    transform: translateX(
-      calc(-1 * (var(--panel) - var(--edge-x) - var(--panel-x) - var(--bar-w)))
-    );
+    z-index: 10;
+    padding: calc(var(--nav-pad-y) + env(safe-area-inset-top, 0px))
+             calc(var(--nav-pad-x) + env(safe-area-inset-right, 0px))
+             0
+             calc(var(--nav-pad-x) + env(safe-area-inset-left, 0px));
   }
 
-  /* ---- drawer ---- */
-  .drawer {
-    display: block;
-    position: fixed;
-    z-index: 50;
-    top: 0;
-    right: 0;
-    width: var(--panel);
-    height: 100vh;
-    height: 100dvh;
-    background: rgb(var(--maroon) / var(--veil));
-    visibility: hidden;
-    transform: translateX(100%);
-    transition: transform  var(--speed) var(--ease),
-                visibility 0s linear var(--speed);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-  .drawer.is-open {
-    visibility: visible;
-    transform: translateX(0);
-    transition: transform var(--speed) var(--ease), visibility 0s;
-  }
-
-  .drawer__list,
-  .drawer__sub {
+  .topnav__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--nav-gap-y) var(--nav-gap-x);
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .drawer__list {
-    padding: calc(var(--nav-top) + env(safe-area-inset-top, 0px))
-             var(--panel-x)
-             calc(6vh + env(safe-area-inset-bottom, 0px));
-  }
-  .drawer__sub { padding-left: var(--indent); }
 
-  .drawer__link {
-    display: block;
+  .topnav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;          /* tap target */
     font-family: "Alegreya SC", Georgia, serif;
     font-weight: 400;
-    font-size: var(--link);
-    line-height: var(--row);
+    font-size: var(--nav-size);
     letter-spacing: 0.02em;
-    color: var(--cream);
+    color: var(--nav-ink);
     text-decoration: none;
     white-space: nowrap;
-    transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 200ms var(--ease);
   }
-  .drawer__link--sub { font-size: calc(var(--link) * var(--sub)); }
+  .topnav__link:active        { opacity: 0.6; }
+  .topnav__link:focus-visible { outline: 2px solid var(--nav-ink); outline-offset: 2px; }
 
-  .drawer__link:active        { opacity: 0.6; transform: translateX(2px); }
-  .drawer__link:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
-
-  /* ---- scrim ---- */
-  .scrim {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 45;
-    background: rgb(8 3 3 / 0.45);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--speed) var(--ease);
+  /* the page you're on: dimmed and underlined */
+  .topnav__link[aria-current="page"] {
+    opacity: 0.55;
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 1px;
   }
-  .scrim.is-on { opacity: 1; pointer-events: auto; }
-  .scrim[hidden] { display: none; }
+
+  /* ---- landing: float over the full-bleed photo ---- */
+  .page--landing .topnav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: linear-gradient(rgb(8 3 3 / 0.55), rgb(8 3 3 / 0));
+    padding-bottom: 2vh;
+  }
+
+  /* ---- set list: paper, not photo ---- */
+  .page--setlist .topnav { --nav-ink: var(--paper-ink); }
+
+  /* the list centres in what's left of the screen, not the whole of it */
+  .page--setlist { display: flex; flex-direction: column; }
+  .page--setlist .setlist { flex: 1 0 auto; min-height: 0; }
+
+  /* the nav sits above the title, so the pages need less headroom */
+  .page--about .about__head,
+  .page--members .members__title,
+  .page--gallery .gallery__title,
+  .page--setlist .setlist { --head-top: 1.5vh; --pad-y: 1.5vh; }
 }
 
 @media (max-width: 860px) and (prefers-reduced-motion: reduce) {
-  .menu-btn,
-  .drawer,
-  .scrim,
-  .drawer__link { transition: none; }
+  .topnav__link { transition: none; }
 }
 
 
@@ -1500,23 +1421,6 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 860px) {
 
   .page--about {
-    /* ---- nav knobs — same values as .page--landing ------------ */
-    /* duplicated rather than hoisted, so the landing page can't    */
-    /* be affected. Keep the two sets in sync by hand.              */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.86;
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;
-
     /* ---- page knobs ------------------------------------------- */
     --pad:        8vw;    /* side margin for all text              */
     --head-top:   5.2vh;  /* space above the title                 */
@@ -1531,7 +1435,7 @@ body.is-locked { overflow: hidden; }
 
     /* the page scrolls now, so it must NOT be a containment root:
        container-type implies contain:layout, which would make body
-       the containing block for the fixed hamburger and drawer.
+       the containing block for anything position:fixed.
        Safe only because every cqw below is overridden. */
     container-type: normal;
 
@@ -1600,11 +1504,7 @@ body.is-locked { overflow: hidden; }
 
   /* ---- the desktop furniture is gone ---- */
   .page--about .note    { display: none; }
-  .page--about .bubbles { display: none; }
-
-  /* ---- drawer: mark the page you're on ---- */
-  .drawer__link[aria-current="page"] { opacity: 0.55; }
-}
+  .page--about .bubbles { display: none; }}
 
 /* no sticky :hover on touch */
 @media (max-width: 860px) and (hover: none) {
@@ -1620,23 +1520,6 @@ body.is-locked { overflow: hidden; }
    ============================================================ */
 
 @media (max-width: 860px) {
-
-  .page--members {
-    /* ---- nav knobs — keep in sync with .page--landing --------- */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.86;
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;
-  }
 
   .members {
     /* ---- page knobs ------------------------------------------- */
@@ -1726,29 +1609,12 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    SET LIST — MOBILE
-   Vertically centred, readable body copy, drawer nav.
+   Vertically centred, readable body copy, top nav.
    Desktop untouched.
    Must sit AFTER the stock setlist media query.
    ============================================================ */
 
 @media (max-width: 860px) {
-
-  .page--setlist {
-    /* ---- nav knobs — keep in sync with .page--landing --------- */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.94;   /* ↑ from 0.86: the page behind is light  */
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;
-  }
 
   .setlist {
     /* ---- page knobs ------------------------------------------- */
@@ -1849,31 +1715,9 @@ body.is-locked { overflow: hidden; }
     transition: visibility 0s;
   }
 
-  /* ---- the back link overlaps the centred list — the drawer
+  /* ---- the back link overlaps the centred list — the top nav
           replaces it, and covers more ground than it ever did ---- */
   .page--setlist .setlist__back { display: none; }
-
-  /* ---- hamburger: this page is PAPER, not photo ----------------
-     the shared .menu-btn__bars is cream (#FFFEE8) — invisible here.
-     Ink while closed; cream once it's over the maroon panel. */
-  .page--setlist .menu-btn__bars,
-  .page--setlist .menu-btn__bars::before,
-  .page--setlist .menu-btn__bars::after {
-    background: var(--paper-ink);
-  }
-  .page--setlist .menu-btn.is-open .menu-btn__bars,
-  .page--setlist .menu-btn.is-open .menu-btn__bars::before,
-  .page--setlist .menu-btn.is-open .menu-btn__bars::after {
-    background: var(--cream);
-  }
-  .page--setlist .menu-btn:focus-visible { outline-color: var(--paper-ink); }
-  .page--setlist .menu-btn.is-open:focus-visible { outline-color: var(--cream); }
-}
-
-
-/* ---- shared: mark the page you're on in the drawer ---- */
-@media (max-width: 860px) {
-  .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
 
 
@@ -1885,23 +1729,6 @@ body.is-locked { overflow: hidden; }
    ============================================================ */
 
 @media (max-width: 860px) {
-
-  .page--gallery {
-    /* ---- nav knobs — keep in sync with .page--landing --------- */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.86;
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;
-  }
 
   /* notch clearance — the title sits under it with viewport-fit=cover */
   .page--gallery .gallery__title {
