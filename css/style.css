@@ -856,49 +856,266 @@ body.is-locked { overflow: hidden; }
 
 .page--tickets {
   --paper: #F7F7F7;
+  --gold:  #F49528;
+  --line:  #343434;
+  --muted: #9C9C9C;
+
+  position: relative;
   min-height: 100vh;
   margin: 0;
   background: #171717;
   color: var(--paper);
-  font-family: "Alegreya SC", Georgia, serif;
+  font-family: "Alegreya Sans", system-ui, sans-serif;
 }
 
 .tickets {
   container-type: inline-size;
+
+  /* ---- KNOBS ------------------------------------------------ */
+  --type:     0.76;   /* type scale, matches the other pages      */
+  --pad:      5.5vw;  /* side margin, matches .scatter / .members */
+  --col:      560px;  /* widest the checkout column may get       */
+  --head-top: 6vh;
+  /* ------------------------------------------------------------ */
+
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 6vh 7vw;
-  text-align: center;
+  padding: var(--head-top) var(--pad) 14vh;
 }
 
 .tickets__title {
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: calc(5cqw * var(--type, 0.76));
-  line-height: 1.15;
+  font-size: calc(5cqw * var(--type));
+  line-height: 1;
   letter-spacing: 0.02em;
-  color: var(--paper);
   margin: 0;
 }
 
-.tickets__sub {
-  font-family: "Alegreya Sans", system-ui, sans-serif;
-  font-size: calc(1.5cqw * var(--type, 0.76));
-  letter-spacing: 0.06em;
-  opacity: 0.6;
-  margin: 1.6em 0 0;
+.tickets__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em 0.9em;
+  margin: 1.3em 0 0;
+  font-size: calc(1.25cqw * var(--type));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
-.tickets__sub a { color: inherit; }
+.tickets__meta span + span::before { content: "\00B7"; margin-right: 0.9em; opacity: .55; }
 
+/* ---- the column ---- */
+.checkout {
+  width: min(100%, var(--col));
+  margin: 5.5vh 0 0;
+  font-size: clamp(14px, 1.15vw, 17px);  /* everything below is em */
+  line-height: 1.5;
+}
+
+/* ---- the tier ---- */
+.tier {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2em;
+  padding-bottom: 1.5em;
+  border-bottom: 1px solid var(--line);
+}
+.tier__name {
+  margin: 0;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.35em;
+  letter-spacing: 0.04em;
+}
+.tier__note  { margin: .45em 0 0; font-size: .85em; color: var(--muted); }
+.tier__price {
+  flex: none;
+  margin: 0;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.35em;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+
+/* ---- quantity ---- */
+.qty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .9em;
+  padding: 1.6em 0;
+  border-bottom: 1px solid var(--line);
+}
+.qty__label {
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.1em;
+  letter-spacing: 0.06em;
+}
+.qty__control {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.qty__btn {
+  width: 2.7em;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--paper);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--speed) var(--ease), opacity var(--speed) var(--ease);
+}
+.qty__btn:hover:not(:disabled) { background: rgb(var(--olive) / .35); }
+.qty__btn:disabled { opacity: .28; cursor: not-allowed; }
+.qty__btn:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
+
+.qty__input {
+  width: 3.4em;
+  padding: .75em 0;
+  border: 0;
+  border-left:  1px solid var(--line);
+  border-right: 1px solid var(--line);
+  background: none;
+  color: var(--paper);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  -moz-appearance: textfield;
+}
+.qty__input::-webkit-outer-spin-button,
+.qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.qty__input:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
+
+.qty__cap { flex-basis: 100%; margin: 0; font-size: .82em; color: var(--muted); }
+
+/* ---- summary ---- */
+.summary { padding: 1.6em 0; border-bottom: 1px solid var(--line); }
+.summary__list { margin: 0; }
+.summary__row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2em;
+  margin: 0 0 .65em;
+}
+.summary__row dt, .summary__row dd { margin: 0; }
+.summary__row dd { font-variant-numeric: tabular-nums; }
+.summary__row--total {
+  margin: 1.1em 0 0;
+  padding-top: 1.1em;
+  border-top: 1px solid var(--line);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.25em;
+  letter-spacing: 0.04em;
+}
+.summary__row--total dd { color: var(--gold); }
+
+/* ---- policies ---- */
+.policies { padding: 1.9em 0 0; }
+.policies__title {
+  margin: 0 0 .9em;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: 1em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.policies__list {
+  margin: 0;
+  padding-left: 1.15em;
+  font-size: .88em;
+  line-height: 1.6;
+  color: #CFCFCF;
+}
+.policies__list li { margin: 0 0 .55em; }
+.policies__list li::marker { color: var(--gold); }
+
+/* ---- consent + button ---- */
+.agree {
+  display: flex;
+  align-items: flex-start;
+  gap: .7em;
+  margin: 1.9em 0 0;
+  font-size: .9em;
+  cursor: pointer;
+}
+.agree__box {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  margin: .25em 0 0;
+  accent-color: rgb(var(--maroon));
+  cursor: pointer;
+}
+
+.buy {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+  margin: 1.8em 0 0;
+  padding: 1em 1.7em;
+  border: 0;
+  border-radius: 999px;
+  background: rgb(var(--maroon) / 1);
+  color: var(--cream);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.15em;
+  letter-spacing: 0.07em;
+  cursor: pointer;
+  transition: background-color var(--speed) var(--ease),
+              transform        var(--speed) var(--ease),
+              opacity          var(--speed) var(--ease);
+}
+.buy:hover:not(:disabled) { background: rgb(var(--maroon) / .82); transform: translateY(-2px); }
+.buy:disabled { opacity: .38; cursor: not-allowed; }
+.buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+.buy__total { font-variant-numeric: tabular-nums; }
+
+/* ---- the "not live yet" notice ---- */
+.demo {
+  margin: 1.2em 0 0;
+  padding: .9em 1.2em;
+  border-left: 3px solid var(--gold);
+  background: rgb(255 255 255 / .045);
+  font-size: .87em;
+  color: #D8D8D8;
+}
+.demo[hidden] { display: none; }
+
+/* ---- bubbles: all three pushed off the right edge ---- */
+.page--tickets .bubble--home    { --hue: var(--maroon); width: 26vh; top:  1.5vh; right: -4vh;   font-size: 3.2vh; --nudge: -0.8vh; z-index: 1; }
+.page--tickets .bubble--about   { --hue: var(--olive);  width: 19vh; top: 33vh;   right: -5vh;   font-size: 2.2vh; --nudge: -1.2vh; z-index: 2; }
+.page--tickets .bubble--gallery { --hue: var(--blue);   width: 21vh; top: 75vh;   right: -5.5vh; font-size: 2.3vh; --nudge: -1.3vh; z-index: 3; }
+
+/* olive is light — ink label at full opacity, same as the members page */
+.page--tickets .bubble--about:hover,
+.page--tickets .bubble--about:focus-visible { color: var(--ink); }
+
+/* ---------- small screens ---------- */
 @media (max-width: 860px) {
-  .tickets__title { font-size: calc(9cqw * var(--type, 0.76)); }
-  .tickets__sub   { font-size: calc(3.2cqw * var(--type, 0.76)); }
+  .tickets {
+    --pad: 6vw;
+    padding-right: calc(6vw + 7vh);   /* clear the edge bubbles */
+    padding-bottom: 18vh;
+  }
+  .tickets__title { font-size: calc(9cqw * var(--type)); }
+  .tickets__meta  { font-size: calc(2.5cqw * var(--type)); }
+  .checkout { width: 100%; font-size: 15px; }
+
+  /* the page scrolls here — let the bubbles scroll away with it */
+  .page--tickets .bubbles { position: absolute; height: 100vh; }
   .page--tickets .bubble--home,
   .page--tickets .bubble--about,
   .page--tickets .bubble--gallery { width: 12vh; font-size: 1.7vh; }
-  .page--tickets .bubble--about {
-  --hue: var(--olive);
-  width: 19vh; top: 29vh; right: -5vh;
-  font-size: 2.2vh; --nudge: -1.2vh; z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buy:hover:not(:disabled) { transform: none; }
 }
