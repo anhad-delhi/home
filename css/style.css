@@ -1506,3 +1506,93 @@ body.is-locked { overflow: hidden; }
   /* ---- drawer: mark the page you're on ---- */
   .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
+
+
+/* ============================================================
+   MEMBERS — MOBILE
+   One per row, flush to a single left margin, full colour.
+   Desktop untouched.
+   Must sit AFTER the existing members media queries — several
+   rules below win on source order, not specificity.
+   ============================================================ */
+
+@media (max-width: 860px) {
+
+  .page--members {
+    /* ---- nav knobs — keep in sync with .page--landing --------- */
+    --panel:    max(50.6vw, 188px);
+    --veil:     0.86;
+    --edge-x:   4.1vw;
+    --panel-x:  5vw;
+    --edge-y:   3.1vh;
+    --bar-w:    22px;
+    --bar-h:    2px;
+    --bar-gap:  6px;
+    --nav-top:  7.6vh;
+    --link:     clamp(16px, 5vw, 22px);
+    --sub:      0.88;
+    --indent:   8.9vw;
+    --row:      1.72;
+  }
+
+  .members {
+    /* ---- page knobs ------------------------------------------- */
+    --cols:       1;
+    --pad:        9.3vw;  /* THE margin. Title and grid both.     */
+    --row-gap:    5.5vh;  /* space between members                */
+    --head-top:   5.2vh;  /* space above the title                */
+    --title-gap:  4.5vh;  /* space below the title                */
+    --title:      clamp(34px, 12vw, 58px);
+    --name:       clamp(12px, 3.8vw, 18px);
+    --name-gap:   1em;    /* space between photo and name         */
+    --name-align: center; /* or: left, to sit on the margin       */
+    /* ------------------------------------------------------------ */
+
+    /* The desktop comment says don't hand-edit --cell. Overriding
+       it anyway, on purpose: the stock formula is min(width, --cap).
+       If --cap won, the grid would narrow and `margin: 0 auto` plus
+       `justify-content: center` would centre it — which is exactly
+       the drifting-margin bug you asked me to kill. Pinning --cell
+       to the column width makes the left edge unconditional.
+       --cap and --col-gap are inert on mobile as a result. */
+    --cell: calc(100cqw - 2 * var(--pad));
+  }
+
+  .page--members .members__title {
+    padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
+             var(--pad) 0;
+    margin: 0 0 var(--title-gap);
+    font-size: var(--title);
+  }
+
+  .page--members .members__grid {
+    justify-content: flex-start;   /* no centring → flush to --pad */
+    width: calc(100% - 2 * var(--pad));
+    column-gap: 0;
+    row-gap: var(--row-gap);
+    padding-bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page--members .member__name {
+    margin-top: var(--name-gap);
+    text-align: var(--name-align);
+    font-size: var(--name);
+  }
+
+  /* ---- full colour on phones ----------------------------------
+     Both selectors are needed: the second overrides the earlier
+     @media (hover: none) rule, which would otherwise re-apply
+     grayscale on touchscreens the moment a tap registers hover. */
+  .page--members .member__frame img,
+  .page--members .member:hover .member__frame img {
+    filter: none;
+    transition: none;
+  }
+
+  /* ---- the desktop furniture is gone ---- */
+  .page--members .bubbles { display: none; }
+
+  /* ---- drawer: mark the page you're on ---- */
+  .drawer__link[aria-current="page"] { opacity: 0.55; }
+}
+
