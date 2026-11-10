@@ -1518,6 +1518,17 @@ body.is-locked { overflow: hidden; }
 
 @media (max-width: 860px) {
 
+  .page--members .members__grid {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* --cell is exactly the column width now; don't let flex shave it */
+  .page--members .member {
+    flex: none;
+  }
+}
+
   .page--members {
     /* ---- nav knobs — keep in sync with .page--landing --------- */
     --panel:    max(50.6vw, 188px);
