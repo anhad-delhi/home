@@ -1696,3 +1696,57 @@ body.is-locked { overflow: hidden; }
 @media (max-width: 860px) {
   .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
+
+
+/* ============================================================
+   GALLERY — MOBILE
+   Drawer instead of bubbles; the grid is a contact sheet, not
+   a control. Everything else matches the stock mobile block.
+   Desktop untouched.
+   ============================================================ */
+
+@media (max-width: 860px) {
+
+  .page--gallery {
+    /* ---- nav knobs — keep in sync with .page--landing --------- */
+    --panel:    max(50.6vw, 188px);
+    --veil:     0.86;
+    --edge-x:   4.1vw;
+    --panel-x:  5vw;
+    --edge-y:   3.1vh;
+    --bar-w:    22px;
+    --bar-h:    2px;
+    --bar-gap:  6px;
+    --nav-top:  7.6vh;
+    --link:     clamp(16px, 5vw, 22px);
+    --sub:      0.88;
+    --indent:   8.9vw;
+    --row:      1.72;
+  }
+
+  /* notch clearance — the title sits under it with viewport-fit=cover */
+  .page--gallery .gallery__title {
+    padding-top: calc(var(--head-top) + env(safe-area-inset-top, 0px));
+  }
+  .page--gallery .gallery__grid {
+    padding-bottom: calc(12vh + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ---- the grid is decoration: no tap, no zoom, no cursor ----
+     the hover scale would otherwise STICK after a tap, since
+     touch fires :hover and nothing clears it. */
+  .page--gallery .shot__btn {
+    cursor: default;
+    pointer-events: none;
+  }
+  .page--gallery .shot__btn:hover img,
+  .page--gallery .shot__btn:focus-visible img {
+    transform: none;
+  }
+
+  /* ---- no lightbox on phones ---- */
+  .page--gallery .lightbox { display: none; }
+
+  /* ---- the desktop furniture is gone ---- */
+  .page--gallery .bubbles { display: none; }
+}
