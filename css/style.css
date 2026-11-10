@@ -1434,100 +1434,13 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    MEMBERS — MOBILE
-   Two per row, full colour, drawer nav. Desktop untouched.
-   Must sit AFTER the existing members media queries — several
-   rules below win on source order, not specificity.
-   ============================================================ */
-
-@media (max-width: 860px) {
-
-  .page--members {
-    /* ---- nav knobs — keep in sync with .page--landing --------- */
-    --panel:    max(50.6vw, 188px);
-    --veil:     0.86;
-    --edge-x:   4.1vw;
-    --panel-x:  5vw;
-    --edge-y:   3.1vh;
-    --bar-w:    22px;
-    --bar-h:    2px;
-    --bar-gap:  6px;
-    --nav-top:  7.6vh;
-    --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;
-  }
-
-  .members {
-    /* ---- page knobs ------------------------------------------- */
-    --cols:      2;
-    --pad:       11.2vw;  /* side margin for the GRID             */
-    --title-x:    9.3vw;  /* side margin for the TITLE            */
-    --col-gap:   12.3vw;  /* space between the two columns        */
-    --row-gap:    5.5vh;  /* space between rows                   */
-    --cap:         60vh;  /* ceiling on cell height — see note    */
-    --head-top:   5.2vh;  /* space above the title                */
-    --title-gap:  4.5vh;  /* space below the title                */
-    --title:     clamp(34px, 12vw, 58px);
-    --name:      clamp(12px, 3.8vw, 18px);
-    --name-gap:  1em;     /* space between photo and name         */
-    /* ------------------------------------------------------------ */
-  }
-
-  .page--members .members__title {
-    padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
-             var(--title-x) 0;
-    margin: 0 0 var(--title-gap);
-    font-size: var(--title);
-  }
-
-  .page--members .members__grid {
-    padding-bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
-  }
-
-  .page--members .member__name {
-    margin-top: var(--name-gap);
-    font-size: var(--name);
-  }
-
-  /* ---- full colour on phones ----------------------------------
-     Both selectors are needed: the second overrides the earlier
-     @media (hover: none) rule, which would otherwise re-apply
-     grayscale on touchscreens the moment a tap registers hover. */
-  .page--members .member__frame img,
-  .page--members .member:hover .member__frame img {
-    filter: none;
-    transition: none;
-  }
-
-  /* ---- the desktop furniture is gone ---- */
-  .page--members .bubbles { display: none; }
-
-  /* ---- drawer: mark the page you're on ---- */
-  .drawer__link[aria-current="page"] { opacity: 0.55; }
-}
-
-
-/* ============================================================
-   MEMBERS — MOBILE
    One per row, flush to a single left margin, full colour.
    Desktop untouched.
-   Must sit AFTER the existing members media queries — several
-   rules below win on source order, not specificity.
+   Must sit AFTER the stock members media queries — several of
+   these win on source order, not specificity.
    ============================================================ */
 
 @media (max-width: 860px) {
-
-  .page--members .members__grid {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  /* --cell is exactly the column width now; don't let flex shave it */
-  .page--members .member {
-    flex: none;
-  }
-}
 
   .page--members {
     /* ---- nav knobs — keep in sync with .page--landing --------- */
@@ -1562,9 +1475,9 @@ body.is-locked { overflow: hidden; }
     /* The desktop comment says don't hand-edit --cell. Overriding
        it anyway, on purpose: the stock formula is min(width, --cap).
        If --cap won, the grid would narrow and `margin: 0 auto` plus
-       `justify-content: center` would centre it — which is exactly
-       the drifting-margin bug you asked me to kill. Pinning --cell
-       to the column width makes the left edge unconditional.
+       `justify-content: center` would re-centre it — the drifting
+       margin you asked me to kill. Pinning --cell to the column
+       width makes the left edge unconditional.
        --cap and --col-gap are inert on mobile as a result. */
     --cell: calc(100cqw - 2 * var(--pad));
   }
@@ -1581,8 +1494,16 @@ body.is-locked { overflow: hidden; }
     width: calc(100% - 2 * var(--pad));
     column-gap: 0;
     row-gap: var(--row-gap);
-    padding-bottom: calc(8vh + env(safe-area-inset-bottom, 0px));
+
+    /* the shorthand matters: a <ul> carries a 40px default
+       padding-inline-start that this page never reset, which was
+       pushing the grid (and, via border-box, shrinking the cells)
+       off the left margin. */
+    padding: 0 0 calc(8vh + env(safe-area-inset-bottom, 0px));
   }
+
+  /* --cell is exactly the column width now; don't let flex shave it */
+  .page--members .member { flex: none; }
 
   .page--members .member__name {
     margin-top: var(--name-gap);
@@ -1593,26 +1514,42 @@ body.is-locked { overflow: hidden; }
   /* ---- full colour on phones ----------------------------------
      Both selectors are needed: the second overrides the earlier
      @media (hover: none) rule, which would otherwise re-apply
-     grayscale on touchscreens the moment a tap registers hover. */
+     grayscale the moment a tap registers as hover. */
   .page--members .member__frame img,
   .page--members .member:hover .member__frame img {
     filter: none;
     transition: none;
   }
 
+  /* ---- PER-PHOTO CROP, PHONE ONLY -----------------------------
+     first number = left/right, second = up/down. 50% 0% pulls to
+     the top of the source image, 50% 100% to the bottom. Faces
+     usually want 20–35%. Delete any line you don't need and it
+     falls back to the shared --focus. */
+  .page--members .member__frame img {
+    object-position: var(--focus-m, var(--focus, 50% 35%));
+  }
+  .page--members .member:nth-child(1)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(2)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(3)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(4)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(5)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(6)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(7)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(8)  { --focus-m: 50% 25%; }
+  .page--members .member:nth-child(9)  { --focus-m: 50% 35%; }
+  .page--members .member:nth-child(10) { --focus-m: 50% 35%; }
+
   /* ---- the desktop furniture is gone ---- */
   .page--members .bubbles { display: none; }
-
-  /* ---- drawer: mark the page you're on ---- */
-  .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
+
 
 /* ============================================================
    SET LIST — MOBILE
    Vertically centred, readable body copy, drawer nav.
    Desktop untouched.
-   Must sit AFTER the existing setlist media query — these rules
-   win on source order, not specificity.
+   Must sit AFTER the stock setlist media query.
    ============================================================ */
 
 @media (max-width: 860px) {
@@ -1636,7 +1573,7 @@ body.is-locked { overflow: hidden; }
 
   .setlist {
     /* ---- page knobs ------------------------------------------- */
-    --anchor:     center;  /* ← `flex-start` = top-aligned, no jump */
+    --anchor:     auto;   /* ← `0` = top-aligned, no jump on open  */
     --pad-x:      6vw;
     --pad-y:      3.5vh;
     --title-w:    min(62cqw, 320px);
@@ -1656,9 +1593,6 @@ body.is-locked { overflow: hidden; }
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    justify-content: safe var(--anchor);  /* `safe` stops overflow
-                                             clipping off the top   */
     min-height: 100vh;
     min-height: 100dvh;
     padding: calc(var(--pad-y) + env(safe-area-inset-top, 0px))
@@ -1666,13 +1600,24 @@ body.is-locked { overflow: hidden; }
              calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
   }
 
+  /* ---- vertical centring -------------------------------------
+     Done with auto margins, NOT justify-content. `safe center`
+     inside a var() can't fall back: a declaration containing
+     var() always parses, so the cascade drops any earlier
+     justify-content, and if `safe` isn't supported the property
+     resolves to `unset` → `normal` → top-aligned, silently.
+     Auto margins need no fallback and, unlike plain `center`,
+     collapse to 0 rather than pushing overflow off the top. */
   .page--setlist .setlist__title {
     width: var(--title-w);
-    margin: 0 auto var(--title-gap);
+    margin: var(--anchor) auto var(--title-gap);
     flex: none;
   }
 
-  .page--setlist .setlist__list { flex: none; }
+  .page--setlist .setlist__list {
+    margin: 0 auto var(--anchor);
+    flex: none;
+  }
 
   /* ---- the row ---- */
   .page--setlist .track { margin-bottom: var(--track-gap); }
@@ -1714,9 +1659,20 @@ body.is-locked { overflow: hidden; }
     margin-right: 0;
   }
 
-  /* collapsed text stays in the a11y tree on desktop; close that here */
-  .page--setlist .track:not(.is-open) .track__inner { visibility: hidden; }
-  .page--setlist .track.is-open .track__inner { visibility: visible; }
+  /* collapsed text stays in the a11y tree on desktop; close that
+     here. The delay holds it visible for the collapse animation. */
+  .page--setlist .track__inner {
+    visibility: hidden;
+    transition: visibility 0s linear 420ms;
+  }
+  .page--setlist .track.is-open .track__inner {
+    visibility: visible;
+    transition: visibility 0s;
+  }
+
+  /* ---- the back link overlaps the centred list — the drawer
+          replaces it, and covers more ground than it ever did ---- */
+  .page--setlist .setlist__back { display: none; }
 
   /* ---- hamburger: this page is PAPER, not photo ----------------
      the shared .menu-btn__bars is cream (#FFFEE8) — invisible here.
@@ -1733,7 +1689,10 @@ body.is-locked { overflow: hidden; }
   }
   .page--setlist .menu-btn:focus-visible { outline-color: var(--paper-ink); }
   .page--setlist .menu-btn.is-open:focus-visible { outline-color: var(--cream); }
+}
 
-  /* ---- drawer: mark the page you're on ---- */
+
+/* ---- shared: mark the page you're on in the drawer ---- */
+@media (max-width: 860px) {
   .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
