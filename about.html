@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171717">
+<meta name="description" content="Nine musicians and a dancer on beginnings and endings.">
 <title>About Anhad</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,11 +17,19 @@
 
   <header class="about__head">
     <h1 class="about__title">About Anhad</h1>
-      <p class="about__col about__col--left">Beginnings and endings, life and death, start and stop describe a fundamental cycle of living. They ask us to confront the new and the old, the constant and the transient and the inevitability of change that underpins most moments. </n> </n> Anhad brings together nine musicians and a dancer from very different worlds to explore these themes. In a 40-minute original set, a violist trained in Carnatic music plays alongside two Hindustani-trained vocalists. A jazz drummer plays polyrhythmic tunes with the tabla, while a Western classical Cello ties the instruments together. The guitar and bass weave acoustics and rhythm into the music, almost blurring the distinctions between songs. At the centre of the show, a kathak dancer performs to the entire set, responding to each of the instruments, striking up conversations with the violin, the drum and the vocalists to create a seamless moment of simultaneous beginnings and endings. The music is as much a visual experience as a sonic one. </n> </n> Anhad strives to coalesce familiar textures like blues and rock riffs with Raags and Taal: an experimental blend of time and space, art and artist, performer and audience.</p>
-      <nav class="about__links" aria-label="More about Anhad">
-        <a href="members.html">About Anhad's Members <span aria-hidden="true">&rarr;</span></a>
-        <a href="setlist.html">About Anhad's Setlist <span aria-hidden="true">&rarr;</span></a>
-      </nav>
+
+    <div class="about__col about__col--left">
+      <p>Beginnings and endings, life and death, start and stop describe a fundamental cycle of living. They ask us to confront the new and the old, the constant and the transient and the inevitability of change that underpins most moments.</p>
+
+      <p>Anhad brings together nine musicians and a dancer from very different worlds to explore these themes. In a 40-minute original set, a violist trained in Carnatic music plays alongside two Hindustani-trained vocalists. A jazz drummer plays polyrhythmic tunes with the tabla, while a Western classical Cello ties the instruments together. The guitar and bass weave acoustics and rhythm into the music, almost blurring the distinctions between songs. At the centre of the show, a kathak dancer performs to the entire set, responding to each of the instruments, striking up conversations with the violin, the drum and the vocalists to create a seamless moment of simultaneous beginnings and endings. The music is as much a visual experience as a sonic one.</p>
+
+      <p>Anhad strives to coalesce familiar textures like blues and rock riffs with Raags and Taal: an experimental blend of time and space, art and artist, performer and audience.</p>
+    </div>
+
+    <nav class="about__links" aria-label="More about Anhad">
+      <a href="members.html">About Anhad's Members <span aria-hidden="true">&rarr;</span></a>
+      <a href="setlist.html">About Anhad's Setlist <span aria-hidden="true">&rarr;</span></a>
+    </nav>
   </header>
 
     <section class="scatter">
@@ -84,6 +94,7 @@
   const PUSH = 0.085;       /* ← how far siblings slide, as a fraction
                                  of the scatter's width. 0.085 ≈ 8.5%.
                                  Raise for more spread, lower for less. */
+  const MOBILE = window.matchMedia('(max-width: 860px)');
   let active = null;
   let stack  = 10;
 
@@ -172,6 +183,7 @@
 
   pieces.forEach(function (el) {
     el.addEventListener('click', function (e) {
+      if (MOBILE.matches) return;   /* on phones the pile is decoration */
       e.stopPropagation();
       if (el === active) return;
       open(el);
@@ -184,6 +196,27 @@
     if (e.key === 'Escape') close();
   });
   window.addEventListener('resize', layout);
+
+  /* ---- phones: no clicks, no focus, no note ---- */
+  function applyMode() {
+    var off = MOBILE.matches;
+    if (off) close();
+    pieces.forEach(function (el) {
+      if (off) {
+        el.setAttribute('inert', '');
+        el.setAttribute('aria-hidden', 'true');
+        el.tabIndex = -1;
+      } else {
+        el.removeAttribute('inert');
+        el.removeAttribute('aria-hidden');
+        el.removeAttribute('tabindex');
+      }
+    });
+  }
+  (MOBILE.addEventListener
+    ? MOBILE.addEventListener.bind(MOBILE, 'change')
+    : MOBILE.addListener.bind(MOBILE))(applyMode);
+  applyMode();
 })();
 </script>
 
@@ -192,6 +225,85 @@
     <a class="bubble bubble--gallery" href="gallery.html"><span>gallery</span></a>
     <a class="bubble bubble--tickets" href="tickets.html"><span>ticket<br>counter</span></a>
   </nav>
-  
+
+  <!-- ===== mobile only: display:none above 860px ===== -->
+
+  <div class="scrim" hidden></div>
+
+  <button class="menu-btn" type="button"
+          aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-btn__bars" aria-hidden="true"></span>
+  </button>
+
+  <nav class="drawer" id="drawer" aria-label="Main">
+    <ul class="drawer__list">
+      <li><a class="drawer__link" href="index.html">Home</a></li>
+      <li>
+        <a class="drawer__link" href="about.html" aria-current="page">About Anhad</a>
+        <ul class="drawer__sub">
+          <li><a class="drawer__link drawer__link--sub" href="members.html">Members</a></li>
+          <li><a class="drawer__link drawer__link--sub" href="setlist.html">Set List</a></li>
+        </ul>
+      </li>
+      <li><a class="drawer__link" href="tickets.html">Ticket Counter</a></li>
+      <li><a class="drawer__link" href="gallery.html">Gallery</a></li>
+    </ul>
+  </nav>
+
+<script>
+(function () {
+  var btn    = document.querySelector('.menu-btn');
+  var drawer = document.getElementById('drawer');
+  var scrim  = document.querySelector('.scrim');
+  if (!btn || !drawer || !scrim) return;
+
+  var links = Array.prototype.slice.call(drawer.querySelectorAll('a'));
+  var open  = false;
+
+  function setOpen(state) {
+    open = state;
+    btn.classList.toggle('is-open', state);
+    drawer.classList.toggle('is-open', state);
+    btn.setAttribute('aria-expanded', state ? 'true' : 'false');
+    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('is-locked', state);
+
+    if (state) {
+      scrim.hidden = false;
+      requestAnimationFrame(function () { scrim.classList.add('is-on'); });
+      links[0].focus();
+    } else {
+      scrim.classList.remove('is-on');
+      setTimeout(function () { if (!open) scrim.hidden = true; }, 400);
+    }
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!open);
+    if (!open) btn.focus();
+  });
+
+  scrim.addEventListener('click', function () { setOpen(false); btn.focus(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (!open) return;
+    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
+    if (e.key !== 'Tab') return;
+
+    var ring  = [btn].concat(links);
+    var first = ring[0];
+    var last  = ring[ring.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  var mq = window.matchMedia('(min-width: 861px)');
+  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(
+    function (ev) { if ((ev.matches !== undefined ? ev.matches : mq.matches) && open) setOpen(false); }
+  );
+})();
+</script>
+
 </body>
 </html>
