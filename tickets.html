@@ -22,7 +22,7 @@
       <p class="tickets__meta">
         <span>Kunzum Books, GK&nbsp;II</span>
         <span>New Delhi</span>
-        <span>11 December 2026</span>
+        <span>11 December</span>
       </p>
     </header>
 
@@ -34,7 +34,7 @@
         <section class="tier">
           <div>
             <h2 class="tier__name">General Admission</h2>
-            <p class="tier__note">Unreserved seating &middot; starts at 7:30&nbsp;PM</p>
+            <p class="tier__note">UNRESERVED SEATING &middot; 7:30&nbsp;PM ONWARDS</p>
           </div>
           <p class="tier__price" id="tier-price">&mdash;</p>
         </section>
@@ -77,7 +77,7 @@
           <h2 class="policies__title">Before you book</h2>
           <ul class="policies__list">
             <li>Tickets are non-refundable and cannot be exchanged once purchased. If the performance is cancelled or rescheduled by the organisers, you will be offered a seat at the new date or a full refund.</li>
-            <li>Right of admission reserved. The organisers and the venue may refuse or revoke entry at their discretion.</li>
+            <li>Right of admission reserved. The organisers may refuse or revoke entry at their discretion.</li>
             <li>Tickets are transferable, but only one person may be admitted per ticket.</li>
             <li>Carry a valid photo ID and your booking confirmation to the venue.</li>
             <li>Latecomers will be seated at a suitable break in the set, at the usher's discretion.</li>
@@ -87,211 +87,4 @@
 
         <label class="agree">
           <input class="agree__box" type="checkbox" id="agree" required>
-          <span>I have read and accept the terms above.</span>
-        </label>
-
-        <button class="buy" type="submit">
-          <span>Purchase</span>
-          <span class="buy__total">&mdash;</span>
-        </button>
-
-        <p class="pay-note">Payment is handled by Razorpay. You'll be taken there to complete the booking.</p>
-
-        <button class="donate" type="button" id="donate">
-          <span>Support the Production</span>
-          <span class="donate__arrow" aria-hidden="true">&rarr;</span>
-        </button>
-
-        <p class="demo" role="status" hidden></p>
-
-      </div>
-
-    </form>
-  </main>
-
-  <nav class="bubbles" aria-label="Site">
-    <a class="bubble bubble--home"    href="index.html"><span>home</span></a>
-    <a class="bubble bubble--about"   href="about.html"><span>about<br>anhad</span></a>
-    <a class="bubble bubble--gallery" href="gallery.html"><span>gallery</span></a>
-  </nav>
-
-<script>
-(function () {
-  /* ---- KNOBS ------------------------------------------------ */
-  var PRICE  = 499;              /* per ticket, in rupees          */
-  var FEE    = 0;                /* flat booking fee, 0 = free     */
-  var MIN    = 1;
-  var MAX    = 10;
-  var TIER   = 'General Admission';
-
-  /* Paste the live links here. While either is empty, that button
-     shows the "not live yet" notice instead of navigating.
-     NOTE: a plain Razorpay page/link carries no quantity. Until
-     that's resolved, a multi-ticket total here will not match
-     what Razorpay charges. See the note below the code. */
-  var RAZORPAY = '';             /* e.g. 'https://rzp.io/l/xxxxxx'  */
-  var DONATE   = '';             /* donation page / UPI link        */
-  /* ------------------------------------------------------------ */
-
-  var form   = document.getElementById('checkout');
-  var input  = document.getElementById('qty-input');
-  var agree  = document.getElementById('agree');
-  var buy    = form.querySelector('.buy');
-  var give   = document.getElementById('donate');
-  var notice = form.querySelector('.demo');
-  var steps  = Array.prototype.slice.call(form.querySelectorAll('.qty__btn'));
-
-  var elPrice = document.getElementById('tier-price');
-  var elLabel = document.getElementById('sum-label');
-  var elSub   = document.getElementById('sum-sub');
-  var elFee   = document.getElementById('sum-fee');
-  var elTotal = document.getElementById('sum-total');
-  var elBtn   = form.querySelector('.buy__total');
-
-  input.min = MIN;
-  input.max = MAX;
-  form.querySelector('.qty__cap').textContent = 'Maximum ' + MAX + ' per booking.';
-
-  function money(n) { return '\u20B9' + n.toLocaleString('en-IN'); }
-
-  function qty() {
-    var n = parseInt(input.value, 10);
-    if (isNaN(n)) n = MIN;
-    return Math.min(MAX, Math.max(MIN, n));
-  }
-
-  function render(writeBack) {
-    var n = qty();
-    if (writeBack) input.value = n;
-
-    var sub   = n * PRICE;
-    var total = sub + FEE;
-
-    elPrice.textContent = money(PRICE);
-    elLabel.textContent = n + ' \u00D7 ' + TIER;
-    elSub.textContent   = money(sub);
-    elFee.textContent   = FEE ? money(FEE) : 'Free';
-    elTotal.textContent = money(total);
-    elBtn.textContent   = money(total);
-
-    steps.forEach(function (b) {
-      var d = parseInt(b.dataset.step, 10);
-      b.disabled = (d < 0 && n <= MIN) || (d > 0 && n >= MAX);
-    });
-    buy.disabled = !agree.checked;
-  }
-
-  function say(msg) {
-    notice.textContent = msg;
-    notice.hidden = false;
-  }
-
-  steps.forEach(function (b) {
-    b.addEventListener('click', function () {
-      input.value = qty() + parseInt(b.dataset.step, 10);
-      render(true);
-    });
-  });
-
-  input.addEventListener('input',  function () { render(false); });
-  input.addEventListener('change', function () { render(true);  });
-  agree.addEventListener('change', function () { render(false); });
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (buy.disabled) return;
-
-    if (RAZORPAY) { window.location.href = RAZORPAY; return; }
-    say('Nothing was charged \u2014 ticketing isn\u2019t live yet.');
-  });
-
-  give.addEventListener('click', function () {
-    if (DONATE) { window.location.href = DONATE; return; }
-    say('The donation page isn\u2019t live yet \u2014 nothing was charged.');
-  });
-
-  render(true);
-})();
-</script>
-
-  <!-- ===== mobile only: display:none above 860px ===== -->
-
-  <div class="scrim" hidden></div>
-
-  <button class="menu-btn" type="button"
-          aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
-    <span class="menu-btn__bars" aria-hidden="true"></span>
-  </button>
-
-  <nav class="drawer" id="drawer" aria-label="Main">
-    <ul class="drawer__list">
-      <li><a class="drawer__link" href="index.html">Home</a></li>
-      <li>
-        <a class="drawer__link" href="about.html">About Anhad</a>
-        <ul class="drawer__sub">
-          <li><a class="drawer__link drawer__link--sub" href="members.html">Members</a></li>
-          <li><a class="drawer__link drawer__link--sub" href="setlist.html">Set List</a></li>
-        </ul>
-      </li>
-      <li><a class="drawer__link" href="tickets.html" aria-current="page">Ticket Counter</a></li>
-      <li><a class="drawer__link" href="gallery.html">Gallery</a></li>
-    </ul>
-  </nav>
-
-<script>
-(function () {
-  var btn    = document.querySelector('.menu-btn');
-  var drawer = document.getElementById('drawer');
-  var scrim  = document.querySelector('.scrim');
-  if (!btn || !drawer || !scrim) return;
-
-  var links = Array.prototype.slice.call(drawer.querySelectorAll('a'));
-  var open  = false;
-
-  function setOpen(state) {
-    open = state;
-    btn.classList.toggle('is-open', state);
-    drawer.classList.toggle('is-open', state);
-    btn.setAttribute('aria-expanded', state ? 'true' : 'false');
-    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
-    document.body.classList.toggle('is-locked', state);
-
-    if (state) {
-      scrim.hidden = false;
-      requestAnimationFrame(function () { scrim.classList.add('is-on'); });
-      links[0].focus();
-    } else {
-      scrim.classList.remove('is-on');
-      setTimeout(function () { if (!open) scrim.hidden = true; }, 400);
-    }
-  }
-
-  btn.addEventListener('click', function (e) {
-    e.stopPropagation();
-    setOpen(!open);
-    if (!open) btn.focus();
-  });
-
-  scrim.addEventListener('click', function () { setOpen(false); btn.focus(); });
-
-  document.addEventListener('keydown', function (e) {
-    if (!open) return;
-    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
-    if (e.key !== 'Tab') return;
-
-    var ring  = [btn].concat(links);
-    var first = ring[0];
-    var last  = ring[ring.length - 1];
-    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-  });
-
-  var mq = window.matchMedia('(min-width: 861px)');
-  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(
-    function (ev) { if ((ev.matches !== undefined ? ev.matches : mq.matches) && open) setOpen(false); }
-  );
-})();
-</script>
-
-</body>
-</html>
+          <span>I have read and accept the
