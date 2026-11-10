@@ -872,14 +872,22 @@ body.is-locked { overflow: hidden; }
   container-type: inline-size;
 
   /* ---- KNOBS ------------------------------------------------ */
-  --type:     0.76;   /* type scale, matches the other pages      */
-  --pad:      5.5vw;  /* side margin, matches .scatter / .members */
-  --col:      560px;  /* widest the checkout column may get       */
-  --head-top: 6vh;
+  --type:       0.76;  /* type scale, matches the other pages     */
+  --pad:        5.5vw; /* LEFT margin                             */
+  --pad-r:        9vw; /* RIGHT margin — wider, clears HOME bubble */
+  --head-top:     6vh; /* space above the title                   */
+  --col-gap:    5.9vw; /* channel between the two columns         */
+  --cols-top:   4.2vh; /* space below the meta line               */
+
+  /* ---- vertical rhythm — raise any of these to loosen ------- */
+  --sec:        1.15em; /* padding inside a bordered section      */
+  --row:        0.5em;  /* between summary rows                   */
+  --btn-gap:    1.05em; /* above each button                      */
+  --lead:       1.45;   /* body line-height                       */
   /* ------------------------------------------------------------ */
 
   min-height: 100vh;
-  padding: var(--head-top) var(--pad) 14vh;
+  padding: var(--head-top) var(--pad-r) 8vh var(--pad);
 }
 
 .tickets__title {
@@ -895,7 +903,7 @@ body.is-locked { overflow: hidden; }
   display: flex;
   flex-wrap: wrap;
   gap: 0.3em 0.9em;
-  margin: 1.3em 0 0;
+  margin: 0.85em 0 0;
   font-size: calc(1.25cqw * var(--type));
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -903,13 +911,17 @@ body.is-locked { overflow: hidden; }
 }
 .tickets__meta span + span::before { content: "\00B7"; margin-right: 0.9em; opacity: .55; }
 
-/* ---- the column ---- */
+/* ---- two columns: order left, terms + pay right ---- */
 .checkout {
-  width: min(100%, var(--col));
-  margin: 5.5vh 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  column-gap: var(--col-gap);
+  align-items: start;
+  margin: var(--cols-top) 0 0;
   font-size: clamp(14px, 1.15vw, 17px);  /* everything below is em */
-  line-height: 1.5;
+  line-height: var(--lead);
 }
+.checkout__col { min-width: 0; }
 
 /* ---- the tier ---- */
 .tier {
@@ -917,7 +929,7 @@ body.is-locked { overflow: hidden; }
   align-items: flex-start;
   justify-content: space-between;
   gap: 2em;
-  padding-bottom: 1.5em;
+  padding-bottom: var(--sec);
   border-bottom: 1px solid var(--line);
 }
 .tier__name {
@@ -927,7 +939,12 @@ body.is-locked { overflow: hidden; }
   font-size: 1.35em;
   letter-spacing: 0.04em;
 }
-.tier__note  { margin: .45em 0 0; font-size: .85em; color: var(--muted); }
+.tier__note {
+  margin: .4em 0 0;
+  font-size: .85em;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
 .tier__price {
   flex: none;
   margin: 0;
@@ -943,8 +960,8 @@ body.is-locked { overflow: hidden; }
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: .9em;
-  padding: 1.6em 0;
+  gap: .55em;
+  padding: var(--sec) 0;
   border-bottom: 1px solid var(--line);
 }
 .qty__label {
@@ -976,7 +993,7 @@ body.is-locked { overflow: hidden; }
 
 .qty__input {
   width: 3.4em;
-  padding: .75em 0;
+  padding: .65em 0;
   border: 0;
   border-left:  1px solid var(--line);
   border-right: 1px solid var(--line);
@@ -991,22 +1008,27 @@ body.is-locked { overflow: hidden; }
 .qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .qty__input:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
 
-.qty__cap { flex-basis: 100%; margin: 0; font-size: .82em; color: var(--muted); }
+.qty__cap {
+  flex-basis: 100%;
+  margin: .15em 0 0;
+  font-size: .82em;
+  color: var(--muted);
+}
 
 /* ---- summary ---- */
-.summary { padding: 1.6em 0; border-bottom: 1px solid var(--line); }
+.summary { padding: var(--sec) 0 0; }
 .summary__list { margin: 0; }
 .summary__row {
   display: flex;
   justify-content: space-between;
   gap: 2em;
-  margin: 0 0 .65em;
+  margin: 0 0 var(--row);
 }
 .summary__row dt, .summary__row dd { margin: 0; }
 .summary__row dd { font-variant-numeric: tabular-nums; }
 .summary__row--total {
-  margin: 1.1em 0 0;
-  padding-top: 1.1em;
+  margin: .9em 0 0;
+  padding-top: .9em;
   border-top: 1px solid var(--line);
   font-family: "Alegreya SC", Georgia, serif;
   font-size: 1.25em;
@@ -1015,32 +1037,62 @@ body.is-locked { overflow: hidden; }
 .summary__row--total dd { color: var(--gold); }
 
 /* ---- policies ---- */
-.policies { padding: 1.9em 0 0; }
+.policies {
+  /* ---- KNOBS ---- */
+  --policy-align: left;   /* ← `justify` if you want a hard right edge.
+                               At this column width it will open rivers. */
+  --bullet:       4px;    /* dot diameter                              */
+  --hang:         1.15em; /* hanging indent — wrapped lines align here  */
+  --policy-gap:   .62em;  /* between bullets                           */
+  /* --------------- */
+  padding: 0;
+}
 .policies__title {
-  margin: 0 0 .9em;
+  margin: 0 0 .85em;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
   font-size: 1em;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #C9C9C9;
 }
+
+/* list-style is dropped so the bullet can be positioned precisely and
+   wrapped lines hang to a clean left edge instead of running under it */
 .policies__list {
   margin: 0;
-  padding-left: 1.15em;
+  padding: 0;
+  list-style: none;
   font-size: .88em;
-  line-height: 1.6;
+  line-height: 1.5;
   color: #CFCFCF;
 }
-.policies__list li { margin: 0 0 .55em; }
-.policies__list li::marker { color: var(--gold); }
+.policies__list li {
+  position: relative;
+  margin: 0 0 var(--policy-gap);
+  padding-left: var(--hang);
+  text-align: var(--policy-align);
+  text-justify: inter-word;
+  -webkit-hyphens: auto;
+          hyphens: auto;
+}
+.policies__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .58em;
+  width: var(--bullet);
+  height: var(--bullet);
+  border-radius: 50%;
+  background: var(--gold);
+}
 
-/* ---- consent + button ---- */
+/* ---- consent ---- */
 .agree {
   display: flex;
   align-items: flex-start;
-  gap: .7em;
-  margin: 1.9em 0 0;
+  gap: .65em;
+  margin: 1.25em 0 0;
   font-size: .9em;
   cursor: pointer;
 }
@@ -1048,19 +1100,20 @@ body.is-locked { overflow: hidden; }
   flex: none;
   width: 1.1em;
   height: 1.1em;
-  margin: .25em 0 0;
+  margin: .22em 0 0;
   accent-color: rgb(var(--maroon));
   cursor: pointer;
 }
 
+/* ---- buttons ---- */
 .buy {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 1em;
   width: 100%;
-  margin: 1.8em 0 0;
-  padding: 1em 1.7em;
+  margin: var(--btn-gap) 0 0;
+  padding: .92em 1.7em;
   border: 0;
   border-radius: 999px;
   background: rgb(var(--maroon) / 1);
@@ -1078,10 +1131,45 @@ body.is-locked { overflow: hidden; }
 .buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 .buy__total { font-variant-numeric: tabular-nums; }
 
+/* the processor note sits with the button it describes */
+.pay-note {
+  margin: .7em 0 0;
+  font-size: .78em;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+
+/* second action, deliberately quieter than Purchase */
+.donate {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+  margin: var(--btn-gap) 0 0;
+  padding: .78em 1.7em;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  background: none;
+  color: var(--gold);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.02em;
+  letter-spacing: 0.07em;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--speed) var(--ease),
+              color            var(--speed) var(--ease),
+              transform        var(--speed) var(--ease);
+}
+.donate:hover { background: rgb(244 149 40 / .12); transform: translateY(-2px); }
+.donate:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+.donate__arrow { font-size: .9em; opacity: .8; }
+
 /* ---- the "not live yet" notice ---- */
 .demo {
-  margin: 1.2em 0 0;
-  padding: .9em 1.2em;
+  margin: var(--btn-gap) 0 0;
+  padding: .85em 1.15em;
   border-left: 3px solid var(--gold);
   background: rgb(255 255 255 / .045);
   font-size: .87em;
@@ -1089,35 +1177,94 @@ body.is-locked { overflow: hidden; }
 }
 .demo[hidden] { display: none; }
 
-/* ---- bubbles: all three pushed off the right edge ---- */
-.page--tickets .bubble--home    { --hue: var(--maroon); width: 26vh; top:  1.5vh; right: -4vh;   font-size: 3.2vh; --nudge: -0.8vh; z-index: 1; }
-.page--tickets .bubble--about   { --hue: var(--olive);  width: 19vh; top: 33vh;   right: -5vh;   font-size: 2.2vh; --nudge: -1.2vh; z-index: 2; }
-.page--tickets .bubble--gallery { --hue: var(--blue);   width: 21vh; top: 75vh;   right: -5.5vh; font-size: 2.3vh; --nudge: -1.3vh; z-index: 3; }
+/* ============================================================
+   TICKETS — BUBBLES. ADJUST HERE.
+   All in vh. Negative right/left pushes the circle off the edge.
+   --nudge shifts the label so it centres in the VISIBLE crescent;
+   the rule of thumb is half the overhang, negated.
+   ============================================================ */
 
-/* olive is light — ink label at full opacity, same as the members page */
-.page--tickets .bubble--about:hover,
-.page--tickets .bubble--about:focus-visible { color: var(--ink); }
+/* HOME — maroon, top right, bleeding off the edge */
+.page--tickets .bubble--home {
+  --hue: var(--maroon);
+  width: 28vh;  top: -0.6vh;  right: -5.7vh;  left: auto;
+  font-size: 2.2vh;  --nudge: -2.9vh;  z-index: 1;
+}
 
-/* ---------- small screens ---------- */
+/* GALLERY — olive, tucked inside, left of HOME */
+.page--tickets .bubble--gallery {
+  --hue: var(--olive);
+  width: 16.4vh;  top: 1.7vh;  right: 23.4vh;  left: auto;
+  font-size: 1.95vh;  --nudge: 0;  z-index: 2;
+}
+
+/* ABOUT ANHAD — blue, bottom left, bleeding off the bottom */
+.page--tickets .bubble--about {
+  --hue: var(--blue);
+  width: 20.7vh;  top: 83.2vh;  left: -1vh;  right: auto;
+  font-size: 2.1vh;  --nudge: 0.5vh;  z-index: 3;
+}
+
+/* olive is light — ink label at full opacity so it stays legible.
+   this moved from --about to --gallery when the colours swapped. */
+.page--tickets .bubble--gallery:hover,
+.page--tickets .bubble--gallery:focus-visible { color: var(--ink); }
+
+/* ============================================================
+   TICKETS — MOBILE
+   One column, drawer instead of bubbles.
+   ============================================================ */
+
 @media (max-width: 860px) {
-  .tickets {
-    --pad: 6vw;
-    padding-right: calc(6vw + 7vh);   /* clear the edge bubbles */
-    padding-bottom: 18vh;
+
+  .page--tickets {
+    /* ---- nav knobs — keep in sync with .page--landing --------- */
+    --panel:    max(50.6vw, 188px);
+    --veil:     0.86;
+    --edge-x:   4.1vw;
+    --panel-x:  5vw;
+    --edge-y:   3.1vh;
+    --bar-w:    22px;
+    --bar-h:    2px;
+    --bar-gap:  6px;
+    --nav-top:  7.6vh;
+    --link:     clamp(16px, 5vw, 22px);
+    --sub:      0.88;
+    --indent:   8.9vw;
+    --row:      1.72;   /* NB: shadows the summary --row above,
+                           which is why .summary__row re-declares it */
   }
+
+  .tickets {
+    --pad:   6vw;
+    --pad-r: 6vw;
+    padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
+             var(--pad-r)
+             calc(10vh + env(safe-area-inset-bottom, 0px))
+             var(--pad);
+  }
+
   .tickets__title { font-size: calc(9cqw * var(--type)); }
   .tickets__meta  { font-size: calc(2.5cqw * var(--type)); }
-  .checkout { width: 100%; font-size: 15px; }
 
-  /* the page scrolls here — let the bubbles scroll away with it */
-  .page--tickets .bubbles { position: absolute; height: 100vh; }
-  .page--tickets .bubble--home,
-  .page--tickets .bubble--about,
-  .page--tickets .bubble--gallery { width: 12vh; font-size: 1.7vh; }
+  .checkout {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2.4vh;
+    font-size: 15px;
+  }
+
+  /* the summary gap must not inherit the drawer's line-height knob */
+  .page--tickets .summary__row { margin-bottom: 0.5em; }
+
+  .page--tickets .policies { padding-top: 1.2em; border-top: 1px solid var(--line); }
+
+  /* ---- the desktop furniture is gone ---- */
+  .page--tickets .bubbles { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .buy:hover:not(:disabled) { transform: none; }
+  .buy:hover:not(:disabled),
+  .donate:hover { transform: none; }
 }
 
 /* ============================================================
