@@ -897,4 +897,8 @@ body.is-locked { overflow: hidden; }
   .page--tickets .bubble--home,
   .page--tickets .bubble--about,
   .page--tickets .bubble--gallery { width: 12vh; font-size: 1.7vh; }
+  .page--tickets .bubble--about {
+  --hue: var(--olive);
+  width: 19vh; top: 29vh; right: -5vh;
+  font-size: 2.2vh; --nudge: -1.2vh; z-index: 2;
 }
