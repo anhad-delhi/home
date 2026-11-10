@@ -1212,7 +1212,7 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    TICKETS — MOBILE
-   One column, drawer instead of bubbles.
+   One column, in the original vertical order. Drawer nav.
    ============================================================ */
 
 @media (max-width: 860px) {
@@ -1231,32 +1231,92 @@ body.is-locked { overflow: hidden; }
     --link:     clamp(16px, 5vw, 22px);
     --sub:      0.88;
     --indent:   8.9vw;
-    --row:      1.72;   /* NB: shadows the summary --row above,
-                           which is why .summary__row re-declares it */
+    --row:      1.72;   /* drawer line-height. Does NOT reach the
+                           summary: .tickets declares its own --row. */
   }
 
   .tickets {
-    --pad:   6vw;
-    --pad-r: 6vw;
+    /* ---- page knobs ------------------------------------------- */
+    --pad:       6vw;
+    --pad-r:     6vw;   /* bubbles are gone — no clearance needed  */
+    --head-top:  5.2vh;
+
+    --title:     clamp(34px, 12vw, 58px);
+    --meta:      clamp(11px, 3.2vw, 14px);
+    --base:      16px;  /* ← do NOT drop below 16px: iOS Safari
+                             zooms the viewport on any focused
+                             input under that, and never zooms back */
+
+    /* ---- vertical rhythm — raise to loosen -------------------- */
+    --sec:       1.25em;
+    --row:       0.55em;
+    --btn-gap:   1.1em;
+    --col-gap:   3vh;   /* order block → terms block              */
+    /* ------------------------------------------------------------ */
+
     padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
              var(--pad-r)
              calc(10vh + env(safe-area-inset-bottom, 0px))
              var(--pad);
   }
 
-  .tickets__title { font-size: calc(9cqw * var(--type)); }
-  .tickets__meta  { font-size: calc(2.5cqw * var(--type)); }
+  .page--tickets .tickets__title { font-size: var(--title); }
 
-  .checkout {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 2.4vh;
-    font-size: 15px;
+  .page--tickets .tickets__meta {
+    margin-top: 1em;
+    font-size: var(--meta);
+    gap: 0.35em 0.8em;
   }
 
-  /* the summary gap must not inherit the drawer's line-height knob */
-  .page--tickets .summary__row { margin-bottom: 0.5em; }
+  /* ---- one column; the two .checkout__col divs stack in source
+          order, which is the original vertical flow ---- */
+  .page--tickets .checkout {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--col-gap);
+    font-size: var(--base);
+    line-height: 1.5;
+  }
 
-  .page--tickets .policies { padding-top: 1.2em; border-top: 1px solid var(--line); }
+  /* ---- tap targets: 44px floor on everything you have to hit ---- */
+  .page--tickets .qty__btn {
+    width: 3em;
+    min-height: 44px;
+  }
+  .page--tickets .qty__input {
+    width: 3.6em;
+    padding: .72em 0;
+  }
+
+  .page--tickets .buy,
+  .page--tickets .donate {
+    min-height: 48px;
+    align-items: center;
+  }
+
+  /* the whole label is the target, so give it real height */
+  .page--tickets .agree {
+    gap: .75em;
+    padding: .35em 0;
+    font-size: .92em;
+  }
+  .page--tickets .agree__box {
+    width: 1.25em;
+    height: 1.25em;
+    margin-top: .12em;
+  }
+
+  /* ---- readability ---- */
+  .page--tickets .policies__list { font-size: .9em; }
+  .page--tickets .pay-note       { font-size: .85em; }
+  .page--tickets .qty__cap       { font-size: .85em; }
+  .page--tickets .tier__note     { font-size: .88em; }
+
+  /* the summary has no bottom border — the rule separates the
+     order block from the terms block */
+  .page--tickets .policies {
+    padding-top: 1.3em;
+    border-top: 1px solid var(--line);
+  }
 
   /* ---- the desktop furniture is gone ---- */
   .page--tickets .bubbles { display: none; }
