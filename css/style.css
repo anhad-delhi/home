@@ -1139,32 +1139,6 @@ body.is-locked { overflow: hidden; }
   color: var(--muted);
 }
 
-/* second action, deliberately quieter than Purchase */
-.donate {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1em;
-  width: 100%;
-  margin: var(--btn-gap) 0 0;
-  padding: .78em 1.7em;
-  border: 1px solid var(--gold);
-  border-radius: 999px;
-  background: none;
-  color: var(--gold);
-  font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.02em;
-  letter-spacing: 0.07em;
-  text-align: left;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--speed) var(--ease),
-              color            var(--speed) var(--ease),
-              transform        var(--speed) var(--ease);
-}
-.donate:hover { background: rgb(244 149 40 / .12); transform: translateY(-2px); }
-.donate:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
-.donate__arrow { font-size: .9em; opacity: .8; }
 
 /* ---- the "not live yet" notice ---- */
 .demo {
@@ -1287,8 +1261,7 @@ body.is-locked { overflow: hidden; }
     padding: .72em 0;
   }
 
-  .page--tickets .buy,
-  .page--tickets .donate {
+  .page--tickets .buy {
     min-height: 48px;
     align-items: center;
   }
@@ -1323,8 +1296,7 @@ body.is-locked { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .buy:hover:not(:disabled),
-  .donate:hover { transform: none; }
+  .buy:hover:not(:disabled) { transform: none; }
 }
 
 /* ============================================================
