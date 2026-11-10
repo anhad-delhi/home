@@ -1596,3 +1596,134 @@ body.is-locked { overflow: hidden; }
   .drawer__link[aria-current="page"] { opacity: 0.55; }
 }
 
+/* ============================================================
+   SET LIST — MOBILE
+   Vertically centred, readable body copy, drawer nav.
+   Desktop untouched.
+   Must sit AFTER the existing setlist media query — these rules
+   win on source order, not specificity.
+   ============================================================ */
+
+@media (max-width: 860px) {
+
+  .page--setlist {
+    /* ---- nav knobs — keep in sync with .page--landing --------- */
+    --panel:    max(50.6vw, 188px);
+    --veil:     0.94;   /* ↑ from 0.86: the page behind is light  */
+    --edge-x:   4.1vw;
+    --panel-x:  5vw;
+    --edge-y:   3.1vh;
+    --bar-w:    22px;
+    --bar-h:    2px;
+    --bar-gap:  6px;
+    --nav-top:  7.6vh;
+    --link:     clamp(16px, 5vw, 22px);
+    --sub:      0.88;
+    --indent:   8.9vw;
+    --row:      1.72;
+  }
+
+  .setlist {
+    /* ---- page knobs ------------------------------------------- */
+    --anchor:     center;  /* ← `flex-start` = top-aligned, no jump */
+    --pad-x:      6vw;
+    --pad-y:      3.5vh;
+    --title-w:    min(62cqw, 320px);
+    --title-gap:  4.2vh;
+
+    --track:      clamp(15px, 4.6vw, 20px);  /* num, name, time   */
+    --num-w:      clamp(26px, 8vw, 36px);    /* numeral column    */
+    --gap:        clamp(6px, 2vw, 10px);
+    --track-gap:  clamp(2px, 1vw, 6px);      /* between rows      */
+    --tap:        11px;   /* vertical padding → 44px tap target   */
+
+    --body:       clamp(14px, 4vw, 17px);
+    --body-lead:  1.5;
+    --caps:       none;   /* ← `uppercase` restores the desktop look */
+    --dot:        5px;
+    /* ------------------------------------------------------------ */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-content: safe var(--anchor);  /* `safe` stops overflow
+                                             clipping off the top   */
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: calc(var(--pad-y) + env(safe-area-inset-top, 0px))
+             var(--pad-x)
+             calc(var(--pad-y) + env(safe-area-inset-bottom, 0px));
+  }
+
+  .page--setlist .setlist__title {
+    width: var(--title-w);
+    margin: 0 auto var(--title-gap);
+    flex: none;
+  }
+
+  .page--setlist .setlist__list { flex: none; }
+
+  /* ---- the row ---- */
+  .page--setlist .track { margin-bottom: var(--track-gap); }
+
+  .page--setlist .track__btn {
+    grid-template-columns: var(--num-w) auto 1fr auto;
+    column-gap: var(--gap);
+    padding: var(--tap) 0;
+  }
+
+  .page--setlist .track__num,
+  .page--setlist .track__name,
+  .page--setlist .track__time { font-size: var(--track); }
+
+  .page--setlist .track__name { white-space: normal; }
+
+  /* dot leader height tracks the type, or it drifts off the baseline */
+  .page--setlist .track__dots {
+    height: var(--track);
+    margin: 0 calc(var(--gap) * 0.6);
+  }
+  .page--setlist .track__dots,
+  .page--setlist .track__rule {
+    background-size: var(--dot) var(--dot);
+  }
+
+  /* ---- the body copy ---- */
+  .page--setlist .track__text {
+    margin-top: calc(var(--tap) * 0.4);
+    padding: 0 0 var(--tap) calc(var(--num-w) + var(--gap));
+    font-size: var(--body);
+    line-height: var(--body-lead);
+    text-transform: var(--caps);
+    letter-spacing: 0;
+  }
+
+  .page--setlist .track__rule {
+    margin-left: calc(var(--num-w) + var(--gap));
+    margin-right: 0;
+  }
+
+  /* collapsed text stays in the a11y tree on desktop; close that here */
+  .page--setlist .track:not(.is-open) .track__inner { visibility: hidden; }
+  .page--setlist .track.is-open .track__inner { visibility: visible; }
+
+  /* ---- hamburger: this page is PAPER, not photo ----------------
+     the shared .menu-btn__bars is cream (#FFFEE8) — invisible here.
+     Ink while closed; cream once it's over the maroon panel. */
+  .page--setlist .menu-btn__bars,
+  .page--setlist .menu-btn__bars::before,
+  .page--setlist .menu-btn__bars::after {
+    background: var(--paper-ink);
+  }
+  .page--setlist .menu-btn.is-open .menu-btn__bars,
+  .page--setlist .menu-btn.is-open .menu-btn__bars::before,
+  .page--setlist .menu-btn.is-open .menu-btn__bars::after {
+    background: var(--cream);
+  }
+  .page--setlist .menu-btn:focus-visible { outline-color: var(--paper-ink); }
+  .page--setlist .menu-btn.is-open:focus-visible { outline-color: var(--cream); }
+
+  /* ---- drawer: mark the page you're on ---- */
+  .drawer__link[aria-current="page"] { opacity: 0.55; }
+}
+
