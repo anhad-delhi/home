@@ -1119,3 +1119,194 @@ body.is-locked { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .buy:hover:not(:disabled) { transform: none; }
 }
+
+/* ============================================================
+   LANDING — MOBILE
+   The orbs are replaced wholesale by a stylised hamburger
+   and a right-hand drawer. Desktop is untouched.
+   ============================================================ */
+
+/* the three new elements don't exist above the breakpoint */
+.menu-btn,
+.drawer,
+.scrim { display: none; }
+
+@media (max-width: 860px) {
+
+  .page--landing {
+    /* ---- KNOBS ------------------------------------------------ */
+    --panel:    max(50.6vw, 188px); /* drawer width                */
+    --veil:     0.86;    /* drawer maroon opacity over the photo   */
+    --edge-x:   4.1vw;   /* bars inset from the screen's right     */
+    --panel-x:  5vw;     /* bars + links inset inside the panel    */
+    --edge-y:   2.7vh;   /* bars inset from the top                */
+    --bar-w:    22px;    /* hamburger bar width                    */
+    --bar-h:    2px;     /* hamburger bar thickness                */
+    --bar-gap:  6px;     /* gap between bars                       */
+    --nav-top:  7.6vh;   /* top of the first link                  */
+    --link:     clamp(16px, 5vw, 22px);  /* top-level link size    */
+    --sub:      0.88;    /* sub-item size, as a fraction of --link */
+    --indent:   8.9vw;   /* Members / Set List indent              */
+    --row:      1.72;    /* line-height = vertical rhythm          */
+    --logo-w:   62cqw;   /* logo width (cqw = % of the stage)      */
+    --logo-y:   28%;     /* logo centre, from the top              */
+    --focus:    50% 50%; /* herophone.jpg crop                     */
+    /* ------------------------------------------------------------ */
+
+    padding: 0;
+  }
+
+  /* ---- full-bleed stage: drop the 1.42 lock and the edge fades ---- */
+  .page--landing .stage {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    aspect-ratio: auto;
+  }
+
+  .page--landing .stage__photo {
+    -webkit-mask-image: none;
+            mask-image: none;
+    object-position: var(--focus);
+  }
+
+  .page--landing .stage__logo {
+    left:  50%;
+    top:   var(--logo-y);
+    width: var(--logo-w);
+  }
+
+  /* ---- the orbs are gone ---- */
+  .page--landing .orb { display: none; }
+
+  /* ---- hamburger ---- */
+  .menu-btn {
+    display: block;
+    position: fixed;
+    z-index: 60;
+    top:   calc(var(--edge-y) + env(safe-area-inset-top, 0px));
+    right: calc(var(--edge-x) + env(safe-area-inset-right, 0px));
+    width:  var(--bar-w);
+    height: calc(var(--bar-h) * 3 + var(--bar-gap) * 2);
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    opacity: 0.95;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform var(--speed) var(--ease);
+  }
+  /* invisible 52×44 tap target without changing the box */
+  .menu-btn::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 52px; height: 44px;
+    transform: translate(-50%, -50%);
+  }
+  .menu-btn:focus-visible { outline: 2px solid var(--cream); outline-offset: 8px; }
+
+  .menu-btn__bars,
+  .menu-btn__bars::before,
+  .menu-btn__bars::after {
+    display: block;
+    width: 100%;
+    height: var(--bar-h);
+    background: var(--cream);
+  }
+  .menu-btn__bars {
+    position: relative;
+    margin-top: calc(var(--bar-h) + var(--bar-gap));
+  }
+  .menu-btn__bars::before,
+  .menu-btn__bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  .menu-btn__bars::before { top: calc(-1 * (var(--bar-h) + var(--bar-gap))); }
+  .menu-btn__bars::after  { top: calc(      var(--bar-h) + var(--bar-gap));  }
+
+  /* when the panel opens, the bars ride in to sit flush with the links */
+  .menu-btn.is-open {
+    transform: translateX(
+      calc(-1 * (var(--panel) - var(--edge-x) - var(--panel-x) - var(--bar-w)))
+    );
+  }
+
+  /* ---- drawer ---- */
+  .drawer {
+    display: block;
+    position: fixed;
+    z-index: 50;
+    top: 0;
+    right: 0;
+    width: var(--panel);
+    height: 100vh;
+    height: 100dvh;
+    background: rgb(var(--maroon) / var(--veil));
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: transform  var(--speed) var(--ease),
+                visibility 0s linear var(--speed);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .drawer.is-open {
+    visibility: visible;
+    transform: translateX(0);
+    transition: transform var(--speed) var(--ease), visibility 0s;
+  }
+
+  .drawer__list,
+  .drawer__sub {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .drawer__list {
+    padding: calc(var(--nav-top) + env(safe-area-inset-top, 0px))
+             var(--panel-x)
+             calc(6vh + env(safe-area-inset-bottom, 0px));
+  }
+  .drawer__sub { padding-left: var(--indent); }
+
+  .drawer__link {
+    display: block;
+    font-family: "Alegreya SC", Georgia, serif;
+    font-weight: 400;
+    font-size: var(--link);
+    line-height: var(--row);
+    letter-spacing: 0.02em;
+    color: var(--cream);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+  }
+  .drawer__link--sub { font-size: calc(var(--link) * var(--sub)); }
+
+  .drawer__link:active        { opacity: 0.6; transform: translateX(2px); }
+  .drawer__link:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
+
+  /* ---- scrim ---- */
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 45;
+    background: rgb(8 3 3 / 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--speed) var(--ease);
+  }
+  .scrim.is-on { opacity: 1; pointer-events: auto; }
+  .scrim[hidden] { display: none; }
+}
+
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  .menu-btn,
+  .drawer,
+  .scrim,
+  .drawer__link { transition: none; }
+}
