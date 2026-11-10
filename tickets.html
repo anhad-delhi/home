@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ticket Counter — Anhad</title>
-<meta name="description" content="Tickets for Anhad are coming soon.">
+<meta name="description" content="Book tickets for Anhad.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,10 +15,84 @@
 <body class="page--tickets">
 
   <main class="tickets">
-    <div>
-      <h1 class="tickets__title">Tickets Out Soon</h1>
-      <!-- <p class="tickets__sub"><a href="mailto:you@anhad.com?subject=Tickets">Write to us to hear first &rarr;</a></p> -->
-    </div>
+
+    <header class="tickets__head">
+      <h1 class="tickets__title">Ticket Counter</h1>
+      <p class="tickets__meta">
+        <span>Kunzum Books, GK&nbsp;II</span>
+        <span>New Delhi</span>
+        <span>December 2026</span>
+      </p>
+    </header>
+
+    <form class="checkout" id="checkout">
+
+      <!-- ---- the tier ---- -->
+      <section class="tier">
+        <div>
+          <h2 class="tier__name">General Admission</h2>
+          <p class="tier__note">Unreserved seating · 40-minute set · doors open 30 minutes prior</p>
+        </div>
+        <p class="tier__price" id="tier-price">—</p>
+      </section>
+
+      <!-- ---- quantity ---- -->
+      <section class="qty">
+        <label class="qty__label" for="qty-input">Tickets</label>
+        <div class="qty__control">
+          <button class="qty__btn" type="button" data-step="-1" aria-label="One fewer ticket">&minus;</button>
+          <input class="qty__input" id="qty-input" type="number" inputmode="numeric"
+                 value="2" min="1" max="10" step="1">
+          <button class="qty__btn" type="button" data-step="1" aria-label="One more ticket">&plus;</button>
+        </div>
+        <p class="qty__cap">Maximum 10 per booking.</p>
+      </section>
+
+      <!-- ---- summary ---- -->
+      <section class="summary">
+        <dl class="summary__list">
+          <div class="summary__row">
+            <dt id="sum-label">—</dt>
+            <dd id="sum-sub">—</dd>
+          </div>
+          <div class="summary__row">
+            <dt>Booking fee</dt>
+            <dd id="sum-fee">—</dd>
+          </div>
+          <div class="summary__row summary__row--total">
+            <dt>Total</dt>
+            <dd id="sum-total" aria-live="polite">—</dd>
+          </div>
+        </dl>
+      </section>
+
+      <!-- ---- policies — DRAFT, needs team sign-off ---- -->
+      <section class="policies">
+        <h2 class="policies__title">Before you book</h2>
+        <ul class="policies__list">
+          <li>Tickets are non-refundable and cannot be exchanged once purchased. If the performance is cancelled or rescheduled by the organisers, you will be offered a seat at the new date or a full refund.</li>
+          <li>Right of admission reserved. The organisers and the venue may refuse or revoke entry at their discretion.</li>
+          <li>Tickets are transferable, but only one person may be admitted per ticket.</li>
+          <li>Carry a valid photo ID and your booking confirmation to the venue.</li>
+          <li>Latecomers will be seated at a suitable break in the set, at the usher's discretion.</li>
+          <li>Photography and recording during the performance are not permitted.</li>
+          <li>Attendees under 12 are admitted free but must be accompanied by a ticket-holding adult.</li>
+        </ul>
+      </section>
+
+      <label class="agree">
+        <input class="agree__box" type="checkbox" id="agree" required>
+        <span>I have read and accept the terms above, including the no-refund policy.</span>
+      </label>
+
+      <button class="buy" type="submit">
+        <span>Purchase</span>
+        <span class="buy__total">—</span>
+      </button>
+
+      <p class="demo" role="status" hidden></p>
+
+    </form>
   </main>
 
   <nav class="bubbles" aria-label="Site">
@@ -26,6 +100,94 @@
     <a class="bubble bubble--about"   href="about.html"><span>about<br>anhad</span></a>
     <a class="bubble bubble--gallery" href="gallery.html"><span>gallery</span></a>
   </nav>
+
+<script>
+(function () {
+  /* ---- KNOBS ------------------------------------------------ */
+  var PRICE    = 499;              /* per ticket, in rupees      */
+  var FEE      = 0;                /* flat booking fee, 0 = free */
+  var MIN      = 1;
+  var MAX      = 10;
+  var TIER     = 'General Admission';
+  var REDIRECT = 'index.html';     /* where Purchase goes        */
+  var NOTICE   = true;             /* false = redirect silently  */
+  var DELAY    = 2200;             /* ms the notice stays up     */
+  /* ------------------------------------------------------------ */
+
+  var form   = document.getElementById('checkout');
+  var input  = document.getElementById('qty-input');
+  var agree  = document.getElementById('agree');
+  var buy    = form.querySelector('.buy');
+  var notice = form.querySelector('.demo');
+  var steps  = Array.prototype.slice.call(form.querySelectorAll('.qty__btn'));
+
+  var elPrice = document.getElementById('tier-price');
+  var elLabel = document.getElementById('sum-label');
+  var elSub   = document.getElementById('sum-sub');
+  var elFee   = document.getElementById('sum-fee');
+  var elTotal = document.getElementById('sum-total');
+  var elBtn   = form.querySelector('.buy__total');
+
+  input.min = MIN;
+  input.max = MAX;
+  form.querySelector('.qty__cap').textContent = 'Maximum ' + MAX + ' per booking.';
+
+  function money(n) { return '\u20B9' + n.toLocaleString('en-IN'); }
+
+  function qty() {
+    var n = parseInt(input.value, 10);
+    if (isNaN(n)) n = MIN;
+    return Math.min(MAX, Math.max(MIN, n));
+  }
+
+  function render(writeBack) {
+    var n = qty();
+    if (writeBack) input.value = n;
+
+    var sub   = n * PRICE;
+    var total = sub + FEE;
+
+    elPrice.textContent = money(PRICE);
+    elLabel.textContent = n + ' \u00D7 ' + TIER;
+    elSub.textContent   = money(sub);
+    elFee.textContent   = FEE ? money(FEE) : 'Free';
+    elTotal.textContent = money(total);
+    elBtn.textContent   = money(total);
+
+    steps.forEach(function (b) {
+      var d = parseInt(b.dataset.step, 10);
+      b.disabled = (d < 0 && n <= MIN) || (d > 0 && n >= MAX);
+    });
+    buy.disabled = !agree.checked;
+  }
+
+  steps.forEach(function (b) {
+    b.addEventListener('click', function () {
+      input.value = qty() + parseInt(b.dataset.step, 10);
+      render(true);
+    });
+  });
+
+  input.addEventListener('input',  function () { render(false); });
+  input.addEventListener('change', function () { render(true);  });
+  agree.addEventListener('change', function () { render(false); });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (buy.disabled) return;
+
+    if (!NOTICE) { window.location.href = REDIRECT; return; }
+
+    notice.textContent = 'Nothing was charged \u2014 ticketing isn\u2019t live yet. '
+                       + 'Taking you back to the home page.';
+    notice.hidden = false;
+    buy.disabled  = true;
+    setTimeout(function () { window.location.href = REDIRECT; }, DELAY);
+  });
+
+  render(true);
+})();
+</script>
 
 </body>
 </html>
