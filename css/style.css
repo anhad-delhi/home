@@ -1577,15 +1577,24 @@ body.is-locked { overflow: hidden; }
   }
 
   /* ---- PILE POSITIONS — ADJUST HERE ----------------------------
+     This is the DESKTOP composition, rescaled to fill the phone:
+         left  = 3 + (desktop_left - 18.9) * 1.5
+         top   =     (desktop_top  -  1.5) * 1.5
+         width =      desktop_width        * 1.5
+     18.9 / 1.5 is the left edge and width of the desktop pile's
+     bounding box; the 3 is the left gutter. Rotations and z-order
+     are the desktop values verbatim, so the overlaps stack the
+     same way. Change a desktop piece and rerun the three lines.
+
      cqw = % of the scatter's width (= 100vw, it's full-bleed).
-     left / top = TOP-LEFT corner. Negative left bleeds off-screen.
+     left / top = TOP-LEFT corner.
      --------------------------------------------------------------- */
-  .page--about .piece--stage  { left: 28.2cqw; top:  0cqw;   width: 41.8cqw; --rot: -2deg; z-index: 1; }
-  .page--about .piece--rhythm { left: 70.9cqw; top:  5.2cqw; width: 20.9cqw; --rot: -3deg; z-index: 1; }
-  .page--about .piece--cert   { left: -1.5cqw; top: 16.9cqw; width: 29.1cqw; --rot: -7deg; z-index: 2; }
-  .page--about .piece--poster { left: 77.9cqw; top: 14.3cqw; width: 25.3cqw; --rot:  9deg; z-index: 3; }
-  .page--about .piece--draw   { left: 33.4cqw; top: 27.4cqw; width: 42.7cqw; --rot:  2deg; z-index: 4; }
-  .page--about .piece--card   { left: 20.4cqw; top: 39.5cqw; width: 12.2cqw; --rot:  5deg; z-index: 5; }
+  .page--about .piece--cert   { left:  3.0cqw; top:  6.6cqw; width: 24.6cqw; --rot: -11deg;  z-index: 1; }
+  .page--about .piece--stage  { left: 21.9cqw; top:  3.4cqw; width: 51.0cqw; --rot:   6deg;  z-index: 2; }
+  .page--about .piece--rhythm { left: 54.9cqw; top:    0cqw; width: 21.8cqw; --rot:  -1deg;  z-index: 3; }
+  .page--about .piece--poster { left: 68.9cqw; top:  6.2cqw; width: 27.5cqw; --rot:  10deg;  z-index: 2; }
+  .page--about .piece--card   { left: 21.0cqw; top: 30.0cqw; width:  9.9cqw; --rot:   4deg;  z-index: 3; }
+  .page--about .piece--draw   { left: 36.2cqw; top: 18.3cqw; width: 38.6cqw; --rot: 2.5deg;  z-index: 4; }
 
   /* ---- the desktop furniture is gone ---- */
   .page--about .note    { display: none; }
