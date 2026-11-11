@@ -1155,11 +1155,19 @@ body.is-locked { overflow: hidden; }
   font-size: 1.5vh;  --nudge: 0;  z-index: 2;
 }
 
-/* ABOUT ANHAD — blue, bottom left, bleeding off the bottom */
+/* ABOUT ANHAD — blue, directly under HOME on the right edge.
+   HOME is 20vh tall from 0.8vh, so it ends at 20.8vh. --about-gap
+   is the air between them; raise it if the two circles kiss. */
 .page--tickets .bubble--about {
   --hue: var(--blue);
-  width: 17vh;  top: 85vh;  left: -1.5vh;  right: auto;
-  font-size: 1.7vh;  --nudge: 0.7vh;  z-index: 3;
+  --about-gap: 1.2vh;
+  width: 17vh;
+  top: calc(0.8vh + 20vh + var(--about-gap));   /* = 22vh */
+  right: -3.5vh;
+  left: auto;
+  font-size: 1.7vh;
+  --nudge: -1.8vh;   /* label centres in the visible crescent */
+  z-index: 2;
 }
 
 /* olive is light — ink label at full opacity so it stays legible */
@@ -2183,13 +2191,13 @@ body.is-locked { overflow: hidden; }
   --art-w:       48%;  /* photo column width                     */
 
   /* ---- vertical rhythm -------------------------------------- */
-  --g-title:   0.35em; /* title → meta line                      */
+  --g-title:   0.25em; /* title → meta line                      */
   --g-meta:    1.85em; /* meta line → first paragraph            */
-  --g-para:    1.45em; /* between paragraphs                     */
+  --g-para:    1.1em; /* between paragraphs                     */
   --g-wide:    2.4em;  /* two-column block → full-width block    */
-  --g-btn:     2.1em;  /* last paragraph → contribute button     */
+  --g-btn:     2.0em;  /* last paragraph → contribute button     */
   --g-back:    1.9em;  /* button → back links                    */
-  --lead:      1.55;
+  --lead:      1.4;
   /* ------------------------------------------------------------ */
 
   padding: var(--head-top) var(--pad) 6vh;
