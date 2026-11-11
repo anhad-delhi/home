@@ -287,18 +287,6 @@ body {
 }
 .note.is-on { opacity: 1; transform: translateY(-50%) scale(1); pointer-events: auto; }
 
-.note::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: 24px;
-  width: 18px;
-  height: 18px;
-  background: var(--note);
-  border-radius: 4px 0 0 0;
-  transform: rotate(-45deg);
-}
-
 .note__title { margin: 0 0 .7em;  font-size: 1rem;  font-weight: 500; line-height: 1.2; }
 .note__body  { margin: 0 0 2.2em; font-size: .9rem; line-height: 1.5; }
 .note__meta  { margin: 0;         font-size: .85rem; opacity: .85; }
