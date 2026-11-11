@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFFFFF">
+<title>Fundraiser — Anhad</title>
+<meta name="description" content="Help bring Anhad from an idea to a fully realised music and dance production.">
+
+<meta property="og:title" content="Fundraiser — Anhad">
+<meta property="og:description" content="Help us build the resources to take Anhad from an idea to a fully realised music and dance production.">
+<meta property="og:url" content="https://anhad-delhi.github.io/home/fundraiser.html">
+<meta property="og:image" content="https://anhad-delhi.github.io/home/assets/poster.png">
+<meta property="og:type" content="website">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@400;500&family=Alegreya+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page--fundraiser">
+
+  <main class="fund">
+
+    <!-- ===== top: text left, photo right ===== -->
+    <div class="fund__top">
+
+      <div class="fund__col">
+
+        <h1 class="fund__title">Fundraiser: Anhad</h1>
+
+        <p class="fund__meta">
+          <span>Kunzum Books GK II</span>
+          <span>7:30 PM Onwards</span>
+          <span>11 December 2026</span>
+        </p>
+
+        <p>Anhad brings together nine musicians and a dancer from very different worlds to explore these themes. In a 40-minute original set, a violist trained in the Carnatic classical tradition plays alongside two Hindustani-trained vocalists. A jazz drummer hits polyrhythmic beats with the tabla, while a Western Classical Cello ties the melody together. The guitar and bass weave acoustics and rhythm into the music, almost blurring the distinctions between songs.</p>
+
+        <p>At the centre of the show, a kathak dancer performs to the entire set, responding to each of the instruments, striking up conversations with the violin, the drums and the vocalists to create a seamless moment of simultaneous beginnings and endings. The music is as much a visual experience as a sonic one. Anhad strives to coalesce familiar textures like blues and rock riffs with Raags and Taal: an experimental blend of time and space, art and artist, performer and audience.</p>
+
+        <p>All Anhad team members are either in our final years of University or have freshly graduated. We are taking this leap largely independently, and are looking to build the resources necessary to take Anhad from an idea to a fully realised music and dance production. The <a href="setlist.html">set list</a> and <a href="members.html">introduction to all the performers</a> are up on our website.</p>
+
+      </div>
+
+      <div class="fund__col fund__col--art">
+        <img class="fund__photo" src="assets/stage.png"
+             alt="The Anhad company on stage at curtain call.">
+      </div>
+
+    </div>
+
+    <!-- ===== full width below ===== -->
+    <div class="fund__wide">
+
+      <p>We are looking to raise a total contribution of ₹20,000 that will be directed towards the foundational costs of bringing this production to life: renting recording and rehearsal spaces, hiring and accessing professional recording equipment, sound engineering, and other essential production expenses. If you would be willing to contribute any sum towards this endeavour, it would mean a great deal to all of us. If you know someone else who might connect with what we are trying to create, we would be very grateful if you could share our initiative with them.</p>
+
+      <p>We are also performing at Kunzum Bookstore, GK2 on Friday, 11th December, 2026, 7:30 PM onwards. The tickets for our first show are available on our website. Every contribution, big or small, will help us give this experiment space, resources and opportunity. We would love for you to be a part of Anhad's journey!</p>
+
+      <a class="contribute" href="https://rzp.io/rzp/anhad-donations"
+         target="_blank" rel="noopener noreferrer">Contribute</a>
+
+      <nav class="fund__back" aria-label="Elsewhere on this site">
+        <a href="index.html"><span aria-hidden="true">&larr;</span> back to home</a>
+        <a href="tickets.html"><span aria-hidden="true">&larr;</span> back to ticket counter</a>
+      </nav>
+
+    </div>
+
+  </main>
+
+  <!-- ===== mobile only: display:none above 860px ===== -->
+
+  <div class="scrim" hidden></div>
+
+  <button class="menu-btn" type="button"
+          aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-btn__bars" aria-hidden="true"></span>
+  </button>
+
+  <nav class="drawer" id="drawer" aria-label="Main">
+    <ul class="drawer__list">
+      <li><a class="drawer__link" href="index.html">Home</a></li>
+      <li><a class="drawer__link" href="about.html">About Anhad</a></li>
+      <li><a class="drawer__link" href="members.html">Members</a></li>
+      <li><a class="drawer__link" href="setlist.html">Set List</a></li>
+      <li><a class="drawer__link" href="tickets.html">Ticket Counter</a></li>
+      <li><a class="drawer__link" href="gallery.html">Gallery</a></li>
+      <li><a class="drawer__link" href="fundraiser.html" aria-current="page">Fundraiser</a></li>
+    </ul>
+  </nav>
+
+  <nav class="social" aria-label="Anhad on social media">
+    <a class="social__link" href="https://www.youtube.com/@anhad-production"
+       target="_blank" rel="noopener noreferrer">
+      <img src="assets/ytlogo.png" alt="Anhad on YouTube">
+    </a>
+    <a class="social__link" href="https://www.instagram.com/anhad.production"
+       target="_blank" rel="noopener noreferrer">
+      <img src="assets/iglogo.png" alt="Anhad on Instagram">
+    </a>
+  </nav>
+
+<script>
+(function () {
+  var btn    = document.querySelector('.menu-btn');
+  var drawer = document.getElementById('drawer');
+  var scrim  = document.querySelector('.scrim');
+  if (!btn || !drawer || !scrim) return;
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('#drawer a, .social a'));
+  var open  = false;
+
+  function setOpen(state) {
+    open = state;
+    btn.classList.toggle('is-open', state);
+    drawer.classList.toggle('is-open', state);
+    btn.setAttribute('aria-expanded', state ? 'true' : 'false');
+    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('is-locked', state);
+
+    if (state) {
+      scrim.hidden = false;
+      requestAnimationFrame(function () { scrim.classList.add('is-on'); });
+      links[0].focus();
+    } else {
+      scrim.classList.remove('is-on');
+      setTimeout(function () { if (!open) scrim.hidden = true; }, 400);
+    }
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!open);
+    if (!open) btn.focus();
+  });
+
+  scrim.addEventListener('click', function () { setOpen(false); btn.focus(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (!open) return;
+    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
+    if (e.key !== 'Tab') return;
+
+    var ring  = [btn].concat(links);
+    var first = ring[0];
+    var last  = ring[ring.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  var mq = window.matchMedia('(min-width: 861px)');
+  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(
+    function (ev) { if ((ev.matches !== undefined ? ev.matches : mq.matches) && open) setOpen(false); }
+  );
+})();
+</script>
+
+</body>
+</html>
