@@ -2094,3 +2094,262 @@ body.is-locked { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .social, .social__link { transition: none; }
 }
+
+
+/* ============================================================
+   FUNDRAISER PAGE
+   The one WHITE page. Everything the site assumes about
+   cream-on-dark has to be inverted here: text, focus rings,
+   the hamburger bars and the social logos.
+   ============================================================ */
+
+.page--fundraiser {
+  --ink-text: #171717;
+  --rule:     #D8D8D8;
+
+  position: relative;
+  min-height: 100vh;
+  margin: 0;
+  background: #FFFFFF;
+  color: var(--ink-text);
+  font-family: "Alegreya Sans", system-ui, sans-serif;
+}
+
+.fund {
+  container-type: inline-size;
+
+  /* ---- KNOBS ------------------------------------------------ */
+  --type:      0.76;   /* master type scale, matches other pages */
+  --pad:         4vw;  /* side margins, both sides               */
+  --head-top:  4.5vh;  /* space above the title                  */
+  --col-gap:   2.3cqw; /* channel between text and photo         */
+  --art-w:       48%;  /* photo column width                     */
+
+  /* ---- vertical rhythm -------------------------------------- */
+  --g-title:   0.35em; /* title → meta line                      */
+  --g-meta:    1.85em; /* meta line → first paragraph            */
+  --g-para:    1.45em; /* between paragraphs                     */
+  --g-wide:    2.4em;  /* two-column block → full-width block    */
+  --g-btn:     2.1em;  /* last paragraph → contribute button     */
+  --g-back:    1.9em;  /* button → back links                    */
+  --lead:      1.55;
+  /* ------------------------------------------------------------ */
+
+  padding: var(--head-top) var(--pad) 6vh;
+
+  /* one base size; everything below is em off this */
+  font-size: clamp(13px, 1.06cqw, 18px);
+  line-height: var(--lead);
+}
+
+/* ---- the two-column top ---- */
+.fund__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--art-w);
+  column-gap: var(--col-gap);
+  align-items: start;
+  margin-bottom: var(--g-wide);
+}
+.fund__col { min-width: 0; }
+
+.fund__title {
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: calc(2.75cqw * var(--type));
+  line-height: 1.1;
+  letter-spacing: 0.005em;
+  margin: 0 0 var(--g-title);
+}
+
+.fund__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25em 0.7em;
+  margin: 0 0 var(--g-meta);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.02em;
+  letter-spacing: 0.045em;
+  line-height: 1.3;
+}
+.fund__meta span + span::before {
+  content: "\00B7";
+  margin-right: 0.7em;
+  opacity: .55;
+}
+
+/* body copy, both columns */
+.fund p {
+  margin: 0 0 var(--g-para);
+  line-height: var(--lead);
+}
+.fund p:last-of-type { margin-bottom: 0; }
+
+.fund a:not(.contribute):not(.fund__back a) {
+  color: inherit;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+/* ---- the photo. height is natural: if stage.png is not
+        roughly 3:2 the two columns won't bottom-align the way
+        the mockup shows. Set --art-ratio to force a crop. ---- */
+.fund__photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* aspect-ratio: var(--art-ratio, auto); object-fit: cover; */
+}
+
+/* ---- the full-width block ---- */
+.fund__wide > p { margin-bottom: var(--g-para); }
+
+/* ---- the contribute button: outlined, not filled ---- */
+.contribute {
+  /* ---- KNOBS ---- */
+  --btn-h:    3.4em;   /* button height                */
+  --border:   1px;     /* outline weight               */
+  --press:    0.45;    /* opacity while held down      */
+  /* --------------- */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--btn-h);
+  margin: var(--g-btn) 0 0;
+  padding: 0 1.5em;
+  border: var(--border) solid var(--ink-text);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-text);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.32em;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--speed) var(--ease),
+              color            var(--speed) var(--ease),
+              opacity          var(--speed) var(--ease);
+}
+.contribute:hover,
+.contribute:focus-visible {
+  background: var(--ink-text);
+  color: #FFFFFF;
+}
+.contribute:active { opacity: var(--press); }
+.contribute:focus-visible { outline: 2px solid var(--ink-text); outline-offset: 4px; }
+
+/* ---- the two back links.
+        In flow, not fixed: this page scrolls, and fixed links
+        over white body copy collide as soon as it does. ---- */
+.fund__back {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  margin-top: var(--g-back);
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.02em;
+  letter-spacing: 0.04em;
+}
+.fund__back a {
+  align-self: flex-start;
+  color: var(--ink-text);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+.fund__back a:hover,
+.fund__back a:focus-visible { opacity: 1; transform: translateX(-3px); }
+.fund__back a:focus-visible { outline: 2px solid var(--ink-text); outline-offset: 4px; }
+
+/* ---- white-page corrections for shared furniture ---- */
+.page--fundraiser .social__link img { filter: brightness(0); opacity: .7; }
+.page--fundraiser .social__link:focus-visible { outline-color: var(--ink-text); }
+
+@media (hover: none) {
+  .contribute:hover { background: transparent; color: var(--ink-text); }
+  .fund__back a:hover { opacity: .6; transform: none; }
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 860px) {
+
+  .page--fundraiser {
+    /* ---- nav knobs — keep in sync with .page--landing --------- */
+    --panel:    max(50.6vw, 188px);
+    --veil:     0.94;   /* ↑ from 0.86: the page behind is white  */
+    --edge-x:   4.1vw;
+    --panel-x:  5vw;
+    --edge-y:   3.1vh;
+    --bar-w:    22px;
+    --bar-h:    2px;
+    --bar-gap:  6px;
+    --nav-top:  7.6vh;
+    --link:     clamp(16px, 5vw, 22px);
+    --row:      1.72;
+  }
+
+  .fund {
+    /* ---- page knobs ------------------------------------------- */
+    --pad:       8vw;
+    --head-top:  5.2vh;
+    --g-meta:    1.6em;
+    --g-wide:    1.5em;   /* no photo now — the two blocks are
+                             just more paragraphs, so the seam
+                             between them should not announce
+                             itself. Raise to separate them.    */
+    --g-para:    1.3em;
+    --g-btn:     2em;
+    --g-back:    1.7em;
+    --lead:      1.5;
+    /* ------------------------------------------------------------ */
+
+    padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
+             var(--pad)
+             calc(12vh + env(safe-area-inset-bottom, 0px));
+    font-size: clamp(15px, 4.1vw, 18px);
+  }
+
+  /* one column */
+  .page--fundraiser .fund__top { display: block; }
+
+  /* ---- no photo on phones ---- */
+  .page--fundraiser .fund__col--art { display: none; }
+
+  .page--fundraiser .fund__title {
+    font-size: clamp(28px, 8.6vw, 42px);
+  }
+  .page--fundraiser .fund__meta {
+    font-size: clamp(12px, 3.6vw, 15px);
+  }
+
+  .page--fundraiser .contribute {
+    min-height: 48px;      /* tap-target floor */
+    font-size: clamp(15px, 4.4vw, 19px);
+  }
+
+  /* ---- hamburger: this page is WHITE, same problem the setlist
+          page has. Ink while closed, cream over the maroon panel. */
+  .page--fundraiser .menu-btn__bars,
+  .page--fundraiser .menu-btn__bars::before,
+  .page--fundraiser .menu-btn__bars::after {
+    background: var(--ink-text);
+  }
+  .page--fundraiser .menu-btn.is-open .menu-btn__bars,
+  .page--fundraiser .menu-btn.is-open .menu-btn__bars::before,
+  .page--fundraiser .menu-btn.is-open .menu-btn__bars::after {
+    background: var(--cream);
+  }
+  .page--fundraiser .menu-btn:focus-visible { outline-color: var(--ink-text); }
+  .page--fundraiser .menu-btn.is-open:focus-visible { outline-color: var(--cream); }
+
+  /* the drawer panel is maroon — logos go back to white there */
+  .page--fundraiser .social__link img { filter: none; opacity: var(--dim); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contribute, .fund__back a { transition: none; }
+}
