@@ -980,11 +980,14 @@ body.is-locked { overflow: hidden; }
   /* ---- KNOBS ---- */
   --rule-gap: 1.5em;   /* above AND below the hairline  */
   --btn-gap:  1.3em;   /* above the purchase button     */
+  --rule-w:   100%;    /* where the hairline ends       */
+  --btn-w:    78%;     /* where the button ends         */
   /* --------------- */
   margin-top: var(--rule-gap);
   padding-top: var(--rule-gap);
   border-top: 1px solid var(--line);
-  max-width: 34em;
+  max-width: none;     /* the two knobs above decide width now */
+  width: var(--rule-w);
 }
 
 .order__row {
@@ -1009,48 +1012,32 @@ body.is-locked { overflow: hidden; }
   color: var(--orange);
 }
 
-/* ---- the purchase button: flat, dims on press -------------- */
-.buy {
+/* ---- the order block ---- */
+.order {
   /* ---- KNOBS ---- */
-  --btn-h:    52px;   /* button height                      */
-  --press:    0.55;   /* opacity while held down            */
-  --hover:    0.86;   /* opacity on hover                   */
+  --rule-gap: 1.5em;   /* above AND below the hairline  */
+  --btn-gap:  1.3em;   /* above the purchase button     */
+  --rule-w:   100%;    /* where the hairline ends       */
+  --btn-w:    78%;     /* where the button ends         */
   /* --------------- */
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-  width: 100%;
-  min-height: var(--btn-h);
-  margin: var(--btn-gap) 0 0;
-  padding: 0 1.9em;
-  border: 0;
-  border-radius: 999px;
-  background: rgb(var(--maroon));
-  color: var(--cream);
-  font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.22em;
-  letter-spacing: 0.07em;
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  transition: opacity var(--speed) var(--ease);
+  margin-top: var(--rule-gap);
+  padding-top: var(--rule-gap);
+  border-top: 1px solid var(--line);
+  max-width: none;     /* the two knobs above decide width now */
+  width: var(--rule-w);
 }
-.buy__total { font-variant-numeric: tabular-nums; }
-
-.buy:hover,
-.buy:focus-visible { opacity: var(--hover); }
-.buy:active        { opacity: var(--press); }
-.buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 
 /* the processor note sits with the button it describes */
 .pay-note {
-  max-width: 34em;
-  margin: .7em 0 0;
-  font-size: .86em;
+  /* ---- KNOBS ---- */
+  --note-w: 100%;   /* raise if it still wraps */
+  /* --------------- */
+  width: var(--note-w);
+  max-width: none;
+  margin: .9em 0 0;
+  font-size: .95em;     /* was .86em */
   line-height: 1.4;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.01em;
   color: var(--muted);
 }
 
