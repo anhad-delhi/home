@@ -866,14 +866,14 @@ body.is-locked { overflow: hidden; }
   --pad-r:      5.5vw; /* RIGHT margin                            */
   --head-top:   11vh;  /* space above the title                   */
   --col-gap:      4vw; /* channel between text and poster         */
-  --art-w:        33%; /* poster column width — was 42%           */
+  --art-w:        33%; /* poster column width                     */
 
-  /* ---- vertical rhythm — ALL TIGHTENED. raise to loosen ----- */
+  /* ---- vertical rhythm — raise any to loosen ---------------- */
   --after-title: 0.85em;
   --after-meta:  1.25em;
   --after-blurb: 1.5em;
   --after-det:   1.4em;
-  --lead:        1.38;   /* was 1.5 */
+  --lead:        1.38;
   /* ------------------------------------------------------------ */
 
   min-height: 100vh;
@@ -887,10 +887,10 @@ body.is-locked { overflow: hidden; }
   column-gap: var(--col-gap);
   align-items: start;
 
-  /* cqw, not vw: the left column now scales with the page the way
-     the title does, so the proportions hold at any window width.
-     The px bounds stop it collapsing on a laptop or ballooning on
-     an external monitor. */
+  /* cqw, not vw: the left column scales with the page the way the
+     title does, so the proportions hold at any window width. The
+     px bounds stop it collapsing on a laptop or ballooning on an
+     external monitor. */
   font-size: clamp(14px, 1.28cqw, 21px);
   line-height: var(--lead);
 }
@@ -950,7 +950,7 @@ body.is-locked { overflow: hidden; }
   /* ---- KNOBS ---- */
   --bullet:  3px;     /* dot diameter                 */
   --hang:    1.05em;  /* hanging indent               */
-  --det-gap: .18em;   /* between rows — was .42em     */
+  --det-gap: .18em;   /* between rows                 */
   /* --------------- */
   margin: 0;
   padding: 0;
@@ -1054,11 +1054,53 @@ body.is-locked { overflow: hidden; }
   width: var(--note-w);
   max-width: none;
   margin: .9em 0 0;
-  font-size: .95em;     /* was .86em */
+  font-size: .95em;
   line-height: 1.4;
   letter-spacing: 0.01em;
   color: var(--muted);
 }
+
+/* ---- the contribute nudge -----------------------------------
+   Sits under the purchase button because that is where the two
+   decisions live: just didn't buy, or just did and feels warm.
+   The left rule in the olive-gold ties it to the meta line and
+   EVENT DETAILS, so it reads as part of the page rather than
+   a banner bolted on. ---- */
+.nudge {
+  /* ---- KNOBS ---- */
+  --nudge-gap:  1.9em;   /* space above the whole block    */
+  --bar:        2px;     /* left rule weight. 0 removes it */
+  --bar-pad:    1.15em;  /* rule → text                    */
+  /* --------------- */
+
+  width: var(--btn-w);
+  margin: var(--nudge-gap) 0 0;
+  padding-left: var(--bar-pad);
+  border-left: var(--bar) solid var(--gold);
+}
+
+.nudge__text {
+  margin: 0 0 .5em;
+  max-width: 32em;
+  font-size: .98em;
+  line-height: 1.45;
+  color: #C9C9C9;
+}
+
+.nudge__link {
+  display: inline-block;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.08em;
+  letter-spacing: 0.05em;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 220ms var(--ease), transform 220ms var(--ease);
+}
+.nudge__link span { display: inline-block; margin-left: .35em; }
+
+.nudge__link:hover,
+.nudge__link:focus-visible { opacity: .78; transform: translateX(3px); }
+.nudge__link:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
 
 /* ---- the poster ---- */
 .tickets__col--art {
@@ -1077,13 +1119,14 @@ body.is-locked { overflow: hidden; }
   display: block;
 }
 
-
-
 @media (hover: none) {
   .buy:hover { opacity: 1; }
+  .nudge__link:hover { opacity: 1; transform: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .buy { transition: none; }
+  .nudge__link { transition: none; }
+  .nudge__link:hover { transform: none; }
 }
 
 
@@ -1130,6 +1173,7 @@ body.is-locked { overflow: hidden; }
   transform: translate(var(--nudge, 0), var(--lift, -0.12em));
 }
 
+
 /* ============================================================
    TICKETS — MOBILE
    One column, no poster, drawer nav.
@@ -1167,7 +1211,7 @@ body.is-locked { overflow: hidden; }
     --t-body:    clamp(15px,  4.1vw, 18px);  /* blurb + bullets     */
     --t-label:   clamp(12px,  3.6vw, 15px);  /* EVENT DETAILS       */
     --t-tier:    clamp(16px,  4.9vw, 21px);  /* GA + ₹499           */
-    --note-size: 12px;    /* see the note above — mockup is ~7px    */
+    --note-size: 12px;    /* the razorpay line                      */
 
     /* ---- vertical rhythm, in px off the mockup ----------------- */
     --g-title:   43px;    /* title → gold line                      */
@@ -1205,17 +1249,13 @@ body.is-locked { overflow: hidden; }
     margin: 0 0 var(--g-title);
   }
 
-  /* ---- the gold line: venue drops out, it's in Event Details.
-          Hiding the span leaves the next one with a stray leading
-          dot, so that ::before goes too. ---- */
+  /* ---- the gold line: all three items show ---- */
   .page--tickets .tickets__meta {
     font-size: var(--t-meta);
     line-height: 1.3;
     gap: 0.25em 0.65em;
     margin: 0 0 var(--g-meta);
   }
-  .page--tickets .tickets__meta span:first-child { display: none; }
-  .page--tickets .tickets__meta span:nth-child(2)::before { content: none; }
 
   /* ---- blurb ---- */
   .page--tickets .tickets__blurb {
@@ -1275,6 +1315,21 @@ body.is-locked { overflow: hidden; }
     font-size: var(--note-size);
     line-height: 1.4;
     margin-top: var(--g-note);
+  }
+
+  /* ---- the contribute nudge ---- */
+  .page--tickets .nudge {
+    --nudge-gap: 34px;
+    --bar-pad:   0.95em;
+    width: 100%;
+  }
+  .page--tickets .nudge__text {
+    font-size: clamp(13px, 3.7vw, 16px);
+    max-width: none;
+  }
+  .page--tickets .nudge__link {
+    font-size: clamp(14px, 4vw, 17px);
+    padding: 6px 0;      /* tap target — a text link is ~17px tall */
   }
 
   /* ---- the desktop furniture is gone ---- */
