@@ -1527,7 +1527,7 @@ body.is-locked { overflow: hidden; }
     --links-size: clamp(14px, 4.1vw, 19px);
     --links-gap:  10vw;   /* space above the two gold links        */
     --pile-gap:   9vw;    /* space above the pile                  */
-    --pile-h:     55vw;   /* pile height — it clips at this line   */
+    --pile-h:     58vw;   /* pile height — it clips at this line   */
     /* ------------------------------------------------------------ */
 
     /* the page scrolls now, so it must NOT be a containment root:
