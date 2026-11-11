@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#171717">
 <title>Ticket Counter — Anhad</title>
-<meta name="description" content="Book tickets for Anhad — 11 December 2026, Kunzum Books, GK II, New Delhi.">
+<meta name="description" content="Tickets for Anhad: An Experiment in Music &amp; Dance — 11 December 2026, Kunzum Books, GK II, New Delhi.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,88 +17,90 @@
 
   <main class="tickets">
 
-    <header class="tickets__head">
-      <h1 class="tickets__title">Ticket Counter</h1>
-      <p class="tickets__meta">
-        <span>Kunzum Books, GK&nbsp;II</span>
-        <span>New Delhi</span>
-        <span>11 December</span>
-      </p>
-    </header>
+    <div class="tickets__grid">
 
-    <form class="checkout" id="checkout">
+      <!-- ================= LEFT: the event ================= -->
+      <div class="tickets__col">
 
-      <!-- ================= LEFT: the order ================= -->
-      <div class="checkout__col">
+        <h1 class="tickets__title">Anhad: An Experiment<br>in Music &amp; Dance</h1>
 
-        <section class="tier">
-          <div>
-            <h2 class="tier__name">General Admission</h2>
-            <p class="tier__note">UNRESERVED SEATING &middot; 7:30&nbsp;PM ONWARDS</p>
-          </div>
-          <p class="tier__price" id="tier-price">&mdash;</p>
+        <p class="tickets__meta">
+          <span>Kunzum Books GK II</span>
+          <span>7:30 PM Onwards</span>
+          <span>11 December 2026</span>
+        </p>
+
+        <p class="tickets__blurb">Anhad strives to coalesce familiar textures like blues and rock riffs with Raags and Taal: an experimental blend of time, space, art, artist, &amp; performer and audience. The track list contains all original music, composed by our artists.</p>
+
+        <section class="details">
+          <h2 class="details__title">Event Details</h2>
+          <ul class="details__list">
+            <li>11th December, 2026</li>
+            <li>7:30 PM onwards</li>
+            <li>Kunzum Books, Greater Kailash II, New Delhi</li>
+          </ul>
         </section>
 
-        <section class="qty">
-          <label class="qty__label" for="qty-input">Tickets</label>
-          <div class="qty__control">
-            <button class="qty__btn" type="button" data-step="-1" aria-label="One fewer ticket">&minus;</button>
-            <input class="qty__input" id="qty-input" type="number" inputmode="numeric"
-                   value="1" min="1" max="10" step="1">
-            <button class="qty__btn" type="button" data-step="1" aria-label="One more ticket">&plus;</button>
+        <section class="order">
+          <h2 class="order__label">Tickets</h2>
+          <div class="order__row">
+            <p class="order__tier">General Admission</p>
+            <p class="order__price">&#8377;499</p>
           </div>
-          <p class="qty__cap">Maximum 10 per booking.</p>
-        </section>
 
-        <section class="summary">
-          <dl class="summary__list">
-            <div class="summary__row">
-              <dt id="sum-label">&mdash;</dt>
-              <dd id="sum-sub">&mdash;</dd>
-            </div>
-            <div class="summary__row">
-              <dt>Booking fee</dt>
-              <dd id="sum-fee">&mdash;</dd>
-            </div>
-            <div class="summary__row summary__row--total">
-              <dt>Total</dt>
-              <dd id="sum-total" aria-live="polite">&mdash;</dd>
-            </div>
-          </dl>
+          <!-- POLICIES GO HERE if Razorpay's page doesn't carry them.
+               The old .policies CSS is still in the stylesheet:
+               <section class="policies">
+                 <h2 class="policies__title">Before you book</h2>
+                 <ul class="policies__list"> … </ul>
+               </section>                                           -->
+
+          <a class="buy" href="https://pages.razorpay.com/anhad-ticket"
+             target="_blank" rel="noopener noreferrer">
+            <span class="buy__label">Purchase</span>
+            <span class="buy__total">&#8377;499</span>
+          </a>
+          <p class="pay-note">Payments are handled by Razorpay. You'll be taken to a secure checkout page.</p>
         </section>
 
       </div>
 
-      <!-- ============ RIGHT: terms and payment ============ -->
-      <div class="checkout__col">
+      <!-- ================= RIGHT: the poster ================= -->
+      <div class="tickets__col tickets__col--art">
+        <img class="tickets__poster" src="assets/about-poster.jpg"
+             alt="Anhad poster: musicians and a dancer inside an illustrated house.">
+      </div>
 
-        <!-- ---- policies — DRAFT, needs team sign-off ---- -->
-        <section class="policies">
-          <h2 class="policies__title">Before you book</h2>
-          <ul class="policies__list">
-            <li>Tickets are non-refundable and cannot be exchanged once purchased. If the performance is cancelled or rescheduled by the organisers, you will be offered a seat at the new date or a full refund.</li>
-            <li>Right of admission reserved. The organisers may refuse or revoke entry at their discretion.</li>
-            <li>Tickets are transferable, but only one person may be admitted per ticket.</li>
-            <li>Carry a valid photo ID and your booking confirmation to the venue.</li>
-            <li>Latecomers will be seated at a suitable break in the set, at the usher's discretion.</li>
-            <li>Attendees under 12 are admitted free but must be accompanied by a ticket-holding adult.</li>
-          </ul>
-        </section>
+    </div>
 
-        <label class="agree">
-          <input class="agree__box" type="checkbox" id="agree" required>
-          <span>I have read and accept the
+  </main>
+
+  <nav class="bubbles" aria-label="Site">
+    <a class="bubble bubble--home"    href="index.html"><span>home</span></a>
+    <a class="bubble bubble--gallery" href="gallery.html"><span>gallery</span></a>
+    <a class="bubble bubble--about"   href="about.html"><span>about<br>anhad</span></a>
+  </nav>
+
+  <!-- ===== mobile only: display:none above 860px ===== -->
+
+  <div class="scrim" hidden></div>
+
+  <button class="menu-btn" type="button"
+          aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+    <span class="menu-btn__bars" aria-hidden="true"></span>
+  </button>
+
   <nav class="drawer" id="drawer" aria-label="Main">
     <ul class="drawer__list">
       <li><a class="drawer__link" href="index.html">Home</a></li>
       <li><a class="drawer__link" href="about.html">About Anhad</a></li>
       <li><a class="drawer__link" href="members.html">Members</a></li>
       <li><a class="drawer__link" href="setlist.html">Set List</a></li>
-      <li><a class="drawer__link" href="tickets.html">Ticket Counter</a></li>
+      <li><a class="drawer__link" href="tickets.html" aria-current="page">Ticket Counter</a></li>
       <li><a class="drawer__link" href="gallery.html">Gallery</a></li>
     </ul>
   </nav>
-  
+
   <nav class="social" aria-label="Anhad on social media">
     <a class="social__link" href="https://www.youtube.com/@anhad-production"
        target="_blank" rel="noopener noreferrer">
@@ -109,3 +111,61 @@
       <img src="assets/iglogo.png" alt="Anhad on Instagram">
     </a>
   </nav>
+
+<script>
+(function () {
+  var btn    = document.querySelector('.menu-btn');
+  var drawer = document.getElementById('drawer');
+  var scrim  = document.querySelector('.scrim');
+  if (!btn || !drawer || !scrim) return;
+
+  var links = Array.prototype.slice.call(document.querySelectorAll('#drawer a, .social a'));
+  var open  = false;
+
+  function setOpen(state) {
+    open = state;
+    btn.classList.toggle('is-open', state);
+    drawer.classList.toggle('is-open', state);
+    btn.setAttribute('aria-expanded', state ? 'true' : 'false');
+    btn.setAttribute('aria-label', state ? 'Close menu' : 'Open menu');
+    document.body.classList.toggle('is-locked', state);
+
+    if (state) {
+      scrim.hidden = false;
+      requestAnimationFrame(function () { scrim.classList.add('is-on'); });
+      links[0].focus();
+    } else {
+      scrim.classList.remove('is-on');
+      setTimeout(function () { if (!open) scrim.hidden = true; }, 400);
+    }
+  }
+
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!open);
+    if (!open) btn.focus();
+  });
+
+  scrim.addEventListener('click', function () { setOpen(false); btn.focus(); });
+
+  document.addEventListener('keydown', function (e) {
+    if (!open) return;
+    if (e.key === 'Escape') { setOpen(false); btn.focus(); return; }
+    if (e.key !== 'Tab') return;
+
+    var ring  = [btn].concat(links);
+    var first = ring[0];
+    var last  = ring[ring.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  var mq = window.matchMedia('(min-width: 861px)');
+  (mq.addEventListener ? mq.addEventListener.bind(mq, 'change') : mq.addListener.bind(mq))(
+    function (ev) { if ((ev.matches !== undefined ? ev.matches : mq.matches) && open) setOpen(false); }
+  );
+})();
+</script>
+
+</body>
+</html>
