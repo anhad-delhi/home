@@ -1057,7 +1057,7 @@ body.is-locked { overflow: hidden; }
 /* ---- the poster ---- */
 .tickets__col--art {
   /* ---- KNOBS ---- */
-  --frame:     1px;     /* hairline border width — 0 removes it   */
+  --frame:     0px;     /* hairline border width — 0 removes it   */
   --frame-pad: 0.55vw;  /* mat between border and image           */
   --art-top:   2.5vh;   /* nudge the whole frame down             */
   /* --------------- */
