@@ -1818,6 +1818,105 @@ body.is-locked { overflow: hidden; }
     height: var(--track);
     margin: 0 calc(var(--gap) * 0.6);
   }
+
+/* ============================================================
+   SOCIAL — YOUTUBE + INSTAGRAM
+   Desktop: fixed bottom-right, every page except the landing.
+   Mobile:  rides in with the drawer, pinned to its bottom edge.
+   ============================================================ */
+
+.social {
+  /* ---- DESKTOP KNOBS ----------------------------------------- */
+  --icon:   3.4vh;   /* logo size                                 */
+  --gap:    2.2vh;   /* space between the two                     */
+  --right:  2.6vw;   /* inset from the right edge                 */
+  --bottom: 4.2vh;   /* inset from the bottom edge                */
+  --dim:    0.78;    /* resting opacity                           */
+  /* ------------------------------------------------------------ */
+
+  position: fixed;
+  z-index: 71;              /* above .bubbles (70), below .lightbox (90) */
+  right:  var(--right);
+  bottom: var(--bottom);
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+}
+
+.social__link {
+  display: block;
+  line-height: 0;
+  opacity: var(--dim);
+  transition: opacity   var(--speed) var(--ease),
+              transform var(--speed) var(--ease);
+}
+.social__link:hover,
+.social__link:focus-visible { opacity: 1; transform: translateY(-2px); }
+.social__link:focus-visible { outline: 2px solid var(--cream); outline-offset: 6px; }
+
+.social__link img {
+  width:  var(--icon);
+  height: var(--icon);
+  object-fit: contain;
+  display: block;
+}
+
+/* the landing page keeps its orbs and nothing else */
+.page--landing .social { display: none; }
+
+/* setlist is the one PAPER page — white logos vanish on it.
+   brightness(0) blacks them out while keeping the alpha.
+   DELETE this rule if your PNGs are already dark. */
+.page--setlist .social__link img { filter: brightness(0); opacity: .75; }
+
+@media (hover: none) {
+  .social__link:hover { opacity: var(--dim); transform: none; }
+}
+
+
+/* ---------- MOBILE: inside the drawer ---------- */
+@media (max-width: 860px) {
+
+  .social {
+    /* ---- MOBILE KNOBS ------------------------------------------ */
+    --icon:   26px;    /* logo size inside the panel                */
+    --gap:    18px;    /* space between the two                     */
+    --right:  7vw;     /* inset from the screen's right edge        */
+    --bottom: 3.4vh;   /* inset from the bottom of the panel        */
+    /* ------------------------------------------------------------ */
+
+    z-index: 55;       /* above the drawer (50), below the button (60) */
+    right:  var(--right);
+    bottom: calc(var(--bottom) + env(safe-area-inset-bottom, 0px));
+    visibility: hidden;
+    transform: translateX(var(--panel));
+    transition: transform  var(--speed) var(--ease),
+                visibility 0s linear var(--speed);
+  }
+
+  /* the drawer is this nav's previous sibling, so its open state can
+     drive both with no change to the five copies of the nav script.
+     --panel is declared on the body, so it inherits down here. */
+  .drawer.is-open ~ .social {
+    visibility: visible;
+    transform: translateX(0);
+    transition: transform var(--speed) var(--ease), visibility 0s;
+  }
+
+  /* hidden on desktop, back on a phone — the landing page has the
+     same drawer as everything else */
+  .page--landing .social { display: flex; }
+
+  /* the panel is maroon on every page, setlist included */
+  .page--setlist .social__link img { filter: none; opacity: var(--dim); }
+
+  /* a long list must not scroll under the logos */
+  .drawer__list { padding-bottom: calc(14vh + env(safe-area-inset-bottom, 0px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .social, .social__link { transition: none; }
+}
   .page--setlist .track__dots,
   .page--setlist .track__rule {
     background-size: var(--dot) var(--dot);
