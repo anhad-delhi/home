@@ -967,7 +967,7 @@ body.is-locked { overflow: hidden; }
   content: "";
   position: absolute;
   left: 0;
-  top: .62em;
+  top: .66em;
   width:  var(--bullet);
   height: var(--bullet);
   border-radius: 50%;
@@ -1101,6 +1101,13 @@ body.is-locked { overflow: hidden; }
 /* olive is light — ink label at full opacity so it stays legible */
 .page--tickets .bubble--gallery:hover,
 .page--tickets .bubble--gallery:focus-visible { color: var(--ink); }
+
+/* Alegreya SC's line box is taller than its caps, so grid centring
+   leaves short labels sitting low. --lift raises the glyphs to the
+   optical centre. Positive = up. */
+.page--tickets .bubble span {
+  transform: translate(var(--nudge, 0), var(--lift, -0.12em));
+}
 
 /* ============================================================
    TICKETS — MOBILE
