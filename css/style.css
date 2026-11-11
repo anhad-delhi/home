@@ -844,7 +844,8 @@ body.is-locked { overflow: hidden; }
 
 .page--tickets {
   --paper: #F7F7F7;
-  --gold:  #F49528;
+  --gold:  #D4A53D;   /* the olive-gold of the meta line */
+  --orange:#F49528;   /* the price */
   --line:  #343434;
   --muted: #9C9C9C;
 
@@ -860,285 +861,267 @@ body.is-locked { overflow: hidden; }
   container-type: inline-size;
 
   /* ---- KNOBS ------------------------------------------------ */
-  --type:       0.76;  /* type scale, matches the other pages     */
+  --type:       0.76;  /* master type scale, matches other pages  */
   --pad:        5.5vw; /* LEFT margin                             */
-  --pad-r:        9vw; /* RIGHT margin — wider, clears HOME bubble */
-  --head-top:     6vh; /* space above the title                   */
-  --col-gap:    5.9vw; /* channel between the two columns         */
-  --cols-top:   4.2vh; /* space below the meta line               */
+  --pad-r:        9vw; /* RIGHT margin — clears HOME + the logos  */
+  --head-top:     9vh; /* space above the title                   */
+  --col-gap:      5vw; /* channel between text and poster         */
+  --art-w:        42%; /* poster column width                     */
 
   /* ---- vertical rhythm — raise any of these to loosen ------- */
-  --sec:        1.15em; /* padding inside a bordered section      */
-  --row:        0.5em;  /* between summary rows                   */
-  --btn-gap:    1.05em; /* above each button                      */
-  --lead:       1.45;   /* body line-height                       */
+  --after-title: 1.1em;
+  --after-meta:  1.9em;
+  --after-blurb: 2.3em;
+  --after-det:   2.1em;
+  --lead:        1.5;
   /* ------------------------------------------------------------ */
 
   min-height: 100vh;
-  padding: var(--head-top) var(--pad-r) 8vh var(--pad);
+  padding: var(--head-top) var(--pad-r) 10vh var(--pad);
 }
 
+/* ---- two columns: event left, poster right ---- */
+.tickets__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--art-w);
+  column-gap: var(--col-gap);
+  align-items: start;
+  font-size: clamp(14px, 1.15vw, 17px);   /* everything below is em */
+  line-height: var(--lead);
+}
+.tickets__col { min-width: 0; }
+
+/* ---- the title ---- */
 .tickets__title {
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: calc(5cqw * var(--type));
-  line-height: 1;
-  letter-spacing: 0.02em;
-  margin: 0;
+  font-size: calc(3.4cqw * var(--type));
+  line-height: 1.12;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+  margin: 0 0 var(--after-title);
 }
 
+/* ---- the gold meta line ---- */
 .tickets__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.3em 0.9em;
-  margin: 0.85em 0 0;
-  font-size: calc(1.25cqw * var(--type));
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.tickets__meta span + span::before { content: "\00B7"; margin-right: 0.9em; opacity: .55; }
-
-/* ---- two columns: order left, terms + pay right ---- */
-.checkout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  column-gap: var(--col-gap);
-  align-items: start;
-  margin: var(--cols-top) 0 0;
-  font-size: clamp(14px, 1.15vw, 17px);  /* everything below is em */
-  line-height: var(--lead);
-}
-.checkout__col { min-width: 0; }
-
-/* ---- the tier ---- */
-.tier {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 2em;
-  padding-bottom: var(--sec);
-  border-bottom: 1px solid var(--line);
-}
-.tier__name {
-  margin: 0;
+  align-items: baseline;
+  gap: 0.3em 0.75em;
+  margin: 0 0 var(--after-meta);
   font-family: "Alegreya SC", Georgia, serif;
-  font-weight: 400;
-  font-size: 1.35em;
-  letter-spacing: 0.04em;
-}
-.tier__note {
-  margin: .4em 0 0;
-  font-size: .85em;
-  letter-spacing: 0.02em;
-  color: var(--muted);
-}
-.tier__price {
-  flex: none;
-  margin: 0;
-  font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.35em;
-  font-variant-numeric: tabular-nums;
+  font-size: 1.05em;
+  letter-spacing: 0.055em;
   color: var(--gold);
 }
-
-/* ---- quantity ---- */
-.qty {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: .55em;
-  padding: var(--sec) 0;
-  border-bottom: 1px solid var(--line);
-}
-.qty__label {
-  font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.1em;
-  letter-spacing: 0.06em;
-}
-.qty__control {
-  display: flex;
-  align-items: stretch;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.qty__btn {
-  width: 2.7em;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--paper);
-  font: inherit;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color var(--speed) var(--ease), opacity var(--speed) var(--ease);
-}
-.qty__btn:hover:not(:disabled) { background: rgb(var(--olive) / .35); }
-.qty__btn:disabled { opacity: .28; cursor: not-allowed; }
-.qty__btn:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
-
-.qty__input {
-  width: 3.4em;
-  padding: .65em 0;
-  border: 0;
-  border-left:  1px solid var(--line);
-  border-right: 1px solid var(--line);
-  background: none;
-  color: var(--paper);
-  font: inherit;
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-  -moz-appearance: textfield;
-}
-.qty__input::-webkit-outer-spin-button,
-.qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.qty__input:focus-visible { outline: 2px solid var(--paper); outline-offset: -4px; }
-
-.qty__cap {
-  flex-basis: 100%;
-  margin: .15em 0 0;
-  font-size: .82em;
-  color: var(--muted);
+.tickets__meta span + span::before {
+  content: "\00B7";
+  margin-right: 0.75em;
+  opacity: .7;
 }
 
-/* ---- summary ---- */
-.summary { padding: var(--sec) 0 0; }
-.summary__list { margin: 0; }
-.summary__row {
-  display: flex;
-  justify-content: space-between;
-  gap: 2em;
-  margin: 0 0 var(--row);
+/* ---- the blurb ---- */
+.tickets__blurb {
+  margin: 0 0 var(--after-blurb);
+  max-width: 34em;
+  font-size: 1.08em;
+  line-height: var(--lead);
 }
-.summary__row dt, .summary__row dd { margin: 0; }
-.summary__row dd { font-variant-numeric: tabular-nums; }
-.summary__row--total {
-  margin: .9em 0 0;
-  padding-top: .9em;
-  border-top: 1px solid var(--line);
-  font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.25em;
-  letter-spacing: 0.04em;
-}
-.summary__row--total dd { color: var(--gold); }
 
-/* ---- policies ---- */
-.policies {
-  /* ---- KNOBS ---- */
-  --policy-align: left;   /* ← `justify` if you want a hard right edge.
-                               At this column width it will open rivers. */
-  --bullet:       4px;    /* dot diameter                              */
-  --hang:         1.15em; /* hanging indent — wrapped lines align here  */
-  --policy-gap:   .62em;  /* between bullets                           */
-  /* --------------- */
-  padding: 0;
-}
-.policies__title {
+/* ---- event details ---- */
+.details { margin: 0 0 var(--after-det); }
+
+.details__title {
   margin: 0 0 .85em;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
   font-size: 1em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #C9C9C9;
+  letter-spacing: 0.085em;
+  color: var(--gold);
 }
 
-/* list-style is dropped so the bullet can be positioned precisely and
-   wrapped lines hang to a clean left edge instead of running under it */
-.policies__list {
+.details__list {
+  /* ---- KNOBS ---- */
+  --bullet: 3px;      /* dot diameter                 */
+  --hang:   1.1em;    /* hanging indent               */
+  --det-gap: .42em;   /* between rows                 */
+  /* --------------- */
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: .88em;
-  line-height: 1.5;
-  color: #CFCFCF;
+  font-size: 1.02em;
 }
-.policies__list li {
+.details__list li {
   position: relative;
-  margin: 0 0 var(--policy-gap);
+  margin: 0 0 var(--det-gap);
   padding-left: var(--hang);
-  text-align: var(--policy-align);
-  text-justify: inter-word;
-  -webkit-hyphens: auto;
-          hyphens: auto;
 }
-.policies__list li::before {
+.details__list li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: .58em;
-  width: var(--bullet);
+  top: .62em;
+  width:  var(--bullet);
   height: var(--bullet);
   border-radius: 50%;
-  background: var(--gold);
+  background: var(--paper);
+  opacity: .75;
 }
 
-/* ---- consent ---- */
-.agree {
-  display: flex;
-  align-items: flex-start;
-  gap: .65em;
-  margin: 1.25em 0 0;
-  font-size: .9em;
-  cursor: pointer;
-}
-.agree__box {
-  flex: none;
-  width: 1.1em;
-  height: 1.1em;
-  margin: .22em 0 0;
-  accent-color: rgb(var(--maroon));
-  cursor: pointer;
+/* ---- the order block ---- */
+.order {
+  /* ---- KNOBS ---- */
+  --rule-gap: 2.1em;   /* above the hairline            */
+  --btn-gap:  1.8em;   /* above the purchase button     */
+  /* --------------- */
+  margin-top: var(--rule-gap);
+  padding-top: var(--rule-gap);
+  border-top: 1px solid var(--line);
+  max-width: 34em;
 }
 
-/* ---- buttons ---- */
-.buy {
+.order__label {
+  margin: 0 0 .7em;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-weight: 400;
+  font-size: 1.5em;
+  letter-spacing: 0.03em;
+}
+
+.order__row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
+  gap: 2em;
+}
+.order__tier {
+  margin: 0;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.5em;
+  letter-spacing: 0.03em;
+}
+.order__price {
+  margin: 0;
+  font-family: "Alegreya SC", Georgia, serif;
+  font-size: 1.5em;
+  font-variant-numeric: tabular-nums;
+  color: var(--orange);
+}
+
+/* ---- the purchase button: a true cylinder ------------------
+   border-radius: 999px alone gives a flat pill. The cylinder
+   comes from a vertical light gradient (top lit, bottom in
+   shadow) plus an inset highlight along the top edge. The
+   ::after is the specular band across the upper third. */
+.buy {
+  /* ---- KNOBS ---- */
+  --barrel-h:  54px;    /* button height — the cylinder's diameter */
+  --sheen:     0.16;    /* top highlight strength. 0 = flat pill   */
+  --shade:     0.30;    /* bottom shadow strength                  */
+  /* --------------- */
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 1em;
   width: 100%;
+  min-height: var(--barrel-h);
   margin: var(--btn-gap) 0 0;
-  padding: .92em 1.7em;
+  padding: 0 2em;
   border: 0;
   border-radius: 999px;
-  background: rgb(var(--maroon) / 1);
+  overflow: hidden;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(255 255 255 / var(--sheen)) 0%,
+      rgb(255 255 255 / 0)           38%,
+      rgb(0 0 0 / 0)                 58%,
+      rgb(0 0 0 / var(--shade))      100%
+    ),
+    rgb(var(--maroon));
+  box-shadow:
+    inset 0  1px 0 rgb(255 255 255 / .22),
+    inset 0 -1px 0 rgb(0 0 0 / .30),
+    0 6px 16px rgb(0 0 0 / .35);
   color: var(--cream);
   font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.15em;
-  letter-spacing: 0.07em;
+  font-size: 1.25em;
+  letter-spacing: 0.075em;
+  text-decoration: none;
   cursor: pointer;
-  transition: background-color var(--speed) var(--ease),
-              transform        var(--speed) var(--ease),
-              opacity          var(--speed) var(--ease);
+  transition: transform  var(--speed) var(--ease),
+              box-shadow var(--speed) var(--ease),
+              filter     var(--speed) var(--ease);
 }
-.buy:hover:not(:disabled) { background: rgb(var(--maroon) / .82); transform: translateY(-2px); }
-.buy:disabled { opacity: .38; cursor: not-allowed; }
-.buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
+
+/* the specular band — a soft ellipse of light across the barrel */
+.buy::after {
+  content: "";
+  position: absolute;
+  inset: 2px 2px auto;
+  height: 42%;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+              rgb(255 255 255 / .13), rgb(255 255 255 / 0));
+  pointer-events: none;
+}
+
+.buy__label,
+.buy__total { position: relative; z-index: 1; }
 .buy__total { font-variant-numeric: tabular-nums; }
+
+.buy:hover,
+.buy:focus-visible {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow:
+    inset 0  1px 0 rgb(255 255 255 / .26),
+    inset 0 -1px 0 rgb(0 0 0 / .30),
+    0 10px 22px rgb(0 0 0 / .42);
+}
+.buy:active {
+  transform: translateY(1px);
+  filter: brightness(.95);
+  box-shadow:
+    inset 0  2px 4px rgb(0 0 0 / .30),
+    0 3px 8px rgb(0 0 0 / .30);
+}
+.buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 
 /* the processor note sits with the button it describes */
 .pay-note {
-  margin: .7em 0 0;
-  font-size: .78em;
-  letter-spacing: 0.03em;
+  margin: .85em 0 0;
+  font-size: .85em;
+  letter-spacing: 0.02em;
   color: var(--muted);
 }
 
-
-/* ---- the "not live yet" notice ---- */
-.demo {
-  margin: var(--btn-gap) 0 0;
-  padding: .85em 1.15em;
-  border-left: 3px solid var(--gold);
-  background: rgb(255 255 255 / .045);
-  font-size: .87em;
-  color: #D8D8D8;
+/* ---- the poster ---- */
+.tickets__col--art {
+  /* ---- KNOBS ---- */
+  --frame:     1px;      /* hairline border width          */
+  --frame-pad: 0.9vw;    /* mat between border and image   */
+  --art-top:   0.6vh;    /* nudge the whole frame down     */
+  /* --------------- */
+  margin-top: var(--art-top);
+  padding: var(--frame-pad);
+  border: var(--frame) solid rgb(255 255 255 / .55);
 }
-.demo[hidden] { display: none; }
+.tickets__poster {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
+@media (hover: none) {
+  .buy:hover { transform: none; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .buy { transition: none; }
+  .buy:hover, .buy:focus-visible { transform: none; }
+}
 /* ============================================================
    TICKETS — BUBBLES. ADJUST HERE.
    All in vh. Negative right/left pushes the circle off the edge.
