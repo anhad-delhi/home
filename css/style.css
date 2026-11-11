@@ -1328,7 +1328,7 @@ body.is-locked { overflow: hidden; }
     --indent:   8.9vw;   /* Members / Set List indent              */
     --row:      1.72;    /* line-height = vertical rhythm          */
     --logo-w:   62cqw;   /* logo width (cqw = % of the stage)      */
-    --logo-y:   28%;     /* logo centre, from the top              */
+    --logo-y:   22%;     /* logo centre, from the top              */
     --focus:    50% 50%; /* herophone.jpg crop                     */
     /* ------------------------------------------------------------ */
 
