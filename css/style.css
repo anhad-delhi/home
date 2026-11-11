@@ -1077,6 +1077,11 @@ body.is-locked { overflow: hidden; }
   display: block;
 }
 
+          <aside class="nudge">
+            <p class="nudge__text">Can't make it to the show? You can still be part of Anhad — any contribution goes towards rehearsal space, recording and sound.</p>
+            <a class="nudge__link" href="fundraiser.html">Contribute instead <span aria-hidden="true">&rarr;</span></a>
+          </aside>
+
 @media (hover: none) {
   .buy:hover { opacity: 1; }
 }
