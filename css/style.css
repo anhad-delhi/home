@@ -844,7 +844,7 @@ body.is-locked { overflow: hidden; }
 
 .page--tickets {
   --paper: #F7F7F7;
-  --gold:  #D4A53D;   /* the olive-gold of the meta line */
+  --gold:  #D3CA27;   /* the meta line + section labels */
   --orange:#F49528;   /* the price */
   --line:  #343434;
   --muted: #9C9C9C;
@@ -863,21 +863,21 @@ body.is-locked { overflow: hidden; }
   /* ---- KNOBS ------------------------------------------------ */
   --type:       0.76;  /* master type scale, matches other pages  */
   --pad:        5.5vw; /* LEFT margin                             */
-  --pad-r:        9vw; /* RIGHT margin — clears HOME + the logos  */
-  --head-top:     9vh; /* space above the title                   */
-  --col-gap:      5vw; /* channel between text and poster         */
-  --art-w:        42%; /* poster column width                     */
+  --pad-r:      5.5vw; /* RIGHT margin                            */
+  --head-top:   11vh;  /* space above the title                   */
+  --col-gap:      4vw; /* channel between text and poster         */
+  --art-w:        33%; /* poster column width — was 42%           */
 
-  /* ---- vertical rhythm — raise any of these to loosen ------- */
-  --after-title: 1.1em;
-  --after-meta:  1.9em;
-  --after-blurb: 2.3em;
-  --after-det:   2.1em;
-  --lead:        1.5;
+  /* ---- vertical rhythm — ALL TIGHTENED. raise to loosen ----- */
+  --after-title: 0.85em;
+  --after-meta:  1.25em;
+  --after-blurb: 1.5em;
+  --after-det:   1.4em;
+  --lead:        1.38;   /* was 1.5 */
   /* ------------------------------------------------------------ */
 
   min-height: 100vh;
-  padding: var(--head-top) var(--pad-r) 10vh var(--pad);
+  padding: var(--head-top) var(--pad-r) 8vh var(--pad);
 }
 
 /* ---- two columns: event left, poster right ---- */
@@ -886,7 +886,12 @@ body.is-locked { overflow: hidden; }
   grid-template-columns: minmax(0, 1fr) var(--art-w);
   column-gap: var(--col-gap);
   align-items: start;
-  font-size: clamp(14px, 1.15vw, 17px);   /* everything below is em */
+
+  /* cqw, not vw: the left column now scales with the page the way
+     the title does, so the proportions hold at any window width.
+     The px bounds stop it collapsing on a laptop or ballooning on
+     an external monitor. */
+  font-size: clamp(14px, 1.28cqw, 21px);
   line-height: var(--lead);
 }
 .tickets__col { min-width: 0; }
@@ -895,36 +900,37 @@ body.is-locked { overflow: hidden; }
 .tickets__title {
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: calc(3.4cqw * var(--type));
-  line-height: 1.12;
-  letter-spacing: 0.01em;
+  font-size: calc(4.2cqw * var(--type));
+  line-height: 1.1;
+  letter-spacing: 0.005em;
   color: var(--paper);
   margin: 0 0 var(--after-title);
 }
 
-/* ---- the gold meta line ---- */
+/* ---- the meta line ---- */
 .tickets__meta {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 0.3em 0.75em;
+  gap: 0.25em 0.7em;
   margin: 0 0 var(--after-meta);
   font-family: "Alegreya SC", Georgia, serif;
   font-size: 1.05em;
-  letter-spacing: 0.055em;
+  letter-spacing: 0.05em;
+  line-height: 1.3;
   color: var(--gold);
 }
 .tickets__meta span + span::before {
   content: "\00B7";
-  margin-right: 0.75em;
+  margin-right: 0.7em;
   opacity: .7;
 }
 
 /* ---- the blurb ---- */
 .tickets__blurb {
   margin: 0 0 var(--after-blurb);
-  max-width: 34em;
-  font-size: 1.08em;
+  max-width: 38em;
+  font-size: 1.12em;
   line-height: var(--lead);
 }
 
@@ -932,24 +938,25 @@ body.is-locked { overflow: hidden; }
 .details { margin: 0 0 var(--after-det); }
 
 .details__title {
-  margin: 0 0 .85em;
+  margin: 0 0 .6em;
   font-family: "Alegreya SC", Georgia, serif;
   font-weight: 400;
-  font-size: 1em;
-  letter-spacing: 0.085em;
+  font-size: 1.02em;
+  letter-spacing: 0.08em;
   color: var(--gold);
 }
 
 .details__list {
   /* ---- KNOBS ---- */
-  --bullet: 3px;      /* dot diameter                 */
-  --hang:   1.1em;    /* hanging indent               */
-  --det-gap: .42em;   /* between rows                 */
+  --bullet:  3px;     /* dot diameter                 */
+  --hang:    1.05em;  /* hanging indent               */
+  --det-gap: .18em;   /* between rows — was .42em     */
   /* --------------- */
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 1.02em;
+  font-size: 1.05em;
+  line-height: 1.45;
 }
 .details__list li {
   position: relative;
@@ -965,27 +972,19 @@ body.is-locked { overflow: hidden; }
   height: var(--bullet);
   border-radius: 50%;
   background: var(--paper);
-  opacity: .75;
+  opacity: .7;
 }
 
 /* ---- the order block ---- */
 .order {
   /* ---- KNOBS ---- */
-  --rule-gap: 2.1em;   /* above the hairline            */
-  --btn-gap:  1.8em;   /* above the purchase button     */
+  --rule-gap: 1.5em;   /* above AND below the hairline  */
+  --btn-gap:  1.3em;   /* above the purchase button     */
   /* --------------- */
   margin-top: var(--rule-gap);
   padding-top: var(--rule-gap);
   border-top: 1px solid var(--line);
   max-width: 34em;
-}
-
-.order__label {
-  margin: 0 0 .7em;
-  font-family: "Alegreya SC", Georgia, serif;
-  font-weight: 400;
-  font-size: 1.5em;
-  letter-spacing: 0.03em;
 }
 
 .order__row {
@@ -999,115 +998,72 @@ body.is-locked { overflow: hidden; }
   font-family: "Alegreya SC", Georgia, serif;
   font-size: 1.5em;
   letter-spacing: 0.03em;
+  line-height: 1.2;
 }
 .order__price {
   margin: 0;
   font-family: "Alegreya SC", Georgia, serif;
   font-size: 1.5em;
   font-variant-numeric: tabular-nums;
+  line-height: 1.2;
   color: var(--orange);
 }
 
-/* ---- the purchase button: a true cylinder ------------------
-   border-radius: 999px alone gives a flat pill. The cylinder
-   comes from a vertical light gradient (top lit, bottom in
-   shadow) plus an inset highlight along the top edge. The
-   ::after is the specular band across the upper third. */
+/* ---- the purchase button: flat, dims on press -------------- */
 .buy {
   /* ---- KNOBS ---- */
-  --barrel-h:  54px;    /* button height — the cylinder's diameter */
-  --sheen:     0.16;    /* top highlight strength. 0 = flat pill   */
-  --shade:     0.30;    /* bottom shadow strength                  */
+  --btn-h:    52px;   /* button height                      */
+  --press:    0.55;   /* opacity while held down            */
+  --hover:    0.86;   /* opacity on hover                   */
   /* --------------- */
 
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
   width: 100%;
-  min-height: var(--barrel-h);
+  min-height: var(--btn-h);
   margin: var(--btn-gap) 0 0;
-  padding: 0 2em;
+  padding: 0 1.9em;
   border: 0;
   border-radius: 999px;
-  overflow: hidden;
-  background:
-    linear-gradient(
-      to bottom,
-      rgb(255 255 255 / var(--sheen)) 0%,
-      rgb(255 255 255 / 0)           38%,
-      rgb(0 0 0 / 0)                 58%,
-      rgb(0 0 0 / var(--shade))      100%
-    ),
-    rgb(var(--maroon));
-  box-shadow:
-    inset 0  1px 0 rgb(255 255 255 / .22),
-    inset 0 -1px 0 rgb(0 0 0 / .30),
-    0 6px 16px rgb(0 0 0 / .35);
+  background: rgb(var(--maroon));
   color: var(--cream);
   font-family: "Alegreya SC", Georgia, serif;
-  font-size: 1.25em;
-  letter-spacing: 0.075em;
+  font-size: 1.22em;
+  letter-spacing: 0.07em;
+  line-height: 1;
   text-decoration: none;
   cursor: pointer;
-  transition: transform  var(--speed) var(--ease),
-              box-shadow var(--speed) var(--ease),
-              filter     var(--speed) var(--ease);
+  transition: opacity var(--speed) var(--ease);
 }
-
-/* the specular band — a soft ellipse of light across the barrel */
-.buy::after {
-  content: "";
-  position: absolute;
-  inset: 2px 2px auto;
-  height: 42%;
-  border-radius: 999px;
-  background: linear-gradient(to bottom,
-              rgb(255 255 255 / .13), rgb(255 255 255 / 0));
-  pointer-events: none;
-}
-
-.buy__label,
-.buy__total { position: relative; z-index: 1; }
 .buy__total { font-variant-numeric: tabular-nums; }
 
 .buy:hover,
-.buy:focus-visible {
-  transform: translateY(-2px);
-  filter: brightness(1.06);
-  box-shadow:
-    inset 0  1px 0 rgb(255 255 255 / .26),
-    inset 0 -1px 0 rgb(0 0 0 / .30),
-    0 10px 22px rgb(0 0 0 / .42);
-}
-.buy:active {
-  transform: translateY(1px);
-  filter: brightness(.95);
-  box-shadow:
-    inset 0  2px 4px rgb(0 0 0 / .30),
-    0 3px 8px rgb(0 0 0 / .30);
-}
+.buy:focus-visible { opacity: var(--hover); }
+.buy:active        { opacity: var(--press); }
 .buy:focus-visible { outline: 2px solid var(--cream); outline-offset: 4px; }
 
 /* the processor note sits with the button it describes */
 .pay-note {
-  margin: .85em 0 0;
-  font-size: .85em;
-  letter-spacing: 0.02em;
+  max-width: 34em;
+  margin: .7em 0 0;
+  font-size: .86em;
+  line-height: 1.4;
+  letter-spacing: 0.015em;
   color: var(--muted);
 }
 
 /* ---- the poster ---- */
 .tickets__col--art {
   /* ---- KNOBS ---- */
-  --frame:     1px;      /* hairline border width          */
-  --frame-pad: 0.9vw;    /* mat between border and image   */
-  --art-top:   0.6vh;    /* nudge the whole frame down     */
+  --frame:     1px;     /* hairline border width — 0 removes it   */
+  --frame-pad: 0.55vw;  /* mat between border and image           */
+  --art-top:   2.5vh;   /* nudge the whole frame down             */
   /* --------------- */
   margin-top: var(--art-top);
   padding: var(--frame-pad);
-  border: var(--frame) solid rgb(255 255 255 / .55);
+  border: var(--frame) solid rgb(255 255 255 / .5);
 }
 .tickets__poster {
   width: 100%;
@@ -1116,42 +1072,46 @@ body.is-locked { overflow: hidden; }
 }
 
 @media (hover: none) {
-  .buy:hover { transform: none; filter: none; }
+  .buy:hover { opacity: 1; }
 }
 @media (prefers-reduced-motion: reduce) {
   .buy { transition: none; }
-  .buy:hover, .buy:focus-visible { transform: none; }
 }
+
+
 /* ============================================================
    TICKETS — BUBBLES. ADJUST HERE.
    All in vh. Negative right/left pushes the circle off the edge.
    --nudge shifts the label so it centres in the VISIBLE crescent;
    the rule of thumb is half the overhang, negated.
+
+   NOTE: vh means these do NOT shrink on a wide, short window —
+   they only track height. If they still look big, lower the
+   widths here rather than the font sizes.
    ============================================================ */
 
 /* HOME — maroon, top right, bleeding off the edge */
 .page--tickets .bubble--home {
   --hue: var(--maroon);
-  width: 28vh;  top: -0.6vh;  right: -5.7vh;  left: auto;
-  font-size: 2.2vh;  --nudge: -2.9vh;  z-index: 1;
+  width: 20vh;  top: 0.8vh;  right: -4.2vh;  left: auto;
+  font-size: 1.75vh;  --nudge: -2.1vh;  z-index: 1;
 }
 
 /* GALLERY — olive, tucked inside, left of HOME */
 .page--tickets .bubble--gallery {
   --hue: var(--olive);
-  width: 16.4vh;  top: 1.7vh;  right: 23.4vh;  left: auto;
-  font-size: 1.95vh;  --nudge: 0;  z-index: 2;
+  width: 12vh;  top: 1.1vh;  right: 17.5vh;  left: auto;
+  font-size: 1.5vh;  --nudge: 0;  z-index: 2;
 }
 
 /* ABOUT ANHAD — blue, bottom left, bleeding off the bottom */
 .page--tickets .bubble--about {
   --hue: var(--blue);
-  width: 20.7vh;  top: 83.2vh;  left: -1vh;  right: auto;
-  font-size: 2.1vh;  --nudge: 0.5vh;  z-index: 3;
+  width: 17vh;  top: 85vh;  left: -1.5vh;  right: auto;
+  font-size: 1.7vh;  --nudge: 0.7vh;  z-index: 3;
 }
 
-/* olive is light — ink label at full opacity so it stays legible.
-   this moved from --about to --gallery when the colours swapped. */
+/* olive is light — ink label at full opacity so it stays legible */
 .page--tickets .bubble--gallery:hover,
 .page--tickets .bubble--gallery:focus-visible { color: var(--ink); }
 
