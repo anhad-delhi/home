@@ -1130,7 +1130,10 @@ body.is-locked { overflow: hidden; }
 
 /* ============================================================
    TICKETS — MOBILE
-   One column, in the original vertical order. Drawer nav.
+   One column, no poster, drawer nav.
+   Every value here is measured off the phone mockup. Desktop
+   is untouched: all of it sits behind .page--tickets inside
+   the breakpoint.
    ============================================================ */
 
 @media (max-width: 860px) {
@@ -1147,100 +1150,133 @@ body.is-locked { overflow: hidden; }
     --bar-gap:  6px;
     --nav-top:  7.6vh;
     --link:     clamp(16px, 5vw, 22px);
-    --sub:      0.88;
-    --indent:   8.9vw;
-    --row:      1.72;   /* drawer line-height. Does NOT reach the
-                           summary: .tickets declares its own --row. */
+    --row:      1.72;
   }
 
   .tickets {
     /* ---- page knobs ------------------------------------------- */
-    --pad:       6vw;
-    --pad-r:     6vw;   /* bubbles are gone — no clearance needed  */
-    --head-top:  5.2vh;
+    --pad:       9.5vw;   /* THE left margin. Everything sits on it */
+    --pad-r:       8vw;   /* right margin — bubbles are gone        */
+    --head-top:    7vh;   /* viewport top → title                   */
 
-    --title:     clamp(34px, 12vw, 58px);
-    --meta:      clamp(11px, 3.2vw, 14px);
-    --base:      16px;  /* ← do NOT drop below 16px: iOS Safari
-                             zooms the viewport on any focused
-                             input under that, and never zooms back */
+    /* ---- type ------------------------------------------------- */
+    --t-title:   clamp(32px, 10.3vw, 48px);
+    --t-meta:    clamp(13px,  4.3vw, 18px);
+    --t-body:    clamp(15px,  4.1vw, 18px);  /* blurb + bullets     */
+    --t-label:   clamp(12px,  3.6vw, 15px);  /* EVENT DETAILS       */
+    --t-tier:    clamp(16px,  4.9vw, 21px);  /* GA + ₹499           */
+    --note-size: 12px;    /* see the note above — mockup is ~7px    */
 
-    /* ---- vertical rhythm — raise to loosen -------------------- */
-    --sec:       1.25em;
-    --row:       0.55em;
-    --btn-gap:   1.1em;
-    --col-gap:   3vh;   /* order block → terms block              */
+    /* ---- vertical rhythm, in px off the mockup ----------------- */
+    --g-title:   43px;    /* title → gold line                      */
+    --g-meta:    28px;    /* gold line → blurb                      */
+    --g-blurb:   50px;    /* blurb → EVENT DETAILS                  */
+    --g-label:   23px;    /* EVENT DETAILS → first bullet           */
+    --g-rule-up: 47px;    /* last bullet → hairline                 */
+    --g-rule-dn: 61px;    /* hairline → GENERAL ADMISSION           */
+    --g-btn:     47px;    /* GENERAL ADMISSION → button             */
+    --g-note:    15px;    /* button → razorpay line                 */
     /* ------------------------------------------------------------ */
 
     padding: calc(var(--head-top) + env(safe-area-inset-top, 0px))
              var(--pad-r)
-             calc(10vh + env(safe-area-inset-bottom, 0px))
+             calc(14vh + env(safe-area-inset-bottom, 0px))
              var(--pad);
   }
 
-  .page--tickets .tickets__title { font-size: var(--title); }
+  /* ---- one column, and a real base size. The desktop grid is
+          sized in cqw, which collapses to the 14px floor on a
+          phone and would shrink every em below it. ---- */
+  .page--tickets .tickets__grid {
+    display: block;
+    font-size: 16px;
+  }
 
+  /* ---- no poster on phones ---- */
+  .page--tickets .tickets__col--art { display: none; }
+
+  /* ---- title ---- */
+  .page--tickets .tickets__title {
+    font-size: var(--t-title);
+    line-height: 1.05;
+    letter-spacing: 0;
+    margin: 0 0 var(--g-title);
+  }
+
+  /* ---- the gold line: venue drops out, it's in Event Details.
+          Hiding the span leaves the next one with a stray leading
+          dot, so that ::before goes too. ---- */
   .page--tickets .tickets__meta {
-    margin-top: 1em;
-    font-size: var(--meta);
-    gap: 0.35em 0.8em;
+    font-size: var(--t-meta);
+    line-height: 1.3;
+    gap: 0.25em 0.65em;
+    margin: 0 0 var(--g-meta);
+  }
+  .page--tickets .tickets__meta span:first-child { display: none; }
+  .page--tickets .tickets__meta span:nth-child(2)::before { content: none; }
+
+  /* ---- blurb ---- */
+  .page--tickets .tickets__blurb {
+    font-size: var(--t-body);
+    line-height: 1.45;
+    max-width: none;
+    margin: 0 0 var(--g-blurb);
   }
 
-  /* ---- one column; the two .checkout__col divs stack in source
-          order, which is the original vertical flow ---- */
-  .page--tickets .checkout {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: var(--col-gap);
-    font-size: var(--base);
-    line-height: 1.5;
+  /* ---- event details ---- */
+  .page--tickets .details { margin: 0; }
+
+  .page--tickets .details__title {
+    font-size: var(--t-label);
+    letter-spacing: 0.07em;
+    margin: 0 0 var(--g-label);
   }
 
-  /* ---- tap targets: 44px floor on everything you have to hit ---- */
-  .page--tickets .qty__btn {
-    width: 3em;
-    min-height: 44px;
+  .page--tickets .details__list {
+    --det-gap: 0;         /* line-height alone sets the rhythm */
+    --hang: 1.15em;
+    font-size: var(--t-body);
+    line-height: 1.45;
   }
-  .page--tickets .qty__input {
-    width: 3.6em;
-    padding: .72em 0;
+  .page--tickets .details__list li::before { top: .62em; }
+
+  /* ---- the hairline + order block.
+          Two separate knobs here, not one --rule-gap: the margin
+          above the rule and the padding below it are different
+          sizes in the mockup. ---- */
+  .page--tickets .order {
+    --btn-w: 100%;
+    width: 100%;
+    margin-top:  var(--g-rule-up);
+    padding-top: var(--g-rule-dn);
   }
 
+  .page--tickets .order__tier,
+  .page--tickets .order__price {
+    font-size: var(--t-tier);
+    line-height: 1.2;
+  }
+
+  /* ---- the button ---- */
   .page--tickets .buy {
-    min-height: 48px;
-    align-items: center;
+    --btn-h: 48px;        /* 44px tap-target floor; mockup is ~36 */
+    justify-content: flex-start;   /* mockup is left-aligned */
+    padding: 0 1.45em;
+    margin-top: var(--g-btn);
+    font-size: clamp(15px, 4.4vw, 19px);
+    letter-spacing: 0.08em;
   }
 
-  /* the whole label is the target, so give it real height */
-  .page--tickets .agree {
-    gap: .75em;
-    padding: .35em 0;
-    font-size: .92em;
-  }
-  .page--tickets .agree__box {
-    width: 1.25em;
-    height: 1.25em;
-    margin-top: .12em;
-  }
-
-  /* ---- readability ---- */
-  .page--tickets .policies__list { font-size: .9em; }
-  .page--tickets .pay-note       { font-size: .85em; }
-  .page--tickets .qty__cap       { font-size: .85em; }
-  .page--tickets .tier__note     { font-size: .88em; }
-
-  /* the summary has no bottom border — the rule separates the
-     order block from the terms block */
-  .page--tickets .policies {
-    padding-top: 1.3em;
-    border-top: 1px solid var(--line);
+  /* ---- razorpay note ---- */
+  .page--tickets .pay-note {
+    width: 100%;
+    font-size: var(--note-size);
+    line-height: 1.4;
+    margin-top: var(--g-note);
   }
 
   /* ---- the desktop furniture is gone ---- */
   .page--tickets .bubbles { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .buy:hover:not(:disabled) { transform: none; }
 }
 
 /* ============================================================
