@@ -89,7 +89,7 @@
   var scrim  = document.querySelector('.scrim');
   if (!btn || !drawer || !scrim) return;
 
-  var links = Array.prototype.slice.call(drawer.querySelectorAll('a'));
+  var links = Array.prototype.slice.call(document.querySelectorAll('#drawer a, .social a'));
   var open  = false;
 
   function setOpen(state) {
