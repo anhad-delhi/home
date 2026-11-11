@@ -1438,18 +1438,20 @@ body.is-locked { overflow: hidden; }
     transition: transform var(--speed) var(--ease), visibility 0s;
   }
 
-  .drawer__list,
-  .drawer__sub {
+  .drawer__list {
     margin: 0;
     padding: 0;
     list-style: none;
   }
+
+  /* flat list — every page is a peer. --item-gap adds air between
+     rows on top of line-height; 0 keeps the original rhythm. */
+  .drawer__list > li + li { margin-top: var(--item-gap, 0); }
   .drawer__list {
     padding: calc(var(--nav-top) + env(safe-area-inset-top, 0px))
              var(--panel-x)
              calc(6vh + env(safe-area-inset-bottom, 0px));
   }
-  .drawer__sub { padding-left: var(--indent); }
 
   .drawer__link {
     display: block;
@@ -1463,7 +1465,6 @@ body.is-locked { overflow: hidden; }
     white-space: nowrap;
     transition: opacity 200ms var(--ease), transform 200ms var(--ease);
   }
-  .drawer__link--sub { font-size: calc(var(--link) * var(--sub)); }
 
   .drawer__link:active        { opacity: 0.6; transform: translateX(2px); }
   .drawer__link:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
