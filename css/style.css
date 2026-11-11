@@ -869,11 +869,11 @@ body.is-locked { overflow: hidden; }
   --art-w:        33%; /* poster column width                     */
 
   /* ---- vertical rhythm — raise any to loosen ---------------- */
-  --after-title: 0.85em;
-  --after-meta:  1.25em;
-  --after-blurb: 1.5em;
-  --after-det:   1.4em;
-  --lead:        1.38;
+  --after-title: 0.70em;
+  --after-meta:  1.10em;
+  --after-blurb: 0.90em;
+  --after-det:   1.25em;
+  --lead:        1.23;
   /* ------------------------------------------------------------ */
 
   min-height: 100vh;
@@ -1216,11 +1216,11 @@ body.is-locked { overflow: hidden; }
     /* ---- vertical rhythm, in px off the mockup ----------------- */
     --g-title:   43px;    /* title → gold line                      */
     --g-meta:    28px;    /* gold line → blurb                      */
-    --g-blurb:   50px;    /* blurb → EVENT DETAILS                  */
+    --g-blurb:   30px;    /* blurb → EVENT DETAILS                  */
     --g-label:   23px;    /* EVENT DETAILS → first bullet           */
     --g-rule-up: 47px;    /* last bullet → hairline                 */
-    --g-rule-dn: 61px;    /* hairline → GENERAL ADMISSION           */
-    --g-btn:     47px;    /* GENERAL ADMISSION → button             */
+    --g-rule-dn: 41px;    /* hairline → GENERAL ADMISSION           */
+    --g-btn:     30px;    /* GENERAL ADMISSION → button             */
     --g-note:    15px;    /* button → razorpay line                 */
     /* ------------------------------------------------------------ */
 
