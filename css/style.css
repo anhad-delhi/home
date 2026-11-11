@@ -2323,8 +2323,7 @@ body.is-locked { overflow: hidden; }
 .fund__back a:focus-visible { outline: 2px solid var(--ink-text); outline-offset: 4px; }
 
 /* ---- white-page corrections for shared furniture ---- */
-.page--fundraiser .social__link img { filter: brightness(0); opacity: .7; }
-.page--fundraiser .social__link:focus-visible { outline-color: var(--ink-text); }
+  .page--fundraiser .social__link img { filter: none; opacity: var(--dim); }
 
 @media (hover: none) {
   .contribute:hover { background: transparent; color: var(--ink-text); }
