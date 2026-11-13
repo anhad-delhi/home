@@ -256,7 +256,7 @@ body {
   background: none;
   cursor: pointer;
   transform-origin: 50% 50%;
-  transform: rotate(var(--rot, 0deg));
+  transform: translateY(var(--lift, 0)) rotate(var(--rot, 0deg));
   transition: transform 420ms cubic-bezier(.4,0,.2,1),
               opacity   280ms ease,
               filter    420ms cubic-bezier(.4,0,.2,1);
@@ -264,6 +264,22 @@ body {
 }
 .piece img { width: 100%; height: auto; display: block; }
 .piece:focus-visible { outline: 2px solid var(--paper); outline-offset: 8px; }
+
+/* ---- hover lift: the only cue that the pile is clickable -----
+   --lift rides inside the existing transform so the rotation
+   survives. It does nothing once a piece is open: the JS writes
+   el.style.transform directly then, and an inline style beats
+   this rule — so the :not(.is-active) guards keep the resting
+   pieces still rather than letting them twitch under a card
+   that is already up. ---- */
+.piece:not(.is-active):hover,
+.piece:not(.is-active):focus-visible {
+  --lift: -10px;        /* ← how far it rises. more negative = higher */
+  filter: drop-shadow(0 14px 26px rgb(0 0 0 / .6));
+}
+
+/* while a piece is open, the others stay put */
+.scatter:has(.piece.is-active) .piece:not(.is-active):hover { --lift: 0; }
 
 .piece.is-active {
   filter: drop-shadow(0 30px 55px rgb(0 0 0 / .85))
