@@ -257,7 +257,7 @@ body {
   cursor: pointer;
   transform-origin: 50% 50%;
   transform: translateY(var(--lift, 0)) rotate(var(--rot, 0deg));
-  transition: transform 220ms cubic-bezier(.4,0,.2,1),
+  transition: transform 360ms cubic-bezier(.4,0,.2,1),
               opacity   280ms ease,
               filter    420ms cubic-bezier(.4,0,.2,1);
   filter: drop-shadow(0 6px 18px rgb(0 0 0 / .45));
