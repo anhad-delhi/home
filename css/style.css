@@ -2068,6 +2068,12 @@ body.is-locked { overflow: hidden; }
     max-width: 86vw;
     padding: 6px 0;   /* tap target — the line is only ~14px tall */
   }
+
+  /* two lines: the comma goes, the date takes its own row.
+     The <a> is absolutely positioned so it computes to block —
+     a block child is legal, and text-align:center inherits. */
+  .page--landing .stage__upcoming .upcoming__sep  { display: none; }
+  .page--landing .stage__upcoming .upcoming__date { display: block; }
 }
 
 @media (prefers-reduced-motion: reduce) {
