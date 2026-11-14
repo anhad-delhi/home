@@ -1280,7 +1280,10 @@ body.is-locked { overflow: hidden; }
     gap: 0.25em 0.65em;
     margin: 0 0 var(--g-meta);
   }
-
+  /* the date is already in EVENT DETAILS below — on a phone the
+     meta line repeating it is just noise in a narrow column */
+  .page--tickets .meta--date { display: none; }
+   
   /* ---- blurb ---- */
   .page--tickets .tickets__blurb {
     font-size: var(--t-body);
