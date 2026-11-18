@@ -1231,7 +1231,7 @@ body.is-locked { overflow: hidden; }
 
     /* ---- type ------------------------------------------------- */
     --t-title:   clamp(32px, 10.3vw, 48px);
-    --t-meta:    clamp(13px,  4.3vw, 18px);
+    --t-meta:    clamp(10px,  3.3vw, 15px);
     --t-body:    clamp(15px,  4.1vw, 18px);  /* blurb + bullets     */
     --t-label:   clamp(12px,  3.6vw, 15px);  /* EVENT DETAILS       */
     --t-tier:    clamp(16px,  4.9vw, 21px);  /* GA + ₹499           */
@@ -1273,13 +1273,18 @@ body.is-locked { overflow: hidden; }
     margin: 0 0 var(--g-title);
   }
 
-  /* ---- the gold line: all three items show ---- */
+  /* ---- the gold line: date is hidden, the other two hold one line ---- */
   .page--tickets .tickets__meta {
+    flex-wrap: nowrap;
     font-size: var(--t-meta);
     line-height: 1.3;
-    gap: 0.25em 0.65em;
+    letter-spacing: 0.035em;
+    gap: 0 0.5em;
     margin: 0 0 var(--g-meta);
   }
+  .page--tickets .tickets__meta span { white-space: nowrap; }
+  .page--tickets .tickets__meta span + span::before { margin-right: 0.5em; }
+
   /* the date is already in EVENT DETAILS below — on a phone the
      meta line repeating it is just noise in a narrow column */
   .page--tickets .meta--date { display: none; }
